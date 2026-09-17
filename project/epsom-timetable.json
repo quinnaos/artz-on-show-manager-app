@@ -1,0 +1,690 @@
+{
+ "Monday": [
+  {
+   "A": "ARTZ ON SHOW"
+  },
+  {
+   "A": "Wicked",
+   "C": "All Staff teaching for Session 1 need to be onsite at 7:30 am. \r\nAll groups will now have the option to have a Brain Break between classes. If the children are focussed and do not require the break, continue with your class as usual. If it is needed, please use it proactively for a snack, toilet, or to reset their brains. Please do not disrupt other groups who may continue with their class."
+  },
+  {
+   "A": "Epsom"
+  },
+  {
+   "A": "Monday 28 September"
+  },
+  {
+   "A": "Time",
+   "B": "Session",
+   "C": "Orange (5-7 yrs)",
+   "D": "Yellow (8-9 yrs)",
+   "E": "Silver (10-11 yrs)",
+   "F": "Black (11+yrs)"
+  },
+  {
+   "A": "8:30 am – 9:00 am",
+   "C": "Register"
+  },
+  {
+   "A": "9:00 am – 9:35 am",
+   "C": "Warm up – Dance Tutor"
+  },
+  {
+   "A": "9:35 am – 10:25 am",
+   "B": "1",
+   "C": "Art: Grace",
+   "D": "Drama:",
+   "E": "Hip Hop:",
+   "F": "Vocals: Kerry",
+   "G": "No class: Jazz"
+  },
+  {
+   "A": "10:15 am – 10:25 am",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "10:25 am – 11:15 am",
+   "B": "2",
+   "C": "Drama:",
+   "D": "Hip Hop:",
+   "E": "Vocals: Kerry",
+   "F": "Art: Grace",
+   "G": "No class: Jazz"
+  },
+  {
+   "A": "11:15 am – 11:45 am",
+   "C": "Morning Tea"
+  },
+  {
+   "A": "11:45 am  – 12:35 pm",
+   "B": "3",
+   "C": "Hip Hop:",
+   "D": "Vocals: Kerry",
+   "E": "Jazz:",
+   "F": "Drama:",
+   "G": "No class: Art"
+  },
+  {
+   "A": "12:25 pm – 12:35 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "12:35 pm – 1:25 pm",
+   "B": "4",
+   "C": "Vocals: Kerry",
+   "D": "Jazz:",
+   "E": "Art: Grace",
+   "F": "Quinn",
+   "G": "No class: Hip Hop and Drama"
+  },
+  {
+   "A": "1:25 pm – 1:55 pm",
+   "C": "Lunch"
+  },
+  {
+   "A": "1:55 pm – 2:10 pm",
+   "C": "Quiet Time"
+  },
+  {
+   "A": "2:10 pm – 3:00 pm",
+   "B": "5",
+   "C": "Jazz:",
+   "D": "Art: Grace",
+   "E": "Drama:",
+   "F": "Quinn",
+   "G": "No class: Hip Hop and Vocals"
+  },
+  {
+   "A": "3:00 pm – 3:15 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "3:15 pm – 3:45 pm",
+   "C": "Intro/Finale practice / Tidy up / Certificates / Points"
+  },
+  {
+   "A": "3:45 pm – 4:00 pm",
+   "C": "Group Time with Parents"
+  },
+  {
+   "A": "Manager: Chloe / 7:15 am"
+  },
+  {
+   "A": "Assistant Manager: Annabella / 7:15 am"
+  },
+  {
+   "A": "Workshop Assistant: Grace / 7:30 am"
+  }
+ ],
+ "Tuesday": [
+  {
+   "A": "ARTZ ON SHOW"
+  },
+  {
+   "A": "Wicked",
+   "C": "All Staff teaching for Session 1 need to be onsite at 8:15 am. \r\nAll groups will now have the option to have a Brain Break between classes. If the children are focussed and do not require the break, continue with your class as usual. If it is needed, please use it proactively for a snack, toilet, or to reset their brains. Please do not disrupt other groups who may continue with their class."
+  },
+  {
+   "A": "Epsom"
+  },
+  {
+   "A": "Tuesday 29 September"
+  },
+  {
+   "A": "Time",
+   "B": "Session",
+   "C": "Orange (5-7 yrs)",
+   "D": "Yellow (8-9 yrs)",
+   "E": "Silver (10-11 yrs)",
+   "F": "Black (11+ yrs)"
+  },
+  {
+   "A": "8:30 am – 9:00 am",
+   "C": "Register"
+  },
+  {
+   "A": "9:00 am – 9:35 am",
+   "C": "Warm up – Dance Tutor"
+  },
+  {
+   "A": "9:35 am – 10:25 am",
+   "B": "1",
+   "C": "Art: Grace",
+   "D": "Jazz:",
+   "E": "Hip Hop:",
+   "F": "Drama:",
+   "G": "No class: Minute to Win it"
+  },
+  {
+   "A": "10:15 am – 10:25 am",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "10:25 am – 11:15 am",
+   "B": "2",
+   "C": "Jazz:",
+   "D": "Hip Hop:",
+   "E": "Drama:",
+   "F": "Minute to Win it: Eva",
+   "G": "No class: Art"
+  },
+  {
+   "A": "11:15 am – 11:45 am",
+   "C": "Morning Tea"
+  },
+  {
+   "A": "11:45 am  – 12:35 pm",
+   "B": "3",
+   "C": "Hip Hop:",
+   "D": "Drama:",
+   "E": "Minute to Win it: Eva",
+   "F": "Art: Grace",
+   "G": "No class: Jazz"
+  },
+  {
+   "A": "12:25 pm – 12:35 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "12:35 pm – 1:25 pm",
+   "B": "4",
+   "C": "Drama:",
+   "D": "Minute to Win it: Eva",
+   "E": "Art: Grace",
+   "F": "Jazz:",
+   "G": "No class: Hip Hop"
+  },
+  {
+   "A": "1:25 pm – 1:55 pm",
+   "C": "Lunch"
+  },
+  {
+   "A": "1:55 pm – 2:10 pm",
+   "C": "Quiet Time"
+  },
+  {
+   "A": "2:10 pm – 3:00 pm",
+   "B": "5",
+   "C": "Minute to Win it: Eva",
+   "D": "Art: Grace",
+   "E": "Jazz:",
+   "F": "Hip Hop:",
+   "G": "No class: Drama"
+  },
+  {
+   "A": "3:00 pm – 3:15 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "3:15 pm – 3:45 pm",
+   "C": "Intro/Finale practice / Tidy up / Certificates / Points"
+  },
+  {
+   "A": "3:45 pm – 4:00 pm",
+   "C": "Group Time with Parents"
+  },
+  {
+   "A": "Manager: Chloe / 8:00 am"
+  },
+  {
+   "A": "Assistant Manager: Annabella / 8:00 am"
+  },
+  {
+   "A": "Workshop Assistant: Grace / 9:00 am"
+  }
+ ],
+ "Wednesday": [
+  {
+   "A": "ARTZ ON SHOW"
+  },
+  {
+   "A": "Wicked",
+   "C": "All Staff teaching for Session 1 need to be onsite at 8:15 am. \r\nAll groups will now have the option to have a Brain Break between classes. If the children are focussed and do not require the break, continue with your class as usual. If it is needed, please use it proactively for a snack, toilet, or to reset their brains. Please do not disrupt other groups who may continue with their class."
+  },
+  {
+   "A": "Epsom"
+  },
+  {
+   "A": "Wednesday 30 September"
+  },
+  {
+   "C": "PHOTOGRAPHY - 9AM (LARN)"
+  },
+  {
+   "A": "Time",
+   "B": "Session",
+   "C": "Orange (5-6 yrs)",
+   "D": "Yellow (8-9 yrs)",
+   "E": "Silver (10-11 yrs)",
+   "F": "Black (11+ yrs)"
+  },
+  {
+   "A": "8:30 am – 9:00 am",
+   "C": "Register"
+  },
+  {
+   "A": "9:00 am – 9:35 am",
+   "C": "Warm up – Dance Tutor"
+  },
+  {
+   "A": "9:35 am – 10:25 am",
+   "B": "1",
+   "C": "Jazz:",
+   "D": "Hip Hop:",
+   "E": "Musical theatre: Quinn",
+   "F": "Drama:",
+   "G": "No class: Characterisation"
+  },
+  {
+   "A": "10:15 am – 10:25 am",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "10:25 am – 11:15 am",
+   "B": "2",
+   "C": "Hip Hop:",
+   "D": "Musical theatre: Quinn",
+   "E": "Drama:",
+   "F": "Characterisation: Claire",
+   "G": "No class: Jazz"
+  },
+  {
+   "A": "11:15 am – 11:45 am",
+   "C": "Morning Tea"
+  },
+  {
+   "A": "11:45 am  – 12:35 pm",
+   "B": "3",
+   "C": "Musical theatre: Quinn",
+   "D": "Drama:",
+   "E": "Characterisation: Claire",
+   "F": "Jazz:",
+   "G": "No class: Hip Hop"
+  },
+  {
+   "A": "12:25 pm – 12:35 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "12:35 pm – 1:25 pm",
+   "B": "4",
+   "C": "Drama:",
+   "D": "Characterisation: Claire",
+   "E": "Jazz:",
+   "F": "Hip Hop:",
+   "G": "No class: Musical Theatre"
+  },
+  {
+   "A": "1:25 pm – 1:55 pm",
+   "C": "Lunch"
+  },
+  {
+   "A": "1:55 pm – 2:10 pm",
+   "C": "Quiet Time"
+  },
+  {
+   "A": "2:10 pm – 3:00 pm",
+   "B": "5",
+   "C": "Characterisation: Claire",
+   "D": "Jazz:",
+   "E": "Hip Hop:",
+   "F": "Musical theatre: Quinn",
+   "G": "No class: Drama"
+  },
+  {
+   "A": "3:00 pm – 3:15 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "3:15 pm – 3:45 pm",
+   "C": "Intro/Finale practice / Tidy up / Certificates / Points"
+  },
+  {
+   "A": "3:45 pm – 4:00 pm",
+   "C": "Group Time with Parents"
+  },
+  {
+   "A": "Manager: Chloe / 8:00 am"
+  },
+  {
+   "A": "Assistant Manager: Annabella / 8:00 am"
+  },
+  {
+   "A": "Workshop Assistant: Grace / 9:00 am"
+  }
+ ],
+ "Thursday": [
+  {
+   "A": "ARTZ ON SHOW"
+  },
+  {
+   "A": "Wicked",
+   "C": "All Staff teaching for Session 1 need to be onsite at 8:15 am. \r\nAll groups will now have the option to have a Brain Break between classes. If the children are focussed and do not require the break, continue with your class as usual. If it is needed, please use it proactively for a snack, toilet, or to reset their brains. Please do not disrupt other groups who may continue with their class."
+  },
+  {
+   "A": "Epsom"
+  },
+  {
+   "A": "Thursday 1 October"
+  },
+  {
+   "A": "Time",
+   "B": "Session",
+   "C": "Orange (5-7 yrs)",
+   "D": "Yellow (8-9 yrs)",
+   "E": "Silver (10-11 yrs)",
+   "F": "Black (11+ yrs)"
+  },
+  {
+   "A": "8:30 am – 9:00 am",
+   "C": "Register"
+  },
+  {
+   "A": "9:00 am – 9:35 am",
+   "C": "Warm up – Dance Tutor"
+  },
+  {
+   "A": "9:35 am – 10:25 am",
+   "B": "1",
+   "C": "Jazz:",
+   "D": "Drama:",
+   "E": "Vocals: Kerry",
+   "F": "Characterisation: Claire",
+   "G": "No class: Hip Hop"
+  },
+  {
+   "A": "10:15 am – 10:25 am",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "10:25 am – 11:15 am",
+   "B": "2",
+   "C": "Drama:",
+   "D": "Vocals: Kerry",
+   "E": "Characterisation: Claire",
+   "F": "Hip Hop:",
+   "G": "No class: Jazz"
+  },
+  {
+   "A": "11:15 am – 11:45 am",
+   "C": "Morning Tea"
+  },
+  {
+   "A": "11:45 am  – 12:35 pm",
+   "B": "3",
+   "C": "Vocals: Kerry",
+   "D": "Characterisation: Claire",
+   "E": "Hip Hop:",
+   "F": "Jazz:",
+   "G": "No class: Drama"
+  },
+  {
+   "A": "12:25 pm – 12:35 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "12:35 pm – 1:25 pm",
+   "B": "4",
+   "C": "Characterisation: Claire",
+   "D": "Hip Hop:",
+   "E": "Jazz:",
+   "F": "Drama:",
+   "G": "No class: Vocals"
+  },
+  {
+   "A": "1:25 pm – 1:55 pm",
+   "C": "Lunch"
+  },
+  {
+   "A": "1:55 pm – 2:10 pm",
+   "C": "Quiet Time"
+  },
+  {
+   "A": "2:10 pm – 3:00 pm",
+   "B": "5",
+   "C": "Hip Hop:",
+   "D": "Jazz:",
+   "E": "Drama:",
+   "F": "Vocals: Kerry",
+   "G": "No class: Characterisation"
+  },
+  {
+   "A": "3:00 pm – 3:15 pm",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break",
+   "F": "Brain Break"
+  },
+  {
+   "A": "3:15 pm – 3:45 pm",
+   "C": "Intro/Finale practice / Tidy up / Certificates / Points"
+  },
+  {
+   "A": "3:45 pm – 4:00 pm",
+   "C": "Group Time with Parents"
+  },
+  {
+   "A": "Manager: Chloe / 8:00 am"
+  },
+  {
+   "A": "Assistant Manager: Annabella / 8:00 am"
+  },
+  {
+   "A": "Workshop Assistant: Grace / 9:00 am"
+  }
+ ],
+ "Friday": [
+  {
+   "A": "ARTZ ON SHOW"
+  },
+  {
+   "A": "Wicked",
+   "C": "All Staff teaching for Session 1 need to be onsite at 8:15 am. Show Day is flexible in terms of timing. Please make it work based on how the children are going. Use breaks and brain breaks as needed. Please do your best to do what you can!"
+  },
+  {
+   "A": "Epsom"
+  },
+  {
+   "A": "Friday 2 October"
+  },
+  {
+   "A": "Time",
+   "B": "Session",
+   "C": "Orange (5-7 yrs)",
+   "D": "Yellow (8-9 yrs)",
+   "E": "Silver (10-11 yrs)",
+   "F": "Black (11+ yrs)"
+  },
+  {
+   "A": "8:30 am – 9:00 am",
+   "C": "Register"
+  },
+  {
+   "A": "9:00 am – 9:30 am",
+   "C": "Warm up – Dance Tutor"
+  },
+  {
+   "A": "9:30 am – 10:15 am",
+   "B": "1",
+   "C": "BLOCKING"
+  },
+  {
+   "A": "10:15 am – 11:00 am",
+   "B": "2",
+   "C": "BLOCKING"
+  },
+  {
+   "A": "11:00 am – 11:30 am",
+   "C": "Morning Tea"
+  },
+  {
+   "A": "11:30 am  – 12:15 pm",
+   "B": "3",
+   "C": "SHOW REHEARSAL 1"
+  },
+  {
+   "A": "12:15 pm – 1:00 pm",
+   "B": "4",
+   "C": "TRANSITION AND STAGE ETTIQUETTE PRACTICE"
+  },
+  {
+   "A": "1:00 pm – 1:35 pm",
+   "C": "Lunch"
+  },
+  {
+   "A": "1:35 pm – 1:45 pm",
+   "C": "Quiet Time"
+  },
+  {
+   "A": "1:45 PM - 2:15 pm",
+   "C": "Make up / Hair"
+  },
+  {
+   "A": "2:15 pm – 3:30 pm",
+   "B": "5",
+   "C": "SHOW REHEARSAL 2 (FULL TECH)"
+  },
+  {
+   "A": "3:30 pm - 3:45 pm",
+   "B": "6",
+   "C": "Get children ready in the main room / Open doors to parents / Ready for Intro/Finale"
+  },
+  {
+   "A": "4:00 pm - 5:00 pm",
+   "C": "SHOW"
+  },
+  {
+   "A": "Manager: Chloe / 8:00 am"
+  },
+  {
+   "A": "Assistant Manager: Annabella / 8:00 am"
+  },
+  {
+   "A": "Workshop Assistant: Grace / 9:00 am"
+  },
+  {
+   "A": "Rosie / 8:15 am"
+  },
+  {
+   "A": "Zoe / 8:15 am"
+  },
+  {
+   "A": "Millie / 8:15 am"
+  },
+  {
+   "A": "Taylor / 8:15 am"
+  }
+ ],
+ "Duty": [
+  {
+   "A": "ARTZ ON SHOW"
+  },
+  {
+   "A": "Wicked",
+   "B": "In attempt to make things easier for all staff, we thought we would trial a duty timetable. We are unsure whether it is easiest for the Managers/Tutors to discuss and allocate duties or for us to do this prior to the Workshops. We would love your feedback on this!"
+  },
+  {
+   "A": "Epsom"
+  },
+  {
+   "A": "Duty Timetable"
+  },
+  {
+   "A": "Time",
+   "B": "MONDAY",
+   "C": "TUESDAY",
+   "D": "WEDNESDAY",
+   "E": "SHOW DAY"
+  },
+  {
+   "A": "BRAIN BREAK 1",
+   "B": "Annabella / Chloe / Taylor",
+   "C": "Annabella / Chloe / Taylor"
+  },
+  {
+   "A": "10 minute break",
+   "B": "Rosie / Millie / Ben / Zoe"
+  },
+  {
+   "A": "MORNING TEA",
+   "B": "Chloe / Rosie / Zoe"
+  },
+  {
+   "A": "30 minute break",
+   "B": "Taylor / Millie / Ben"
+  },
+  {
+   "A": "BRAIN BREAK 2",
+   "B": "Millie / Annabella / Ben"
+  },
+  {
+   "A": "10 minute break",
+   "B": "Rosie / Zoe / Ben"
+  },
+  {
+   "A": "LUNCH TIME",
+   "B": "Taylor / Millie / Ben"
+  },
+  {
+   "A": "30 minute break",
+   "B": "Rosie / Zoe"
+  },
+  {
+   "A": "QUIET TIME",
+   "B": "Ben / Rosie / Zoe"
+  },
+  {
+   "A": "10 minute break",
+   "B": "Millie / Taylor"
+  },
+  {
+   "A": "BRAIN BREAK 3",
+   "B": "Brain Break",
+   "C": "Brain Break",
+   "D": "Brain Break",
+   "E": "Brain Break"
+  },
+  {
+   "A": "INTRO / FINALE",
+   "B": "Intro/Finale practice / Tidy up / Certificates / Points"
+  },
+  {
+   "A": "10 minute break",
+   "B": "Taylor",
+   "E": "SHOW"
+  }
+ ]
+}

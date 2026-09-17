@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics=""><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><style>body{margin:0;background:#E9E7E2;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}a{color:#7C3AED}a:hover{color:#5B21B6}
+.om-cb{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.om-more{display:none}
+.om-cb:checked ~ .om-more{display:block}
+.om-less{display:none}
+.om-cb:checked ~ .om-pill .om-less{display:inline}
+.om-cb:checked ~ .om-pill .om-open{display:none}
+.om-pill:hover{background:#F1ECFE !important}</style></helmet>
+<div style="display:flex;gap:48px;align-items:flex-start;justify-content:center;padding:16px 32px 32px;min-height:100vh;box-sizing:border-box">
+
+<sc-if value="{{ showNotes }}" hint-placeholder-val="{{ true }}">
+<div style="width:360px;flex:none;padding-top:4px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.16em;text-transform:uppercase;color:rgba(27,26,31,.42)">Artz On Show · internal</div>
+<h1 style="margin:14px 0 0;font:400 42px/1.05 'IBM Plex Sans';letter-spacing:-.02em;color:#1B1A1F">Manager operations app</h1>
+<p style="margin:18px 0 0;font:400 14.5px/1.62 'IBM Plex Sans';color:rgba(27,26,31,.66);text-wrap:pretty">Five location hubs, each with a manager checklist for Day 1 to Day 5, a Daily Admin checklist that runs every day, and a Morning Welcome page listing everything to cover before classes start.</p>
+<div style="margin-top:30px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42);padding-bottom:14px">Structure</div>
+<div style="display:grid;grid-template-columns:22px 1fr;gap:0 12px;font:400 13.5px/1.5 'IBM Plex Sans';color:rgba(27,26,31,.78)">
+<div style="color:#7C3AED;font:500 12px/1.6 'IBM Plex Mono'">01</div><div style="padding-bottom:9px">Hub picker — Epsom, Karaka, Hamilton, North Shore, Howick</div>
+<div style="color:#7C3AED;font:500 12px/1.6 'IBM Plex Mono'">02</div><div style="padding-bottom:9px">Hub home — what's on right now, today's progress</div>
+<div style="color:#7C3AED;font:500 12px/1.6 'IBM Plex Mono'">03</div><div style="padding-bottom:9px">Checklists — Daily Admin plus one per day, grouped into sections, ticks stamp a time</div>
+<div style="color:#7C3AED;font:500 12px/1.6 'IBM Plex Mono'">04</div><div style="padding-bottom:9px">Morning Welcome — everything to cover in the 9:20am welcome</div>
+<div style="color:#7C3AED;font:500 12px/1.6 'IBM Plex Mono'">05</div><div style="padding-bottom:9px">Certificates and Points — points sheets, winners, Group Time order</div>
+<div style="color:#7C3AED;font:500 12px/1.6 'IBM Plex Mono'">06</div><div style="padding-bottom:9px">Group Time — the full 3:45pm parent session, start to finish</div>
+<div style="color:#7C3AED;font:500 12px/1.6 'IBM Plex Mono'">07</div><div>Venue info — address and emergency contacts</div>
+</div>
+</div>
+<div style="margin-top:30px;padding:18px 20px;background:#F7F6F4;border:1px solid #DFDCD6;border-radius:12px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42)">Assumptions to correct</div>
+<ul style="margin:12px 0 0;padding-left:18px;font:400 13px/1.6 'IBM Plex Sans';color:rgba(27,26,31,.7)">
+<li style="padding-bottom:6px">Tasks are the same at all five locations; only venue details differ.</li>
+<li style="padding-bottom:6px">Daily Admin ticks reset per day, so each of the five days has its own copy.</li>
+<li>Ticks record a time, so head office can see progress live.</li>
+</ul>
+</div>
+<p style="margin:26px 0 0;font:400 12.5px/1.6 'IBM Plex Sans';color:rgba(27,26,31,.5)">It's a working prototype. Pick a hub, tick items, open a part of the day.</p>
+</div>
+</sc-if>
+
+<div style="flex:none;position:sticky;top:20px;align-self:flex-start;height:min(700px, calc(100vh - 40px));display:flex">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" time="{{ nowTime }}" hint-size="390px,700px">
+
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;background:#F4F3F1;font-family:'IBM Plex Sans',system-ui,sans-serif;overflow:hidden">
+
+<div style="flex:none;background:#fff;border-bottom:1px solid #E4E1DC;padding:54px 20px 15px">
+<div style="display:flex;align-items:center;gap:12px;min-height:32px">
+<sc-if value="{{ canBack }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ back }}" style="width:31px;height:31px;flex:none;border-radius:99px;background:#F0EEEA;display:flex;align-items:center;justify-content:center;font:400 19px/1 'IBM Plex Sans';color:#1B1A1F;cursor:pointer;padding-bottom:3px;box-sizing:border-box" style-hover="background:#E4E1DC">‹</div>
+</sc-if>
+<sc-if value="{{ isHubs }}" hint-placeholder-val="{{ true }}">
+<img src="logo-black.png" alt="Artz On Show" style="height:27px;width:auto;display:block">
+</sc-if>
+<sc-if value="{{ hasHeaderText }}" hint-placeholder-val="{{ false }}">
+<div style="min-width:0;flex:1">
+<div style="font:500 9.5px/1 'IBM Plex Mono';letter-spacing:.16em;text-transform:uppercase;color:#7C3AED">{{ headerKicker }}</div>
+<div style="margin-top:5px;font:500 18.5px/1.15 'IBM Plex Sans';letter-spacing:-.015em;color:#1B1A1F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ headerTitle }}</div>
+</div>
+</sc-if>
+</div>
+</div>
+
+<div ref="{{ scrollRef }}" style="flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding-bottom:{{ scrollPad }}">
+
+<sc-if value="{{ isHubs }}" hint-placeholder-val="{{ true }}">
+<div style="padding:24px 20px 32px">
+<div style="font:400 22px/1.25 'IBM Plex Sans';letter-spacing:-.02em;color:#1B1A1F">Hello {{ managerName }}!</div>
+<div style="margin-top:5px;font:400 14px/1.5 'IBM Plex Sans';color:rgba(27,26,31,.55)">{{ todayLabel }}</div>
+<div style="margin:26px 0 10px;font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42)">Operation hubs</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ hubs }}" as="h" hint-placeholder-count="5">
+<div onClick="{{ h.open }}" style="background:#fff;border:1px solid #E4E1DC;border-radius:14px;padding:16px 17px;cursor:pointer;display:flex;align-items:center;gap:14px" style-hover="border-color:#7C3AED">
+<div style="flex:1;min-width:0">
+<div style="font:500 16.5px/1.2 'IBM Plex Sans';letter-spacing:-.015em;color:#1B1A1F">{{ h.name }}</div>
+<div style="margin-top:4px;font:400 12.5px/1.4 'IBM Plex Sans';color:rgba(27,26,31,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.venue }}</div>
+<div style="margin-top:10px;display:flex;align-items:center;gap:9px">
+<div style="width:70px;height:5px;border-radius:99px;background:#EDEAE4;overflow:hidden"><div style="height:100%;border-radius:99px;background:{{ h.barColor }};width:{{ h.pct }}%"></div></div>
+<div style="font:500 11.5px/1 'IBM Plex Mono';color:{{ h.barColor }}">{{ h.pctLabel }}</div>
+</div>
+</div>
+<div style="font:400 20px/1 'IBM Plex Sans';color:rgba(27,26,31,.28)">›</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+<div style="padding:20px 20px 32px">
+<div style="background:#1B1A1F;border-radius:16px;padding:18px 19px;color:#fff">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+<div style="font:500 9.5px/1 'IBM Plex Mono';letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45)">On now · {{ nowTime }}</div>
+<div style="font:500 11.5px/1 'IBM Plex Mono';color:#C4B5FD">{{ homeCount }} today</div>
+</div>
+<div style="margin-top:12px;font:400 23px/1.15 'IBM Plex Sans';letter-spacing:-.02em">{{ nowPart }}</div>
+<div style="margin-top:8px;font:400 13.5px/1.5 'IBM Plex Sans';color:rgba(255,255,255,.62)">{{ nowNote }}</div>
+<div onClick="{{ openNow }}" style="margin-top:16px;display:inline-flex;align-items:center;gap:7px;background:#7C3AED;border-radius:99px;padding:10px 16px;font:500 13px/1 'IBM Plex Sans';cursor:pointer" style-hover="background:#6D28D9">Open instructions ›</div>
+</div>
+<div style="margin:26px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42)">Today's checklists</div>
+<div style="display:flex;gap:5px">
+<sc-for list="{{ dayPills }}" as="d" hint-placeholder-count="5">
+<div onClick="{{ d.pick }}" style="padding:5px 8px;border-radius:8px;background:{{ d.bg }};border:1px solid {{ d.border }};font:500 10px/1 'IBM Plex Mono';letter-spacing:.05em;color:{{ d.fg }};cursor:pointer">{{ d.abbr }}</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ todayLists }}" as="l" hint-placeholder-count="2">
+<div onClick="{{ l.open }}" style="background:#fff;border:1px solid #E4E1DC;border-radius:14px;padding:16px 17px;cursor:pointer" style-hover="border-color:#7C3AED">
+<div style="display:flex;align-items:baseline;gap:9px">
+<div style="flex:1;font:500 15.5px/1.25 'IBM Plex Sans';letter-spacing:-.015em;color:#1B1A1F">{{ l.name }}</div>
+<div style="font:500 11.5px/1 'IBM Plex Mono';color:{{ l.barColor }}">{{ l.count }}</div>
+</div>
+<div style="margin-top:5px;font:400 12.5px/1.45 'IBM Plex Sans';color:rgba(27,26,31,.5)">{{ l.sub }}</div>
+<div style="margin-top:12px;height:5px;border-radius:99px;background:#EDEAE4;overflow:hidden"><div style="height:100%;border-radius:99px;background:{{ l.barColor }};width:{{ l.pct }}%;transition:width .25s ease"></div></div>
+</div>
+</sc-for>
+</div>
+<div style="margin:26px 0 10px;font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42)">Shortcuts</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<sc-for list="{{ shortcuts }}" as="s" hint-placeholder-count="4">
+<div onClick="{{ s.open }}" style="grid-column:{{ s.span }};background:#fff;border:1px solid #E4E1DC;border-radius:14px;padding:15px 15px 16px;cursor:pointer;min-height:80px;display:flex;flex-direction:column;justify-content:space-between;gap:14px" style-hover="border-color:#7C3AED">
+<div style="font:500 11px/1 'IBM Plex Mono';color:#7C3AED">{{ s.tag }}</div>
+<div style="font:500 14.5px/1.25 'IBM Plex Sans';letter-spacing:-.015em;color:#1B1A1F">{{ s.name }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLists }}" hint-placeholder-val="{{ false }}">
+<div style="padding:20px 20px 32px">
+<div style="font:400 13.5px/1.5 'IBM Plex Sans';color:rgba(27,26,31,.58)">Daily Admin runs every day. The day checklist changes with the programme.</div>
+<div style="margin-top:20px;display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ allLists }}" as="l" hint-placeholder-count="6">
+<div onClick="{{ l.open }}" style="background:#fff;border:1px solid {{ l.border }};border-radius:14px;padding:15px 17px;cursor:pointer;display:flex;align-items:center;gap:14px" style-hover="border-color:#7C3AED">
+<div style="width:40px;height:40px;flex:none;border-radius:11px;background:{{ l.chipBg }};display:flex;align-items:center;justify-content:center;font:500 12px/1 'IBM Plex Mono';color:{{ l.chipFg }}">{{ l.abbr }}</div>
+<div style="flex:1;min-width:0">
+<div style="font:500 15.5px/1.2 'IBM Plex Sans';letter-spacing:-.015em;color:#1B1A1F">{{ l.name }}</div>
+<div style="margin-top:4px;font:400 12.5px/1.4 'IBM Plex Sans';color:rgba(27,26,31,.5)">{{ l.sub }}</div>
+</div>
+<div style="font:500 11.5px/1 'IBM Plex Mono';color:{{ l.barColor }}">{{ l.count }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 0 32px">
+<div style="padding:15px 20px 17px;background:#fff;border-bottom:1px solid #E4E1DC">
+<div style="display:flex;align-items:baseline;gap:12px">
+<div style="flex:1;font:400 13.5px/1.45 'IBM Plex Sans';color:rgba(27,26,31,.6)">{{ listBlurb }}</div>
+<div style="font:500 13px/1 'IBM Plex Mono';color:#7C3AED">{{ listCount }}</div>
+</div>
+<div style="margin-top:13px;height:6px;border-radius:99px;background:#EDEAE4;overflow:hidden"><div style="height:100%;border-radius:99px;background:#7C3AED;width:{{ listPct }}%;transition:width .25s ease"></div></div>
+</div>
+<sc-if value="{{ hasBrief }}" hint-placeholder-val="{{ false }}">
+<div style="margin:16px 20px 0;padding:16px 17px;background:#F7F4FE;border:1px solid #DDD0FB;border-radius:14px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:#7C3AED">Brief</div>
+<sc-if value="{{ hasBriefLead }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:10px;font:500 14px/1.55 'IBM Plex Sans';color:#1B1A1F;text-wrap:pretty">{{ briefLead }}</div>
+</sc-if>
+<sc-if value="{{ briefHasMore }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:11px">
+<div onClick="{{ toggleBrief }}" style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;border:1px solid #DDD0FB;background:#fff;font:500 10px/1.35 'IBM Plex Mono';letter-spacing:.07em;text-transform:uppercase;color:#5B21B6;cursor:pointer" style-hover="background:#F1ECFE">{{ briefToggleLabel }}</div>
+<div style="margin-top:10px;font:400 13.5px/1.6 'IBM Plex Sans';color:#3F2A6B;text-wrap:pretty;display:{{ briefDisplay }}">{{ brief }}</div>
+</div>
+</sc-if>
+</div>
+</sc-if>
+<sc-for list="{{ sections }}" as="sec" hint-placeholder-count="3">
+<div style="padding:22px 20px 0">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42)">{{ sec.name }}</div>
+<div style="margin-top:11px;display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="4">
+<div style="background:{{ it.bg }};border:1px solid {{ it.border }};border-radius:13px;padding:14px 15px">
+<div onClick="{{ it.tick }}" style="cursor:pointer;display:flex;gap:13px;align-items:flex-start">
+<div style="width:24px;height:24px;flex:none;border-radius:99px;border:1.5px solid {{ it.ringColor }};background:{{ it.ringFill }};display:flex;align-items:center;justify-content:center;font:500 13px/1 'IBM Plex Sans';color:#fff">{{ it.mark }}</div>
+<div style="flex:1;min-width:0">
+<div style="font:400 14.5px/1.4 'IBM Plex Sans';color:{{ it.fg }};text-decoration:{{ it.strike }}">{{ it.t }}</div>
+<sc-if value="{{ it.hasSub }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:5px;font:400 12.5px/1.45 'IBM Plex Sans';color:rgba(27,26,31,.5)">{{ it.sub }}</div>
+</sc-if>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+<sc-if value="{{ it.hasChip }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:9px;display:inline-flex;align-items:center;padding:4px 9px;border-radius:99px;background:{{ it.chipBg }};font:500 10px/1.35 'IBM Plex Mono';letter-spacing:.07em;text-transform:uppercase;color:{{ it.chipFg }}">{{ it.chip }}</div>
+</sc-if>
+</div>
+</div>
+</div>
+<sc-if value="{{ it.hasMore }}" hint-placeholder-val="{{ false }}">
+<div style="margin:9px 0 0 37px">
+<input type="checkbox" class="om-cb" id="{{ it.cbId }}" />
+<label class="om-pill" for="{{ it.cbId }}" style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;border:1px solid #DDD0FB;background:#F7F4FE;font:500 10px/1.35 'IBM Plex Mono';letter-spacing:.07em;text-transform:uppercase;color:#5B21B6;cursor:pointer;user-select:none"><span class="om-open">More</span><span class="om-less">Less</span></label>
+<div class="om-more" style="margin-top:9px;padding:11px 13px;background:#F7F4FE;border-left:2px solid #C4B5FD;border-radius:0 10px 10px 0;font:400 12.5px/1.55 'IBM Plex Sans';color:#4A3A6B;text-wrap:pretty;white-space:pre-line">{{ it.more }}</div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div style="padding:26px 20px 0">
+<div onClick="{{ submitList }}" style="background:{{ submitBg }};border-radius:13px;padding:16px;text-align:center;font:500 14.5px/1 'IBM Plex Sans';color:{{ submitFg }};cursor:pointer">{{ submitLabel }}</div>
+<div style="margin-top:10px;text-align:center;font:400 12px/1.5 'IBM Plex Sans';color:rgba(27,26,31,.45)">{{ submitNote }}</div>
+<div onClick="{{ goHome }}" style="margin-top:14px;padding:14px;background:#fff;border:1px solid #E4E1DC;border-radius:13px;text-align:center;font:500 13.5px/1 'IBM Plex Sans';color:#7C3AED;cursor:pointer" style-hover="border-color:#7C3AED">‹ Back to hub home</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ false }}">
+<div style="padding:20px 20px 32px">
+<div style="font:400 13.5px/1.55 'IBM Plex Sans';color:rgba(27,26,31,.6)">Cover these in the Daily Welcome at approx 9:20am, groups sitting in their lines.</div>
+<sc-for list="{{ welcomeSections }}" as="sec" hint-placeholder-count="3">
+<div style="margin-top:22px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:{{ sec.labelColor }}">{{ sec.name }}</div>
+<div style="margin-top:11px;background:{{ sec.bg }};border:1px solid {{ sec.border }};border-radius:14px;padding:4px 16px">
+<sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="6">
+<div style="display:flex;gap:12px;padding:13px 0;border-bottom:1px solid {{ sec.rule }}">
+<div style="width:6px;height:6px;flex:none;border-radius:99px;background:{{ sec.dot }};margin-top:7px"></div>
+<div style="flex:1;min-width:0;font:400 14px/1.5 'IBM Plex Sans';color:{{ sec.fg }};text-wrap:pretty">{{ it.t }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div onClick="{{ goHome }}" style="margin-top:22px;padding:14px;background:#fff;border:1px solid #E4E1DC;border-radius:13px;text-align:center;font:500 13.5px/1 'IBM Plex Sans';color:#7C3AED;cursor:pointer" style-hover="border-color:#7C3AED">‹ Back to hub home</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGroup }}" hint-placeholder-val="{{ false }}">
+<div style="padding:20px 20px 32px">
+<div style="font:400 13.5px/1.55 'IBM Plex Sans';color:rgba(27,26,31,.6)">Group Time starts at 3:45pm. Work through in order.</div>
+<sc-for list="{{ groupSections }}" as="sec" hint-placeholder-count="6">
+<div style="margin-top:22px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42)">{{ sec.name }}</div>
+<div style="margin-top:11px;background:#fff;border:1px solid #E4E1DC;border-radius:14px;padding:4px 16px">
+<sc-for list="{{ sec.items }}" as="it" hint-placeholder-count="3">
+<div style="display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #EFEDE9">
+<div style="width:6px;height:6px;flex:none;border-radius:99px;background:{{ it.dot }};margin-top:7px"></div>
+<div style="flex:1;min-width:0;font:400 14px/1.5 'IBM Plex Sans';color:{{ it.fg }};font-style:{{ it.style }};text-wrap:pretty">
+<sc-if value="{{ it.hasB }}" hint-placeholder-val="{{ false }}">
+<strong style="font-weight:600;color:#1B1A1F">{{ it.b }}</strong>
+</sc-if>
+{{ it.t }}
+<sc-if value="{{ it.hasNote }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:7px;padding:9px 12px;background:#F7F4FE;border-left:2px solid #7C3AED;border-radius:0 9px 9px 0;font:400 13px/1.5 'IBM Plex Sans';color:#3F2A6B">{{ it.note }}</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div onClick="{{ goHome }}" style="margin-top:22px;padding:14px;background:#fff;border:1px solid #E4E1DC;border-radius:13px;text-align:center;font:500 13.5px/1 'IBM Plex Sans';color:#7C3AED;cursor:pointer" style-hover="border-color:#7C3AED">‹ Back to hub home</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSpeech }}" hint-placeholder-val="{{ false }}">
+<div style="padding:20px 20px 32px">
+<div style="font:400 13.5px/1.55 'IBM Plex Sans';color:rgba(27,26,31,.6)">Delivered by the Manager at the end of the show on Day 5.</div>
+<div style="margin-top:14px;padding:12px 14px;background:#F7F4FE;border:1px solid #DDD0FB;border-radius:12px;font:400 12.5px/1.55 'IBM Plex Sans';color:#3F2A6B">Anything in <span style="color:#6D28D9;font-style:italic">[square brackets]</span> is a gap for you to fill with the week's detail.</div>
+<div style="margin-top:18px;display:flex;flex-direction:column;gap:16px">
+<sc-for list="{{ speechParas }}" as="p" hint-placeholder-count="16">
+<div style="background:{{ p.bg }};padding:{{ p.pad }};border-radius:{{ p.radius }}">
+<div style="font-size:15px;line-height:1.75;font-family:'IBM Plex Sans';text-wrap:pretty;white-space:pre-line">
+<sc-for list="{{ p.parts }}" as="x" hint-placeholder-count="2">
+<span style="font-weight:{{ x.weight }};color:{{ x.fg }};font-style:{{ x.style }}">{{ x.t }}</span>
+</sc-for>
+</div>
+<sc-if value="{{ p.hasHints }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ p.hints }}" as="h" hint-placeholder-count="2">
+<div style="padding-left:11px;border-left:2px solid #E4E1DC;font:400 12.5px/1.5 'IBM Plex Sans';color:rgba(27,26,31,.52);text-wrap:pretty">{{ h.h }}</div>
+</sc-for>
+</div>
+</sc-if>
+
+</div>
+</sc-for>
+</div>
+<div onClick="{{ goHome }}" style="margin-top:22px;padding:14px;background:#fff;border:1px solid #E4E1DC;border-radius:13px;text-align:center;font:500 13.5px/1 'IBM Plex Sans';color:#7C3AED;cursor:pointer" style-hover="border-color:#7C3AED">‹ Back to hub home</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPoints }}" hint-placeholder-val="{{ false }}">
+<div style="padding:20px 20px 32px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+<div style="font:400 13.5px/1.5 'IBM Plex Sans';color:rgba(27,26,31,.6)">Tap to award. Points can never be taken away.</div>
+<div style="font:500 10.5px/1 'IBM Plex Mono';color:rgba(27,26,31,.45)">{{ pointsDayLabel }}</div>
+</div>
+
+<sc-if value="{{ noGroups }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;padding:14px 16px;background:#fff;border:1px dashed #D6D2CB;border-radius:12px;font:400 13px/1.5 'IBM Plex Sans';color:rgba(27,26,31,.6)">{{ noGroupsMsg }}</div>
+</sc-if>
+
+<sc-if value="{{ hasGroups }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ pointGroups }}" as="g" hint-placeholder-count="3">
+<div style="background:{{ g.bg }};border:1.5px solid {{ g.border }};border-radius:16px;padding:15px 16px">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="flex:1;min-width:0">
+<div style="font:500 15px/1.2 'IBM Plex Sans';letter-spacing:-.01em;color:{{ g.color }}">{{ g.name }}</div>
+<sc-if value="{{ g.showLead }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:5px;display:inline-flex;padding:3px 8px;border-radius:99px;background:{{ g.color }};font:500 9px/1.35 'IBM Plex Mono';letter-spacing:.09em;text-transform:uppercase;color:#fff">{{ g.leadLabel }}</div>
+</sc-if>
+</div>
+<div style="font:500 40px/1 'IBM Plex Sans';letter-spacing:-.03em;color:{{ g.color }};font-variant-numeric:tabular-nums">{{ g.total }}</div>
+</div>
+<div style="margin-top:13px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<div onClick="{{ g.add1 }}" style="padding:13px 0;border-radius:11px;background:#fff;border:1px solid {{ g.border }};text-align:center;font:500 15px/1 'IBM Plex Sans';color:{{ g.color }};cursor:pointer;user-select:none" style-hover="border-color:{{ g.color }}" style-active="background:{{ g.bg }}">+1</div>
+<div onClick="{{ g.add5 }}" style="padding:13px 0;border-radius:11px;background:#fff;border:1px solid {{ g.border }};text-align:center;font:500 15px/1 'IBM Plex Sans';color:{{ g.color }};cursor:pointer;user-select:none" style-hover="border-color:{{ g.color }}" style-active="background:{{ g.bg }}">+5</div>
+<div onClick="{{ g.add10 }}" style="padding:13px 0;border-radius:11px;background:#fff;border:1px solid {{ g.border }};text-align:center;font:500 15px/1 'IBM Plex Sans';color:{{ g.color }};cursor:pointer;user-select:none" style-hover="border-color:{{ g.color }}" style-active="background:{{ g.bg }}">+10</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div onClick="{{ doUndo }}" style="margin-top:14px;padding:13px;background:#fff;border:1px solid #E4E1DC;border-radius:12px;text-align:center;font:500 13px/1 'IBM Plex Sans';color:{{ undoColor }};cursor:pointer" style-hover="border-color:#7C3AED">{{ undoLabel }}</div>
+
+<div style="margin-top:14px;padding:13px 15px;background:#F7F4FE;border:1px solid #DDD0FB;border-radius:12px;font:400 12.5px/1.55 'IBM Plex Sans';color:#3F2A6B">Totals reset with each day. Add all points to the whiteboard and announce in order at Group Time, beginning with Orange. If groups are far apart, bump up the lower ones.</div>
+</sc-if>
+
+<div onClick="{{ goHome }}" style="margin-top:22px;padding:14px;background:#fff;border:1px solid #E4E1DC;border-radius:13px;text-align:center;font:500 13.5px/1 'IBM Plex Sans';color:#7C3AED;cursor:pointer" style-hover="border-color:#7C3AED">‹ Back to hub home</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isInfo }}" hint-placeholder-val="{{ false }}">
+<div style="padding:20px 20px 32px">
+<div style="background:#fff;border:1px solid #E4E1DC;border-radius:14px;padding:17px">
+<div style="font:500 10.5px/1 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;color:rgba(27,26,31,.42)">Venue</div>
+<div style="margin-top:10px;font:400 15px/1.45 'IBM Plex Sans';color:#1B1A1F">{{ venue }}</div>
+
+</div>
+</div>
+<div style="margin-top:12px;background:#fff;border:1px solid #E4E1DC;border-radius:14px;padding:4px 17px">
+<sc-for list="{{ contacts }}" as="c" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #EFEDE9">
+<div style="flex:1;min-width:0"><div style="font:500 14.5px/1.25 'IBM Plex Sans';color:#1B1A1F">{{ c.name }}</div><div style="margin-top:3px;font:400 12.5px/1.4 'IBM Plex Sans';color:rgba(27,26,31,.5)">{{ c.role }}</div></div>
+<div style="font:500 12.5px/1 'IBM Plex Mono';color:#7C3AED">{{ c.phone }}</div>
+</div>
+</sc-for>
+</div>
+<div onClick="{{ goHubs }}" style="margin-top:14px;padding:15px 17px;background:#fff;border:1px solid #E4E1DC;border-radius:14px;text-align:center;font:500 13.5px/1 'IBM Plex Sans';color:#7C3AED;cursor:pointer" style-hover="border-color:#7C3AED">Switch hub</div>
+</sc-if></div>
+
+
+</div>
+
+<sc-if value="{{ hasTabs }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:1px solid #E4E1DC;padding:9px 12px 30px;display:flex">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+<div onClick="{{ t.go }}" style="flex:1;padding:8px 2px;border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;background:{{ t.bg }}">
+<div style="width:17px;height:17px;border-radius:{{ t.radius }};border:1.8px solid {{ t.color }};background:{{ t.fill }}"></div>
+<div style="font:500 9.5px/1 'IBM Plex Sans';letter-spacing:0;color:{{ t.color }};white-space:nowrap">{{ t.name }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+</x-import></div>
+
+
+</div>
+
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Presentation&quot;},&quot;managerName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Sara&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Presentation&quot;},&quot;showTimestamps&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behaviour&quot;}}">
+const HUBS = [
+  { id:'epsom', name:'Epsom', venue:'Raye Freedman Arts Centre, Silver Road, Newmarket', seed:0.72 },
+  { id:'karaka', name:'Karaka', venue:'Karaka Memorial Hall, 319 Linwood Road', seed:0.55 },
+  { id:'hamilton', name:'Hamilton', venue:'Southwell School, 200 Peachgrove Road', seed:0.90 },
+  { id:'northshore', name:'North Shore', venue:'Takapuna Normal Intermediate School, 26 Northcote Road', seed:0.0 },
+  { id:'howick', name:'Howick', venue:'Howick College, 25 Sandspit Road, Howick', seed:0.34 },
+];
+
+const ADMIN = { id:'admin', name:'Daily Admin', abbr:'ADM', sub:'To be ticked off every day',
+  blurb:'These need to be ticked off every day.',
+  sections:[
+    { name:'Roll and absences', items:[
+      { t:'For children who have not arrived: Check the roll for days attending & any notes.', more:'Using the enrolment form, call parent to see why child/ren have not turned up. Please type the reason why in the notes column on the roll so we know in the office as well as in the debrief.' },
+      { t:'If a child is not attending at all for the week (unable to attend or sick) please add this to your Debrief. The office will sort this on the roll.' },
+    ]},
+    { name:'Enrolments and sales', items:[
+      { t:'Finish adding the enrolments as required \u2013 if you need any support with this, please email artz@artzonshow.co.nz. Please add children to all tabs on the roll' },
+      { t:'If you sold any additional photos, please make sure these have been added to the roll.' },
+      { t:'Count merch on Day 1 and the final day and check against the stock on Shopify.', chip:'Day 1 and Day 5' },
+    ]},
+    { name:'Parent communication', items:[
+      { t:'Send a quick message to new parents around 10.30am to update them with their child\u2019s progress and enjoyment.  To be done anytime a child is unsettled at drop off.' },
+    ]},
+    { name:'Friday only', items:[
+      { t:'FRIDAY: Bag each individual and sibling photos using the sealable bags in the Admin box.', chip:'Day 5 only', more:'Individual and sibling photos are to be placed in the same bag, both facing upwards. Use the photo sheet to make sure each child\u2019s photo is accounted for. If any prints are missing, please notify the primary caregiver of the child so they are aware before arriving - inform them a print will be organised and posted to them.' },
+    ]},
+  ]};
+
+const DAYS = [
+  { id:'mon', name:'Day 1', abbr:'D1', sub:'Welcome and introductions',
+    blurb:'Welcome, introductions and setting expectations for the week.',
+    briefLead:'Day 1 sets the tone for the week. Teach routines, expectations and boundaries clearly, and get staff learning names from the start.',
+    brief:'Take the time to clearly explain routines, expectations, and boundaries, ensuring both new and returning children understand how the Workshop will run. These expectations should be reinforced throughout the week. Encourage all staff to begin building positive relationships with the children from the very first day. Learning names, creating a welcoming environment, and making every child feel valued will have a significant impact on their overall experience.',
+    sections:[
+      { name:'Before doors open', items:[
+        { t:'Unlock all rooms and spaces' },
+        { t:'Hold a Staff Briefing' },
+        { t:'Road sign out' },
+        { t:'Tables are in a tidy manner', more:'Merch laid out nicely, tablecloths straight, posters visible, QR stands are visible etc. Please maintain a tidy Admin area throughout the week. HWK \u2013 please use the vacuum when and where needed throughout the week.' },
+        { t:'Wifi / iPad and Shopify / POS are connected, roll is open', more:'See green or red bar at the top of the screen for POS connection. Complete Merch and Photo sales through Shopify POS app. Link email address and child\u2019s name for customer.' },
+        { t:'Check Workshop emails for last minute enrolments.', more:'Make a name tag!' },
+        { t:'Put the Colouring sheets and pencils in the main room', more:'Children do not have to do one, but they are there as an option to help calm their nerves.' },
+      ]},
+      { name:'Arrival and welcome', items:[
+        { t:'Welcome every child and parent by their name', more:'Every parent and child must be welcomed by their name, ticked off on the digital roll, given their lanyard and be welcomed into the main room. Bags are to be put under their colour group sign. Please delegate a tutor to help you with welcoming children.' },
+        { t:'Complete any Merch and Photograph sales' },
+        { t:'Tutors are to be in the main room to comfort and manage students' },
+        { t:'One or two tutors are to start a Warm up from 8:50am - no later.', more:'Please add variety to your Warm ups \u2013 Drama, Vocals, Dance, Jump Jam, ice breakers.' },
+        { t:'At 9:20am approx, groups will sit in their lines for Daily Welcome/Introductions/Check ins' },
+        { t:'Front door to be locked for security reasons once all children are inside (if you can).' },
+        { t:'Check you have no notes to be actioned/put notes from arrival into daily debrief/ask office to action.' },
+        { t:'Check off Daily Admin Tasks' },
+      ]},
+      { name:'Morning sessions', items:[
+        { t:'Check on tutors and make sure classes are running smoothly.', more:'Please watch/observe/help in classes as much as you can. Write any notes or observations of tutors/classes in the debrief.' },
+        { t:'Children are to walk quietly and in two lines when moving between classes.', more:'Remind tutors and children that some classes may still be learning.\n\nThis is an expectation that must be taught. Manager and Tutors to model what to do and what not to do.' },
+        { t:'Brain Breaks - Optional for older groups', more:'This can be used for toilet breaks, snacks, or a game. Tutors must closely supervise their group.' },
+        { t:'Photos and Videos for Marketing', sub:'Children with blue stickers cannot be photographed.', more:'Please take quality photos AND videos throughout the day. Message your photos and videos to Sara/Quinn before the end of each day.' },
+        { t:'Workshop Assistants', more:'Support your Workshop Assistants as much as you can by observing them regularly, giving feedback, discussing their progress, and working through their checklist with them.' },
+        { t:'Morning Tea after Session 2', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'Students come back from morning tea, roll is called (not marked) and send students off to their classes.', more:'Manager needs to announce where groups are going for Session 3 and 4 using the Timetable. Do this first, mark the first groups roll and send them off etc.' },
+      ]},
+      { name:'Lunch and quiet time', items:[
+        { t:'Lunch time begins at 1pm. Remind children to drink water and eat what they have!', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'After Lunch, students will come in for \u2018quiet time\u2019. How each child expresses this is fine, as long as it is quiet.' },
+        { t:'All children are to help pick up any rubbish and tidy their bags. Please ensure all lost property is handed out.' },
+        { t:'PM roll is marked before going off for the afternoon classes.', more:'Manager needs to announce where groups are going for Session 5 and 6 using the Timetable. Do this first, mark the first groups roll and send them off etc.' },
+        { t:'Students Lanyards are to be collected and displayed on the admin table in a TIDY MANNER.' },
+      ]},
+      { name:'Afternoon', items:[
+        { t:'Get Certificates and Points organised.' },
+        { t:'Intro/Finale Rehearsal at 3.15pm.' },
+        { t:'At 3:45pm group times starts.' },
+        { t:'Return any students medicine.' },
+        { t:'AOS Workshops must finish on time every day, at 4pm.' },
+      ]},
+      { name:'Close of day', items:[
+        { t:'Tutors are responsible for their rooms: lights out, windows closed, lost property collected. Lock rooms.' },
+        { t:'Ring late parents at 4.15 pm to check that they are on their way.' },
+        { t:'Daily Debrief', more:'Talk through the debrief with your team and record on JotForm link in Teams. This is to be a GROUP conversation with your team so that everyone is on the same page. Send staff home by 4:30pm.' },
+        { t:'Staff Timesheets \u2013 Daily', more:'Check that the timesheets have been filled out by each tutor. The Manager must sign the timesheet. Ensure all the timesheets round to the nearest 5 minutes.' },
+        { t:'Bring Artz on Show road sign inside.' },
+        { t:'Ensure all doors and windows are securely locked before you set an alarm and leave for the night.' },
+      ]},
+    ]},
+  { id:'tue', name:'Day 2', abbr:'D2', sub:'Photography Day \u00b7 drama script', subAlt:{ epsom:'Drama script printed and handed out' },
+    blurb:'Photography day, be ready to start at 9am. Drama script printed and handed out.',
+    blurbAlt:{ epsom:'Drama script printed, organised and handed out.' },
+    briefLead:'Day 2 builds on Day 1. Reinforce yesterday\u2019s routines, run Photography Day smoothly, and hand out scripts.',
+    briefAlt:{ epsom:{
+      lead:'Day 2 builds on Day 1. Reinforce yesterday\u2019s routines and hand out scripts.',
+      brief:'Day 2 is all about building on the foundations set on Day 1. Continue to reinforce the routines, expectations, and boundaries established yesterday, while encouraging staff to keep building positive relationships with the children. Scripts should be printed, organised, and handed out to the children, taking time to explain how they will be used and looked after throughout the week. By now, children should be starting to settle into the Workshop, so keep encouraging confidence, participation, and a positive team environment.',
+    }},
+    brief:'Day 2 is all about building on the foundations set on Day 1. Continue to reinforce the routines, expectations, and boundaries established yesterday, while encouraging staff to keep building positive relationships with the children. Day 2 is also Photography Day, so ensure children and staff are prepared and that photography runs smoothly alongside the Workshop schedule. Scripts should be printed, organised, and handed out to the children, taking time to explain how they will be used and looked after throughout the week. By now, children should be starting to settle into the Workshop, so keep encouraging confidence, participation, and a positive team environment.',
+    sections:[
+      { name:'Before doors open', items:[
+        { t:'Unlock all rooms and spaces' },
+        { t:'Road sign out' },
+        { t:'Tables are in a tidy manner', more:'Merch laid out nicely, tablecloths straight, posters visible, QR stands are visible etc. Please maintain a tidy Admin area throughout the week. HWK \u2013 please use the vacuum when and where needed throughout the week.' },
+        { t:'Wifi / iPad and Shopify / POS are connected, roll is open', more:'See green or red bar at the top of the screen for POS connection. Complete Merch and Photo sales through Shopify POS app. Link email address and child\u2019s name for customer.' },
+        { t:'Check Workshop emails for last minute enrolments.', more:'Make a name tag!' },
+        { t:'Drama Script - Is it ready to print?', more:'Check that you have received the script with casting from the Drama Tutor. Begin printing scripts, please ensure this does not take you away from welcoming each child by their name. The number of children in a scene = the number of copies printed for that scene. Once done, staple scenes together and highlight the lines for each child.' },
+        { t:'Photography Day. Ensure you are ready to start at 9am', notHubs:['epsom'], more:'All children are listed on the Photo Sheet, so if any payments, please just change the number in the correct columns. Eg. each child has a 1 for individual photo, if they purchase another, they will have a 2. Print out 2 copies of photo sheet for Photographer and you. Ensure all children get their photo and sibling photo if paid for. Before the photographer leaves, please copy his references to your copy of the photo sheet. Groups need to be picked up from their class and taken to the photographer. They must wait in a line sitting down. Once groups are all completed, do the sibling photos. Confirm with the photographer, they have done all the siblings and have all additional prints recorded.' },
+        { t:'Use the themed Spotify playlist to play very quietly during the Welcome. Put the speaker out of reach.' },
+      ]},
+      { name:'Arrival and welcome', items:[
+        { t:'Welcome every child and parent by their name', more:'Every parent and child must be welcomed by their name, ticked off on the digital roll, given their lanyard and be welcomed into the main room. Bags are to be put under their colour group sign. Please delegate a tutor to help you with welcoming children.' },
+        { t:'Complete any Merch and Photograph sales' },
+        { t:'Tutors are to be in the main room to comfort and manage students' },
+        { t:'One or two tutors are to start a Warm up from 8:50am - no later.', more:'Please add variety to your Warm ups \u2013 Drama, Vocals, Dance, Jump Jam, ice breakers.' },
+        { t:'Please ensure Dance Tutors are running Intro/Finale as part of the Warm Up' },
+        { t:'At 9:20am approx, groups will sit in their lines for Daily Welcome/Introductions/Check ins' },
+        { t:'Front door to be locked for security reasons once all children are inside (if you can).' },
+        { t:'Check you have no notes to be actioned/put notes from arrival into daily debrief/ask office to action.' },
+        { t:'Check off Daily Admin Tasks' },
+      ]},
+      { name:'Morning sessions', items:[
+        { t:'Check on tutors and make sure classes are running smoothly.', more:'Please watch/observe/help in classes as much as you can. Write any notes or observations of tutors/classes in the debrief.' },
+        { t:'Children are to walk quietly and in two lines when moving between classes.', more:'Remind tutors and children that some classes may still be learning.\n\nThis is an expectation that must be taught. Manager and Tutors to model what to do and what not to do.' },
+        { t:'Brain Breaks - Optional for older groups', more:'This can be used for toilet breaks, snacks, or a game. Tutors must closely supervise their group.' },
+        { t:'Photos and Videos for Marketing', sub:'Children with blue stickers cannot be photographed.', more:'Please take quality photos AND videos throughout the day. Message your photos and videos to Sara/Quinn before the end of each day.' },
+        { t:'Workshop Assistants', more:'Support your Workshop Assistants as much as you can by observing them regularly, giving feedback, discussing their progress, and working through their checklist with them.' },
+        { t:'Morning Tea after Session 2', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'Students come back from morning tea, roll is called (not marked) and send students off to their classes.', more:'Manager needs to announce where groups are going for Session 3 and 4 using the Timetable. Do this first, mark the first groups roll and send them off etc.' },
+      ]},
+      { name:'Lunch and quiet time', items:[
+        { t:'Lunch time begins at 1pm. Remind children to drink water and eat what they have!', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'After Lunch, students will come in for \u2018quiet time\u2019. How each child expresses this is fine, as long as it is quiet.' },
+        { t:'All children are to help pick up any rubbish and tidy their bags. Please ensure all lost property is handed out.' },
+        { t:'PM roll is marked before going off for the afternoon classes.', more:'Manager needs to announce where groups are going for Session 5 and 6 using the Timetable. Do this first, mark the first groups roll and send them off etc.' },
+        { t:'Students Lanyards are to be collected and displayed on the admin table in a TIDY MANNER.' },
+      ]},
+      { name:'Afternoon', items:[
+        { t:'Get Certificates and Points organised.' },
+        { t:'Intro/Finale Rehearsal at 3.15pm.' },
+        { t:'At 3:45pm group times starts.' },
+        { t:'Return any students medicine.' },
+        { t:'AOS Workshops must finish on time every day, at 4pm.' },
+      ]},
+      { name:'Close of day', items:[
+        { t:'Tutors are responsible for their rooms: lights out, windows closed, lost property collected. Lock rooms.' },
+        { t:'Ring late parents at 4.15 pm to check that they are on their way.' },
+        { t:'Daily Debrief', more:'Talk through the debrief with your team and record on JotForm link in Teams. This is to be a GROUP conversation with your team so that everyone is on the same page. Send staff home by 4:30pm.' },
+        { t:'Staff Timesheets \u2013 Daily', more:'Check that the timesheets have been filled out by each tutor. The Manager must sign the timesheet. Ensure all the timesheets round to the nearest 5 minutes.' },
+        { t:'Bring Artz on Show road sign inside.' },
+        { t:'Ensure all doors and windows are securely locked before you set an alarm and leave for the night.' },
+      ]},
+    ]},
+  { id:'wed', name:'Day 3', abbr:'D3', sub:'Dances finished, learning lines', subAlt:{ epsom:'Photography Day · dances finished, learning lines' },
+    blurb:'Dances finished and children well into learning their lines. Confirm speech and Intro/Finale leaders today.',
+    blurbAlt:{ epsom:'Photography day, be ready to start at 9am. Dances finished and children well into learning their lines.' },
+    briefLead:'Day 3 is hump day. Energy may dip, so bring patience and encouragement. Dances finished and lines well underway by the end of today.',
+    brief:'Day 3 can often feel like the \u2018hump day\u2019 of the Workshop. Children may be starting to feel tired as they reach the middle of a busy week, so continue to bring plenty of positive energy, encouragement, and patience throughout the day. Keep reinforcing the expectations and routines established earlier in the week, particularly if energy or focus begins to drop. By the end of Day 3, dances should be finished and children should be well into learning their lines, with a strong understanding of their scenes and what is expected of them. This is a great day to celebrate how much has already been achieved while keeping everyone motivated and focused for the final two days.',
+    sections:[
+      { name:'Before doors open', items:[
+        { t:'Unlock all rooms and spaces' },
+        { t:'Road sign out' },
+        { t:'Tables are in a tidy manner', more:'Merch laid out nicely, tablecloths straight, posters visible, QR stands are visible etc. Please maintain a tidy Admin area throughout the week. HWK \u2013 please use the vacuum when and where needed throughout the week.' },
+        { t:'Wifi / iPad and Shopify / POS are connected, roll is open', more:'See green or red bar at the top of the screen for POS connection. Complete Merch and Photo sales through Shopify POS app. Link email address and child\u2019s name for customer.' },
+        { t:'Check Workshop emails for last minute enrolments.', more:'Make a name tag!' },
+        { t:'Photography Day. Ensure you are ready to start at 9am', hubs:['epsom'], more:'All children are listed on the Photo Sheet, so if any payments, please just change the number in the correct columns. Eg. each child has a 1 for individual photo, if they purchase another, they will have a 2. Print out 2 copies of photo sheet for Photographer and you. Ensure all children get their photo and sibling photo if paid for. Before the photographer leaves, please copy his references to your copy of the photo sheet. Groups need to be picked up from their class and taken to the photographer. They must wait in a line sitting down. Once groups are all completed, do the sibling photos. Confirm with the photographer, they have done all the siblings and have all additional prints recorded.' },
+        { t:'Make sure all Art Gear is clean, packed up and Art room is tidy and ready to leave venue Friday.' },
+        { t:'Use the themed Spotify playlist to play very quietly during the Welcome. Put the speaker out of reach.' },
+      ]},
+      { name:'Arrival and welcome', items:[
+        { t:'Welcome every child and parent by their name', more:'Every parent and child must be welcomed by their name, ticked off on the digital roll, given their lanyard and be welcomed into the main room. Bags are to be put under their colour group sign. Please delegate a tutor to help you with welcoming children.' },
+        { t:'Complete any Merch and Photograph sales' },
+        { t:'Tutors are to be in the main room to comfort and manage students' },
+        { t:'One or two tutors are to start a Warm up from 8:50am - no later.', more:'Please add variety to your Warm ups \u2013 Drama, Vocals, Dance, Jump Jam, ice breakers.' },
+        { t:'Please ensure Dance Tutors are running Intro/Finale as part of the Warm Up' },
+        { t:'At 9:20am approx, groups will sit in their lines for Daily Welcome/Introductions/Check ins' },
+        { t:'Front door to be locked for security reasons once all children are inside (if you can).' },
+        { t:'Check you have no notes to be actioned/put notes from arrival into daily debrief/ask office to action.' },
+        { t:'Check off Daily Admin Tasks' },
+        { t:'Count lollipops and prizes and let Sara know if you have enough.' },
+      ]},
+      { name:'Morning sessions', items:[
+        { t:'Check on tutors and make sure classes are running smoothly.', more:'Please watch/observe/help in classes as much as you can. Write any notes or observations of tutors/classes in the debrief.' },
+        { t:'Children are to walk quietly and in two lines when moving between classes.', more:'Remind tutors and children that some classes may still be learning.\n\nThis is an expectation that must be taught. Manager and Tutors to model what to do and what not to do.' },
+        { t:'Dances and scenes - Please watch!', more:'Do your best to watch dances and scenes. Provide support to ensure the dances are clean and high energy. Children are to sing the Jazz and Intro/Finale dances \u2013 please encourage this. Watch scenes and ensure the Drama tutor is beginning to block these. This will make Thursday afternoon and show rehearsals a lot smoother. Encourage children to project their voices.' },
+        { t:'Opening speech people - these should be confirmed today.' },
+        { t:'Brain Breaks - Optional for older groups', more:'This can be used for toilet breaks, snacks, or a game. Tutors must closely supervise their group.' },
+        { t:'Photos and Videos for Marketing', sub:'Children with blue stickers cannot be photographed.', more:'Please take quality photos AND videos throughout the day. Message your photos and videos to Sara/Quinn before the end of each day.' },
+        { t:'Workshop Assistants', more:'Support your Workshop Assistants as much as you can by observing them regularly, giving feedback, discussing their progress, and working through their checklist with them.' },
+        { t:'Morning Tea after Session 2', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'Students come back from morning tea, roll is called (not marked) and send students off to their classes.', more:'Manager needs to announce where groups are going for Session 3 and 4 using the Timetable. Do this first, mark the first groups roll and send them off etc.' },
+      ]},
+      { name:'Lunch and quiet time', items:[
+        { t:'Lunch time begins at 1pm. Remind children to drink water and eat what they have!', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'After Lunch, students will come in for \u2018quiet time\u2019. How each child expresses this is fine, as long as it is quiet.' },
+        { t:'All children are to help pick up any rubbish and tidy their bags. Please ensure all lost property is handed out.' },
+        { t:'PM roll is marked before going off for the afternoon classes.', more:'Manager needs to announce where groups are going for Session 5 and 6 using the Timetable. Do this first, mark the first groups roll and send them off etc.' },
+        { t:'Students Lanyards are to be collected and displayed on the admin table in a TIDY MANNER.' },
+      ]},
+      { name:'Afternoon', items:[
+        { t:'Get Certificates and Points organised.' },
+        { t:'Intro/Finale Rehearsal at 3.15pm.' },
+        { t:'Intro/Finale Leaders - these should be confirmed today.' },
+        { t:'At 3:45pm group times starts.' },
+        { t:'Return any students medicine.' },
+        { t:'AOS Workshops must finish on time every day, at 4pm.' },
+      ]},
+      { name:'Close of day', items:[
+        { t:'Tutors are responsible for their rooms: lights out, windows closed, lost property collected. Lock rooms.' },
+        { t:'Ring late parents at 4.15 pm to check that they are on their way.' },
+        { t:'Let ALL staff know, unless they\u2019re working next week, they need to Return uniform Friday after the show.' },
+        { t:'Daily Debrief', more:'Talk through the debrief with your team and record on JotForm link in Teams. This is to be a GROUP conversation with your team so that everyone is on the same page. Send staff home by 4:30pm.' },
+        { t:'Staff Timesheets \u2013 Daily', more:'Check that the timesheets have been filled out by each tutor. The Manager must sign the timesheet. Ensure all the timesheets round to the nearest 5 minutes.' },
+        { t:'Bring Artz on Show road sign inside.' },
+        { t:'Ensure all doors and windows are securely locked before you set an alarm and leave for the night.' },
+      ]},
+    ]},
+  { id:'thu', name:'Day 4', abbr:'D4', sub:'Run sheet and show prep',
+    blurb:'Run sheet built today. Team briefed on the show day plan.',
+    briefLead:'Day 4 brings it all together. Clean and refine each piece, work transitions, and run larger sections. Children should leave feeling prepared.',
+    brief:'Day 4 is about bringing everything together and getting performance ready. By now, children should be confident with their dances, lines, scenes, and overall structure of the show. Use today to clean and refine each piece, work on transitions, entrances and exits, and begin running larger sections of the performance together. Continue to reinforce expectations and encourage children to stay focused as excitement for tomorrow begins to build. Identify anything that still needs extra attention and make sure staff are clear on what needs to be prioritised before the end of the day. Children should leave Day 4 feeling confident, prepared, and excited to perform.',
+    sections:[
+      { name:'Before doors open', items:[
+        { t:'Unlock all rooms and spaces' },
+        { t:'Road sign out' },
+        { t:'Tables are in a tidy manner', more:'Merch laid out nicely, tablecloths straight, posters visible, QR stands are visible etc. Please maintain a tidy Admin area throughout the week. HWK \u2013 please use the vacuum when and where needed throughout the week.' },
+        { t:'Wifi / iPad and Shopify / POS are connected, roll is open', more:'See green or red bar at the top of the screen for POS connection. Complete Merch and Photo sales through Shopify POS app. Link email address and child\u2019s name for customer.' },
+        { t:'Check Workshop emails for last minute enrolments.', more:'Make a name tag!' },
+        { t:'Use the themed Spotify playlist to play very quietly during the Welcome. Put the speaker out of reach.' },
+      ]},
+      { name:'Arrival and welcome', items:[
+        { t:'Welcome every child and parent by their name', more:'Every parent and child must be welcomed by their name, ticked off on the digital roll, given their lanyard and be welcomed into the main room. Bags are to be put under their colour group sign. Please delegate a tutor to help you with welcoming children.' },
+        { t:'Complete any Merch and Photograph sales' },
+        { t:'Tutors are to be in the main room to comfort and manage students' },
+        { t:'One or two tutors are to start a Warm up from 8:50am - no later.', more:'Please add variety to your Warm ups \u2013 Drama, Vocals, Dance, Jump Jam, ice breakers.' },
+        { t:'Please ensure Dance Tutors are running Intro/Finale as part of the Warm Up' },
+        { t:'At 9:20am approx, groups will sit in their lines for Daily Welcome/Introductions/Check ins' },
+        { t:'Front door to be locked for security reasons once all children are inside (if you can).' },
+        { t:'Check you have no notes to be actioned/put notes from arrival into daily debrief/ask office to action.' },
+        { t:'Check off Daily Admin Tasks' },
+        { t:'Run sheet - Template on Teams MUST be used.', more:'Have a detailed run sheet prepared for the tutors to use for the show. The run sheet must include the children in each scene, their group and costume.' },
+      ]},
+      { name:'Morning sessions', items:[
+        { t:'Begin Show Preparation' },
+        { t:'Start preparing the art for display.', sub:'Cut out, blu tacked and ready to go.' },
+        { t:'Check on tutors and make sure classes are running smoothly.', more:'Please watch/observe/help in classes as much as you can. Write any notes or observations of tutors/classes in the debrief.' },
+        { t:'Dances and scenes - Please watch!', more:'Do your best to watch dances and scenes. Provide support to ensure the dances are clean and high energy. Children are to sing the Jazz and Intro/Finale dances \u2013 please encourage this. Watch scenes and ensure the Drama tutor is beginning to block these. This will make Thursday afternoon and show rehearsals a lot smoother. Encourage children to project their voices.' },
+        { t:'Children are to walk quietly and in two lines when moving between classes.', more:'Remind tutors and children that some classes may still be learning.\n\nThis is an expectation that must be taught. Manager and Tutors to model what to do and what not to do.' },
+        { t:'Brain Breaks - Optional for older groups', more:'This can be used for toilet breaks, snacks, or a game. Tutors must closely supervise their group.' },
+        { t:'Photos and Videos for Marketing', sub:'Children with blue stickers cannot be photographed.', more:'Please take quality photos AND videos throughout the day. Message your photos and videos to Sara/Quinn before the end of each day.' },
+        { t:'Workshop Assistants', more:'Support your Workshop Assistants as much as you can by observing them regularly, giving feedback, discussing their progress, and working through their checklist with them.' },
+        { t:'Morning Tea after Session 2', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'Students come back from morning tea, roll is called (not marked) and send students off to their classes.', more:'Manager needs to announce where groups are going for Session 3 and 4 using the Timetable. Do this first, mark the first groups roll and send them off etc.' },
+      ]},
+      { name:'Lunch and quiet time', items:[
+        { t:'Lunch time begins at 1pm. Remind children to drink water and eat what they have!', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'After Lunch, students will come in for \u2018quiet time\u2019. How each child expresses this is fine, as long as it is quiet.' },
+        { t:'All children are to help pick up any rubbish and tidy their bags. Please ensure all lost property is handed out.' },
+        { t:'PM roll is marked before beginning blocking.' },
+      ]},
+      { name:'Afternoon', items:[
+        { t:'Detach student lanyards from plastic name pockets.', more:'Bundle plastic pockets & name tags in a rubber band and place into Admin box. Lanyards are to be placed into laundry bag in Admin Box' },
+        { t:'Get Certificates and Points organised.' },
+        { t:'Intro/Finale Rehearsal at 3.15pm.' },
+        { t:'At 3:45pm group times starts. Do not show any dances today.' },
+        { t:'Return any students medicine.' },
+        { t:'AOS Workshops must finish on time every day, at 4pm.' },
+      ]},
+      { name:'Close of day', items:[
+        { t:'Tutors are responsible for their rooms: lights out, windows closed, lost property collected. Lock rooms.' },
+        { t:'Ring late parents at 4.15 pm to check that they are on their way.' },
+        { t:'Daily Debrief', more:'Talk through the debrief with your team and record on JotForm link in Teams. This is to be a GROUP conversation with your team so that everyone is on the same page. Send staff home by 4:30pm.' },
+        { t:'Recap outline for SHOW DAY. Does your team know the plan?' },
+        { t:'Staff Timesheets \u2013 Daily', more:'Check that the timesheets have been filled out by each tutor. The Manager must sign the timesheet. Ensure all the timesheets round to the nearest 5 minutes.' },
+        { t:'Bring Artz on Show road sign inside.' },
+        { t:'Ensure all doors and windows are securely locked before you set an alarm and leave for the night.' },
+      ]},
+    ]},
+  { id:'fri', name:'Day 5', abbr:'D5', sub:'SHOW DAY',
+    blurb:'Show starts at 4pm. Pack out follows.',
+    briefLead:'Show day. Build confidence, keep the atmosphere calm, and make sure certificates, costumes, props and spaces are ready.',
+    brief:'Day 5 is show day! The focus today is on building confidence, celebrating everything the children have achieved, and preparing for a fantastic final performance. Complete a full run-through of the show, tidy any final details, and make sure children understand their entrances, exits, transitions, and performance expectations. Keep the atmosphere positive and calm as excitement builds, while continuing to reinforce the routines and expectations that have been in place throughout the week. Ensure certificates, costumes, props, performance spaces, and any parent-facing areas are organised and ready. Most importantly, encourage the children to enjoy the experience, support one another, and feel proud of everything they have accomplished throughout the week.',
+    sections:[
+      { name:'Before doors open', items:[
+        { t:'Unlock all rooms and spaces' },
+        { t:'Road sign out' },
+        { t:'Tables are in a tidy manner', more:'Merch laid out nicely, tablecloths straight, posters visible, QR stands are visible etc. Please maintain a tidy Admin area throughout the week. HWK \u2013 please use the vacuum when and where needed throughout the week.' },
+        { t:'Wifi / iPad and Shopify / POS are connected, roll is open', more:'See green or red bar at the top of the screen for POS connection. Complete Merch and Photo sales through Shopify POS app. Link email address and child\u2019s name for customer.' },
+        { t:'Use the themed Spotify playlist to play very quietly during the Welcome. Put the speaker out of reach.' },
+        { t:'Give every staff member and the Venue Tech their own copy of the Run Sheet.' },
+        { t:'Confirm every Tutor knows where they need to be and what their role is.' },
+      ]},
+      { name:'Arrival and welcome', items:[
+        { t:'Welcome every child and parent by their name - No lanyards', more:'Every parent and child must be welcomed by their name, ticked off on the digital roll, and be welcomed into the main room. Bags are to be put under their colour group sign. Please delegate a tutor to help you with welcoming children.' },
+        { t:'Complete any Merch and Photograph sales' },
+        { t:'Tutors are to be in the main room to comfort and manage students' },
+        { t:'One or two tutors are to start a Warm up from 8:50am - no later.', more:'Please add variety to your Warm ups \u2013 Drama, Vocals, Dance, Jump Jam, ice breakers.' },
+        { t:'Please ensure Dance Tutors are running Intro/Finale as part of the Warm Up' },
+        { t:'At 9:20am approx, groups will sit in their lines for Daily Welcome/Introductions/Check ins/house keeping for Show Day' },
+        { t:'Front door to be locked for security reasons once all children are inside (if you can).' },
+        { t:'Check you have no notes to be actioned/put notes from arrival into daily debrief/ask office to action.' },
+        { t:'Check off Daily Admin Tasks' },
+      ]},
+      { name:'Rehearsals', items:[
+        { t:'Continue any unfinished Show Preparation.' },
+        { t:'Make sure whoever is running tech, Venue Tech or a Tutor, has the music and the PowerPoint if one is needed.' },
+        { t:'Prepare for the show by displaying Art on stage.', sub:'Can only be displayed on the Art boards. Use Gunstapler in Admin box. Black Group love helping with this', more:'The art should already be cut out and ready to go up from Day 4.', hubs:['epsom'] },
+        { t:'Prepare for the show by displaying Art on stage.', sub:'Front of the stage and side stage walls.', more:'The art should already be cut out and ready to go up from Day 4.', hubs:['howick'] },
+        { t:'Prepare for the show by displaying Art on stage.', sub:'White wall at the back of the stage and front of stage', more:'The art should already be cut out and ready to go up from Day 4.', hubs:['karaka'] },
+        { t:'Prepare for the show by displaying Art on stage.', sub:'Front of stage only', more:'The art should already be cut out and ready to go up from Day 4.', hubs:['hamilton'] },
+        { t:'Prepare for the show by displaying Art on stage.', sub:'Front of stage and anywhere else you can make it work', more:'The art should already be cut out and ready to go up from Day 4.', hubs:['northshore'] },
+        { t:'Finish the blocking before morning tea.', sub:'It should have movement and action throughout.' },
+        { t:'Follow the timetable for Show rehearsals.', more:'Do your best to watch dances and scenes. Provide support to ensure the dances are clean and high energy. Children are to sing the Jazz and Intro/Finale dances \u2013 please encourage this. Watch scenes and ensure the Drama tutor is beginning to block these. Encourage children to project their voices.' },
+        { t:'Morning Tea', sub:'Please do your best to ensure the children get fresh air.', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'Students come back from morning tea, roll is called (not marked) and begin next Show run.' },
+        { t:'Run one show rehearsal that the children get to watch, finished before lunch.', sub:'Practise transitions and stage etiquette if they need work.' },
+        { t:'Make sure the Opening Speech children have practised with the microphones.' },
+        { t:'Make sure the Drama Tutor is organised to prompt and has had practice during at least one rehearsal.' },
+        { t:'Photos and Videos for Marketing', sub:'Children with blue stickers cannot be photographed.', more:'Please take quality photos AND videos throughout the day. Message your photos and videos to Sara/Quinn before the end of each day.' },
+        { t:'Workshop Assistants', more:'Support your Workshop Assistants as much as you can by observing them regularly, giving feedback, discussing their progress, and working through their checklist with them.' },
+      ]},
+      { name:'Lunch and quiet time', items:[
+        { t:'Lunch time begins at 1pm. Remind children to drink water and eat what they have!', more:'Please ensure you have 2 staff members actively on duty. If you have more than 70 children, you will need 3 staff members on.' },
+        { t:'After Lunch, students will come in for \u2018quiet time\u2019. How each child expresses this is fine, as long as it is quiet.' },
+        { t:'All children are to help pick up any rubbish and tidy their bags. Please ensure all lost property is handed out.' },
+        { t:'PM roll is marked.' },
+      ]},
+      { name:'Hair, make up and final rehearsal', items:[
+        { t:'Begin Hair and Make Up as per the timetable.', more:'Please ensure children line up nicely when waiting for hairspray and make up. If children are using their own make up, the bathrooms must be left clean.' },
+        { t:'FINAL SHOW REHEARSAL in black clothes, props, and hair and make up, with full tech.' },
+        { t:'After final rehearsal, make sure all Children are clean, tidy and looking presentable.' },
+        { t:'Back in the main room with the children by about 3:30pm for a pre-show warm up or circle time.' },
+        { t:'Make sure the room all the children are waiting in the main room. Bags are tidy and sorted. Make one last toilet call!!  WISH ALL THE CHILDREN GOOD LUCK and reassure them that nerves are okay!' },
+      ]},
+      { name:'The show', items:[
+        { t:'Have points, prizes and certificates ready to go.' },
+        { t:'Put all merch on display in the merch box for the duration of the show.' },
+        { t:'Manager in the reception area to welcome parents and direct them to the show.' },
+        { t:'Children ready backstage at 3:45pm, doors open at 3:45pm.' },
+        { t:'Show starts at 4pm sharp.' },
+        { t:'Manager to say Closing Speech at the end of the show.' },
+        { t:'Back in the main room (not on stage!): Final certificates are to be awarded. Group points are to be tallied and winning group announced - Hand out prizes to winning group after the other groups have left.' },
+        { t:'Dismiss students group by group, giving each student a lollipop as they leave.' },
+        { t:'Manager to head out to admin area, meet with parents, help with enrolments. Be prepared to assist with future enrolments before and after the show. Ensure QR codes, forms and POS is ready to go.' },
+      ]},
+      { name:'Pack out', items:[
+        { t:'Tutors collect lost property and take down the art immediately after Certificates and Points.' },
+        { t:'Tutors are responsible for helping tidy up: lights out, windows closed, lost property collected. Lock rooms. Begin Pack Out' },
+        { t:'Refer to the Manager Pack Out Checklist to begin packing out.', more:'Please delegate two tutors to complete the Tutor 1 and Tutor 2 Packout lists. Ensure the Workshop Gear Checklist is completed.' },
+        { t:'Daily Debrief', more:'Talk through the debrief with your team and record on JotForm link in Teams. This is to be a GROUP conversation with your team so that everyone is on the same page. Send staff home by 4:30pm.' },
+        { t:'Staff Timesheets \u2013 Daily', more:'Check that the timesheets have been filled out by each tutor. The Manager must sign the timesheet. Ensure all the timesheets round to the nearest 5 minutes.' },
+        { t:'Ensure all doors and windows are securely locked before you set an alarm and leave for the night.' },
+      ]},
+    ]},
+];
+
+const CERTS = { id:'certs', name:'Certificates and Points', abbr:'C&P', sub:'Awarded during Group Time',
+  blurb:'Points tallied and certificates awarded each day.',
+  sections:[
+    { name:'Points sheets', items:[
+      { t:'Each Tutor must have a Points sheets and should be adding to this sheet throughout each class. Points cannot be taken away once they have been awarded.' },
+      { t:'Points must be tallied and updated on the whiteboard. If points are significantly far apart, please bump up the lower groups.' },
+    ]},
+    { name:'Choosing winners', items:[
+      { t:'Each Tutor must choose a Certificate Winner for each discipline that they teach.', more:'There should be 6 certificate winners (5 - Epsom) Monday - Wednesday. Thursday and Friday there should be 3. Manager\u2019s are to only award certificates when it is a very well deserved one.' },
+      { t:'Please check off all Certificate Winners on the Certificate tab on the roll. This is to ensure the certificates are evenly spread across each Workshop.' },
+      { t:'Tutors or Manager must write the certificates with neat and tidy handwriting.' },
+    ]},
+    { name:'Group Time', items:[
+      { t:'Tutors must award their certificates during Group Time and the Manager to award any certificates for Tutors not rostered on.' },
+      { t:'During Group Time, points are done last and are ALWAYS announced from the youngest group to the oldest.' },
+    ]},
+  ]};
+
+const GROUPTIME = [
+  { name:'Before Group Time', items:[
+    { t:'Please ensure doors are shut well in advance of Group Time.' },
+    { b:'Bags:', t:'Before parents enter, please ensure all bags are tidy and students are seated quietly and ready.' },
+    { b:'Dances:', t:'Check in with the Dance Tutors and have up to two dances prepared, a combination of Jazz and Hip-Hop. Dances are to be shown Monday, Tuesday, and Wednesday only.' },
+    { b:'5 Volunteers:', t:'Choose 5 volunteers (prior to Group Time so they can practice) to talk about their day. They must clearly state their name, age, school, and favourite class of the day. Encourage them to speak loudly and practice projecting their voice so everyone can hear.' },
+  ]},
+  { name:'Group Time', items:[
+    { t:'Open the doors and Welcome the parents in.' },
+    { t:'Begin with our volunteers and group dances.' },
+    { b:'Today:', t:'Talk about what the children got up to today and any exciting things that happened. Specialist classes, dances, auditions, lines, Photography Day, Art, blocking etc.' },
+    { b:'Tomorrow:', t:'Build excitement for the next day. Provide a preview for the next day, especially Specialist Classes.' },
+    { i:'If it is Photography Day, remind students to bring a brush or comb, not to share these items, and to come ready with big smiles.' },
+  ]},
+  { name:'Show Day Announcements (Wednesday and Thursday)', items:[
+    { b:'What to wear:', t:'All black clothing, hair neat and up. Staff will assist with makeup and final hair touches.' },
+    { b:'Footwear:', t:'No crocs or light up shoes please - huge Health and Safety issue!!' },
+    { b:'Show Newsletter:', t:'If parents have not received it, there are copies free to take on the Admin table.' },
+    { b:'At home:', t:'Get a good night\u2019s sleep, bring plenty of water and food, and practise their lines and dances.' },
+    { t:'Check in with staff for any additional reminders.' },
+  ]},
+  { name:'Points & Certificates', items:[
+    { t:'Invite tutors to present a certificate to one student each, ensuring they clearly explain why the student is receiving it and celebrate effort, attitude, and growth.' },
+    { t:'Photograph the Certificate Winners.', note:'Any winner with a blue dot is photographed on their own with the Tutor who awarded them.' },
+    { t:'Briefly explain to parents how the points system works. Announce points in group colour order, beginning with Orange always' },
+  ]},
+  { name:'Home Time', items:[
+    { t:'All students must remain inside or in the designated area until their parent or caregiver arrives. Dismiss groups to collect their bags one group at a time. Please send Orange Group first to help with smooth collection and visibility.' },
+  ]},
+  { name:'One Day Students', items:[
+    { t:'Try and catch One Day Students before they leave to chat about how they found the day and discuss the option of returning for another day.' },
+  ]},
+];
+
+const WELCOME = [
+  { name:'Morning Welcome', items:[
+    'Each staff member to introduce themselves to the children. Please do not ask staff to share their age. Introduce other Tutor\u2019s not rostered on and what they will be teaching (so children know what to expect), they can introduce themselves properly when they arrive.',
+    'Announce and discuss the theme.',
+    'Announce Specialist Classes.',
+    'Talk about expectations with name tags eg. not food, no decorating them.',
+    'Classrooms and toilets',
+    'Ziggy, Ziggy, Ziggy/There was a hush from the crowd/Clapping/Numbers 10, 9, 8, etc.',
+    'Discuss how we move between classes. E.g. lining up and walking',
+    'No running, chewing gum, or cell phones.',
+    'Evacuation procedure',
+    'First aid kit / sunscreen',
+    'Discuss boundaries, personal space and how we talk to each other.',
+    'Set expectations for Quiet Time. Show the children what activities are available, and how we look after them and each other while using them.',
+    'Points system: All groups start from 0 each class. Children can earn points, but there is no taking away points. Listening, effort, respect, kindness. Ask the children who won at the previous Workshop (make it fun). We do not want the same group to win again.',
+  ]},
+  { name:'Venue specific', tone:'venue', items:[
+    { t:'Southwell: No going on the oval as it is a sacred piece of land.', hubs:['hamilton'] },
+    { t:'Karaka: No playing with the Play Centre mud kitchen at all. Please remind children of this daily.', hubs:['karaka'] },
+  ]},
+  { name:'SHOW DAY', tone:'show', items:[
+    'Expectations for when in the theatre and how to behave on the stage',
+    'Use your listening ears!',
+    'Remind children that its okay to feel nervous or have butterflies in your stomach. Nerves mean you care!',
+  ]},
+];
+
+// Daily schedule. Times are minutes from midnight; `go` names the page the
+// "On now" card opens. Epsom Days 1-4 are the only confirmed timings so far.
+const SCHEDULES = {
+  'epsom:standard': [
+    { t:'07:30', name:'Staff arrival and setup', note:'Day 1 only. Unlock, walk the space and brief the team before anyone arrives.', day1:true },
+    { t:'08:15', name:'Staff arrival and setup', note:'Rooms unlocked, tables tidy, POS connected and the roll open before the first family arrives.' },
+    { t:'08:30', name:'Arrival and drop-off', note:'Welcome every child and parent by name, tick the digital roll and hand out lanyards.', go:'list' },
+    { t:'08:50', name:'Warm up', note:'One or two tutors leading. From Day 2 the Intro/Finale runs as part of the warm up.' },
+    { t:'09:25', name:'Daily Welcome', note:'Groups in their lines for introductions, expectations and check-ins.', go:'welcome' },
+    { t:'09:35', name:'Session 1', note:'First class of the day. Float between rooms and support tutors and children.' },
+    { t:'10:15', name:'Brain break', note:'Toilets, snacks or a game. Tutors supervise their own group closely.' },
+    { t:'10:25', name:'Session 2', note:'Check each room in the first ten minutes.' },
+    { t:'11:15', name:'Morning tea', note:'Two staff actively on duty, three if you have more than 70 children. Get the children outside for fresh air.' },
+    { t:'11:45', name:'Session 3', note:'Roll called after morning tea, then announce where each group is heading for Sessions 3 and 4.' },
+    { t:'12:25', name:'Brain break', note:'Short reset before the last class before lunch.' },
+    { t:'12:35', name:'Session 4', note:'Last class before lunch.' },
+    { t:'13:25', name:'Lunch', note:'Two staff actively on duty. Remind the children to drink water and eat what they have.' },
+    { t:'13:55', name:'Quiet time', note:'However each child expresses it is fine, as long as it is quiet.' },
+    { t:'14:10', name:'Session 5', note:'PM roll marked first, then announce where each group is going. Final class of the day.' },
+    { t:'15:00', name:'Brain break', note:'Last break before rehearsal.' },
+    { t:'15:15', name:'Intro/Finale rehearsal', note:'Whole group together. Lanyards collected and displayed on the admin table.' },
+    { t:'15:45', name:'Group Time', note:'Doors open, parents welcomed in. Volunteers, dances, certificates and points.', go:'group' },
+    { t:'16:00', name:'End of day', note:'Finish on time. Late parents phoned at 4:15pm, then debrief and timesheets.' },
+  ],
+  'other:standard': [
+    { t:'07:30', name:'Staff arrival and setup', note:'Day 1 only. Unlock, walk the space and brief the team before anyone arrives.', day1:true },
+    { t:'08:15', name:'Staff arrival and setup', note:'Rooms unlocked, tables tidy, POS connected and the roll open before the first family arrives.' },
+    { t:'08:30', name:'Arrival and drop-off', note:'Welcome every child and parent by name, tick the digital roll and hand out lanyards.', go:'list' },
+    { t:'08:50', name:'Warm up', note:'One or two tutors leading. From Day 2 the Intro/Finale runs as part of the warm up.' },
+    { t:'09:20', name:'Daily Welcome', note:'Groups in their lines for introductions, expectations and check-ins.', go:'welcome' },
+    { t:'09:30', name:'Session 1', note:'First class of the day. Float between rooms and support tutors and children.' },
+    { t:'10:10', name:'Brain break', note:'Toilets, snacks or a game. Tutors supervise their own group closely.' },
+    { t:'10:20', name:'Session 2', note:'Check each room in the first ten minutes.' },
+    { t:'11:00', name:'Morning tea', note:'Two staff actively on duty, three if you have more than 70 children. Get the children outside for fresh air.' },
+    { t:'11:30', name:'Session 3', note:'Roll called after morning tea, then announce where each group is heading for Sessions 3 and 4.' },
+    { t:'12:10', name:'Brain break', note:'Short reset before the last class before lunch.' },
+    { t:'12:20', name:'Session 4', note:'Last class before lunch.' },
+    { t:'13:00', name:'Lunch', note:'Two staff actively on duty. Remind the children to drink water and eat what they have.' },
+    { t:'13:35', name:'Quiet time', note:'However each child expresses it is fine, as long as it is quiet.' },
+    { t:'13:45', name:'Session 5', note:'PM roll marked first, then announce where each group is going for Sessions 5 and 6.' },
+    { t:'14:25', name:'Brain break', note:'Last break of the afternoon.' },
+    { t:'14:35', name:'Session 6', note:'Final class of the day.' },
+    { t:'15:15', name:'Intro/Finale rehearsal', note:'Whole group together. Lanyards collected and displayed on the admin table.' },
+    { t:'15:45', name:'Group Time', note:'Doors open, parents welcomed in. Volunteers, dances, certificates and points.', go:'group' },
+    { t:'16:00', name:'End of day', note:'Finish on time. Late parents phoned at 4:15pm, then debrief and timesheets.' },
+  ],
+  'epsom:fri': [
+    { t:'08:15', name:'Staff arrival and setup', note:'Rooms unlocked, tables tidy, POS connected and the roll open. Finish any outstanding show preparation before the children arrive.' },
+    { t:'08:30', name:'Arrival and drop-off', note:'Welcome every child and parent by name and tick the digital roll. No lanyards today.', go:'list' },
+    { t:'08:50', name:'Warm up', note:'One or two tutors leading, with the Intro/Finale run as part of it.' },
+    { t:'09:20', name:'Daily Welcome', note:'Groups in their lines for check-ins and show day housekeeping.', go:'welcome' },
+    { t:'09:30', name:'Blocking', note:'Finish the blocking before morning tea. It should have movement and action throughout.' },
+    { t:'11:00', name:'Morning tea', note:'Two staff actively on duty. Get the children outside for fresh air.' },
+    { t:'11:30', name:'Show rehearsals', note:'Extra practice time. Work transitions and stage etiquette, and run one rehearsal the children get to watch.' },
+    { t:'13:00', name:'Lunch', note:'Two staff actively on duty. Remind the children to drink water and eat what they have.' },
+    { t:'13:35', name:'Quiet time', note:'A short settle before hair and make up begins.' },
+    { t:'13:45', name:'Hair and make up', note:'Follow the timetable. Children line up nicely, and bathrooms are left clean if they use their own make up.' },
+    { t:'14:15', name:'Final show rehearsal', note:'Black clothes, props, hair and make up, with full tech.' },
+    { t:'15:30', name:'Children ready backstage', note:'Get them feeling good with some pre-show exercises. One last toilet call, wish them all good luck, and reassure them that nerves are okay.' },
+    { t:'15:45', name:'Doors open', note:'Manager in the reception area to welcome parents and direct them to the show.' },
+    { t:'16:00', name:'THE SHOW', note:'4pm sharp through to about 5pm. One staff member stays in the wings.' },
+    { t:'17:00', name:'Certificates and pack out', note:'Certificates, points and prizes in the main room, then lost property, art down and the Pack Out Checklist.' },
+  ],
+  'other:fri': [
+    { t:'08:15', name:'Staff arrival and setup', note:'Rooms unlocked, tables tidy, POS connected and the roll open. Finish any outstanding show preparation before the children arrive.' },
+    { t:'08:30', name:'Arrival and drop-off', note:'Welcome every child and parent by name and tick the digital roll. No lanyards today.', go:'list' },
+    { t:'08:50', name:'Warm up', note:'One or two tutors leading, with the Intro/Finale run as part of it.' },
+    { t:'09:20', name:'Daily Welcome', note:'Groups in their lines for check-ins and show day housekeeping.', go:'welcome' },
+    { t:'09:30', name:'Blocking', note:'Finish the blocking before morning tea. It should have movement and action throughout.' },
+    { t:'11:00', name:'Morning tea', note:'Two staff actively on duty. Get the children outside for fresh air.' },
+    { t:'11:30', name:'Show rehearsals', note:'Extra practice time. Work transitions and stage etiquette, and run one rehearsal the children get to watch.' },
+    { t:'13:00', name:'Lunch', note:'Two staff actively on duty. Remind the children to drink water and eat what they have.' },
+    { t:'13:35', name:'Quiet time', note:'A short settle before hair and make up begins.' },
+    { t:'13:45', name:'Hair and make up', note:'Follow the timetable. Children line up nicely, and bathrooms are left clean if they use their own make up.' },
+    { t:'14:15', name:'Final show rehearsal', note:'Black clothes, props, hair and make up, with full tech.' },
+    { t:'15:30', name:'Children ready backstage', note:'Get them feeling good with some pre-show exercises. One last toilet call, wish them all good luck, and reassure them that nerves are okay.' },
+    { t:'15:45', name:'Doors open', note:'Manager in the reception area to welcome parents and direct them to the show.' },
+    { t:'16:00', name:'THE SHOW', note:'4pm sharp through to about 5pm. One staff member stays in the wings.' },
+    { t:'17:00', name:'Certificates and pack out', note:'Certificates, points and prizes in the main room, then lost property, art down and the Pack Out Checklist.' },
+  ],
+};
+
+// Closing Speech. `fill` marks a paragraph containing [bracketed] prompts the
+// Manager swaps for the week's real detail. `cue` lines are stage directions.
+const SPEECH = [
+  { cue:true, t:'Firstly, can we give a huge round of applause to all of our incredible performers!' },
+  { t:'What you have just seen on stage is the result of an amazing week of learning, creating, rehearsing and working together.' },
+  { t:'This week, we have watched our children [e.g. grow in confidence, make new friendships, work incredibly hard, step outside their comfort zones].' },
+  { t:'A real stand out moment this week was [a stand out moment from the week], and it has been so wonderful watching how the children have [something they have done as a group].',
+    hints:['Stand out moment: the whole cast nailing the finale for the first time, hearing them all sing together on stage for the first time, how quickly they picked up their scenes',
+           'As a group: supported and encouraged each other, come together as one cast, grown in confidence together, made everyone feel included'] },
+  { t:'For many of our children, getting up on stage and performing in front of an audience is a huge achievement. Whether it was [e.g. learning some tricky choreography, projecting their lines, performing a part that is completely out of their comfort zone, trying a new style, getting on stage for the first time], every child has achieved something to be proud of this week.' },
+  { t:'And how amazing was [e.g. a favourite dance, funny scene, song, character or special moment from the show]!' },
+  { t:'We are incredibly proud of every single one of them.' },
+  { t:'A massive thank you as well to our wonderful Tutors who have encouraged, taught and supported the children throughout the week. We have had:' },
+  { t:'[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]' },
+  { cue:true, t:'Can we please give our Tutors a huge round of applause!' },
+  { t:'And of course, a huge thank you to all of our families. Thank you for trusting us with your children and for being here today to celebrate them. We absolutely love creating a space where children can be creative, build their confidence, make friends, try new things and feel proud of themselves.' },
+  { t:'Our next Artz On Show Workshop is [theme], running [dates]. We would absolutely love to see lots of familiar faces back again!' },
+  { t:'In just a moment, we are going to take the children back for around 10 more minutes for our final points, lollipops and prizes, and then we will send them back out to you.' },
+  { t:'But before we do, to all of our performers: you should be so proud of yourselves!' },
+  { t:'Thank you for bringing your [e.g. energy, kindness, enthusiasm, creativity, humour] to Artz On Show this week. It has been an absolute pleasure having you with us.' },
+  { cue:true, t:'And for one final time, can we make some noise and give a massive round of applause to our [theme] cast!' },
+];
+
+
+
+// Colour groups per hub. Karaka runs three; others to be confirmed.
+// Colour groups per hub. Epsom is the only location running four groups.
+const G = {
+  orange: { id:'orange', name:'Orange', color:'#C2410C', bg:'#FFF1E7', border:'#F3D3BC' },
+  yellow: { id:'yellow', name:'Yellow', color:'#8A6100', bg:'#FFF8E3', border:'#EFE0B0' },
+  silver: { id:'silver', name:'Silver', color:'#4B5563', bg:'#F3F4F6', border:'#DCDFE4' },
+  black:  { id:'black',  name:'Black',  color:'#1B1A1F', bg:'#F2F1EF', border:'#D8D5D0' },
+};
+
+const GROUPS = {
+  epsom:      [G.orange, G.yellow, G.silver, G.black],
+  karaka:     [G.orange, G.yellow, G.silver],
+  hamilton:   [G.orange, G.yellow, G.silver],
+  northshore: [G.orange, G.yellow, G.silver],
+  howick:     [G.orange, G.yellow, G.silver],
+};
+
+
+const CONTACTS = [
+  { name:'Sara', role:'Co-Director', phone:'021 0826 8818' },
+  { name:'Quinn', role:'Co-Director', phone:'021 117 8845' },
+  { name:'Emergency', role:'Ambulance, fire, police', phone:'111' },
+];
+
+class Component extends DCLogic {
+  state = { screen:'hubs', hubId:null, listId:null, dayId:'mon', ticks:{}, submitted:{}, open:{}, briefOpen:false, points:{}, lastAward:null, tt:null };
+
+  componentDidMount() {
+    this._clock = setInterval(() => this.forceUpdate(), 30000);
+    this._stopClock = () => clearInterval(this._clock);
+    fetch('epsom-timetable.json').then(r => r.json()).then(tt => this.setState({ tt })).catch(() => {});
+  }
+
+  componentWillUnmount() { if (this._stopClock) this._stopClock(); }
+
+  // Builds the Epsom timetable grid for the selected day out of the spreadsheet rows.
+  timetable() {
+    const tt = this.state.tt;
+    if (!tt || this.state.hubId !== 'epsom') return null;
+    const sheet = tt[{ mon:'Monday', tue:'Tuesday', wed:'Wednesday', thu:'Thursday', fri:'Friday' }[this.state.dayId]];
+    if (!sheet) return null;
+    const hi = sheet.findIndex(r => (r.A || '').trim() === 'Time');
+    if (hi < 0) return null;
+    const h = sheet[hi];
+    const groups = ['C','D','E','F'].map(k => h[k]).filter(Boolean);
+    const isTime = t => /^\s*\d{1,2}:\d{2}\s*(am|pm)/i.test(t || '');
+    const rows = [], staff = [];
+    for (let i = hi + 1; i < sheet.length; i++) {
+      const r = sheet[i], a = (r.A || '').trim();
+      const cells = ['C','D','E','F'].map(k => r[k] || '');
+      if (isTime(a)) {
+        const spans = !!cells[0] && !r.D && !r.E && !r.F;
+        rows.push({ time: a.replace(/\s+/g, ' '), session: r.B || '', cells: cells, whole: spans ? cells[0] : '', noClass: r.G || '' });
+      } else if (a) staff.push(a);
+    }
+    const meta = sheet.slice(0, hi).map(r => r.A).filter(Boolean);
+    const note = (sheet[1] || {}).C || (sheet[1] || {}).B || '';
+    return { groups, rows, staff, date: meta[3] || '', show: meta[1] || '', note };
+  }
+
+  // "08:50" -> "8.50am", "16:00" -> "4pm"
+  ampm(t) {
+    const h24 = +t.slice(0, 2), m = t.slice(3);
+    const h = h24 % 12 === 0 ? 12 : h24 % 12;
+    const suffix = h24 < 12 ? 'am' : 'pm';
+    return h + (m === '00' ? '' : '.' + m) + suffix;
+  }
+
+  pointsKey(hubId, groupId) { return hubId + '|' + this.state.dayId + '|' + groupId; }
+
+  award(hubId, groupId, n) {
+    const k = this.pointsKey(hubId, groupId);
+    this.setState(st => {
+      const p = Object.assign({}, st.points);
+      p[k] = Math.max(0, (p[k] || 0) + n);
+      return { points: p, lastAward: { k: k, n: n } };
+    });
+  }
+
+  undoAward() {
+    const la = this.state.lastAward;
+    if (!la) return;
+    this.setState(st => {
+      const p = Object.assign({}, st.points);
+      p[la.k] = Math.max(0, (p[la.k] || 0) - la.n);
+      return { points: p, lastAward: null };
+    });
+  }
+
+  _scrollRef = (el) => {
+    this._scroller = el;
+    if (el && !el._tracked) {
+      el._tracked = true;
+      el.addEventListener('scroll', () => { this._prevScrollTop = el.scrollTop; });
+    }
+  };
+
+  go(screen, extra) {
+    const from = this.state, el = this._scroller;
+    if (el && from.screen === 'list' && from.listId) {
+      this._listScroll = this._listScroll || {};
+      this._listScroll[from.listId] = el.scrollTop;
+    }
+    const next = Object.assign({ screen: screen }, extra || {});
+    const listId = next.listId || from.listId;
+    const to = (screen === 'list') ? ((this._listScroll || {})[listId] || 0) : 0;
+    this.setState(next, () => {
+      const apply = () => { if (this._scroller) this._scroller.scrollTop = to; };
+      apply();
+      requestAnimationFrame(apply);
+    });
+  }
+
+  listFor(id) {
+    if (id === 'admin') return ADMIN;
+    if (id === 'certs') return CERTS;
+    return DAYS.find(d => d.id === id) || DAYS[0];
+  }
+  itemsOf(l) { return l.sections.reduce((a, s) => a.concat(s.items), []); }
+
+  // Some items only apply at certain locations. Indices stay stable across hubs
+  // so a tick recorded at one hub never lands on a different item at another.
+  showsAt(it, hubId) {
+    if (it.hubs) return it.hubs.indexOf(hubId) >= 0;
+    if (it.notHubs) return it.notHubs.indexOf(hubId) < 0;
+    return true;
+  }
+
+  visibleIndexes(l, hubId) {
+    const out = [];
+    this.itemsOf(l).forEach((it, i) => { if (this.showsAt(it, hubId)) out.push(i); });
+    return out;
+  }
+  key(hubId, listId, i) {
+    // Daily Admin runs every day, so its ticks are stored per day too.
+    const daily = listId === 'admin' || listId === 'certs';
+    const scope = daily ? listId + '@' + this.state.dayId : listId;
+    return hubId + '|' + scope + '|' + i;
+  }
+
+  progress(hubId, listId) {
+    const l = this.listFor(listId), idx = this.visibleIndexes(l, hubId), total = idx.length;
+    let done = 0;
+    idx.forEach(i => { if (this.state.ticks[this.key(hubId, listId, i)]) done++; });
+    return { done, total, pct: total ? Math.round(done / total * 100) : 0 };
+  }
+
+  hubProgress(hub) {
+    let done = 0, total = 0, touched = false;
+    ['admin', this.state.dayId].forEach(id => { const p = this.progress(hub.id, id); done += p.done; total += p.total; if (p.done) touched = true; });
+    if (!touched) return Math.round(hub.seed * 100);
+    return total ? Math.round(done / total * 100) : 0;
+  }
+
+  tick(hubId, listId, i) {
+    const k = this.key(hubId, listId, i);
+    this.setState(s => {
+      const t = Object.assign({}, s.ticks);
+      if (t[k]) delete t[k];
+      else t[k] = new Date().toLocaleTimeString('en-NZ', { hour: 'numeric', minute: '2-digit', hour12: true }).replace(/\s/g, '').toLowerCase();
+      return { ticks: t };
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const hub = HUBS.find(h => h.id === s.hubId) || HUBS[0];
+    const screen = s.screen;
+    const showTimes = this.props.showTimestamps ?? true;
+    const name = this.props.managerName ?? 'Sara';
+
+    const v = {
+      showNotes: this.props.showNotes ?? false,
+      managerName: name,
+      todayLabel: new Date().toLocaleDateString('en-NZ', { weekday:'long', day:'numeric', month:'long' }),
+      nowTime: new Date().toLocaleTimeString('en-NZ', { hour:'numeric', minute:'2-digit', hour12:true }).replace(/\s/g, '').toLowerCase(),
+      isHubs: screen === 'hubs', isHome: screen === 'home', isLists: screen === 'lists',
+      isList: screen === 'list', isWelcome: screen === 'welcome', isGroup: screen === 'group', isSpeech: screen === 'speech', isPoints: screen === 'points', isInfo: screen === 'info',
+      canBack: screen !== 'hubs',
+      hasHeaderText: screen !== 'hubs',
+      scrollRef: this._scrollRef,
+      scrollPad: ['home','lists','list','welcome','group','speech','points','info'].indexOf(screen) >= 0 ? '96px' : '0px',
+      hasTabs: ['home','lists','list','welcome','group','speech','points','info'].indexOf(screen) >= 0,
+      back: () => {
+        if (screen === 'home') this.go('hubs', { hubId: null });
+        else this.go('home');
+      },
+      goHubs: () => this.go('hubs', { hubId: null }),
+      goLists: () => this.go('lists'),
+      goHome: () => this.go('home'),
+      venue: hub.venue,
+      contacts: CONTACTS,
+      headerKicker: screen === 'home' ? 'Operation hub' : hub.name + ' hub',
+      headerTitle: '',
+      sections: [],
+      listBlurb: '', listCount: '', listPct: 0,
+      hasBrief: false, briefLead: '', hasBriefLead: false, brief: '',
+      briefHasMore: false, briefDisplay: 'none', briefToggleLabel: 'Read more', toggleBrief: () => {},
+      submitLabel: '', submitBg: '#EDEAE4', submitFg: '#1B1A1F', submitNote: '', submitList: () => {},
+    };
+
+    if (screen === 'home') v.headerTitle = hub.name;
+    else if (screen === 'lists') v.headerTitle = 'Checklists';
+    else if (screen === 'welcome') v.headerTitle = 'Morning Welcome';
+    else if (screen === 'group') v.headerTitle = 'Group Time';
+    else if (screen === 'speech') v.headerTitle = 'Closing Speech';
+    else if (screen === 'points') v.headerTitle = 'Points';
+    else if (screen === 'info') v.headerTitle = 'Venue and contacts';
+    else if (screen === 'list') v.headerTitle = this.listFor(s.listId).name;
+
+    v.hubs = HUBS.map(h => {
+      const pct = this.hubProgress(h);
+      const color = pct === 0 ? '#C2410C' : pct >= 90 ? '#15803D' : '#7C3AED';
+      return { name: h.name, venue: h.venue, pct: pct, pctLabel: pct + '%',
+        barColor: color, open: () => this.go('home', { hubId: h.id }) };
+    });
+
+    const listCard = (l) => {
+      const p = this.progress(hub.id, l.id);
+      return { name: l.name, sub: ((l.subAlt || {})[hub.id] || l.sub), abbr: l.abbr, count: p.done + '/' + p.total, pct: p.pct,
+        barColor: p.done === p.total ? '#15803D' : p.done ? '#7C3AED' : 'rgba(27,26,31,.35)',
+        border: p.done === p.total ? '#BBE0C4' : '#E4E1DC',
+        chipBg: (l.id === 'admin' || l.id === 'certs') ? '#1B1A1F' : '#F1ECFE',
+        chipFg: (l.id === 'admin' || l.id === 'certs') ? '#fff' : '#5B21B6',
+        open: () => this.go('list', { listId: l.id }) };
+    };
+
+    const day = DAYS.find(d => d.id === s.dayId) || DAYS[0];
+    v.todayLists = [listCard(ADMIN), listCard(day)];
+    v.allLists = [ADMIN, CERTS].concat(DAYS).map(listCard);
+
+    v.dayPills = DAYS.map(d => {
+      const on = d.id === s.dayId, p = this.progress(hub.id, d.id);
+      return { abbr: d.abbr, done: p.done === p.total,
+        bg: on ? '#7C3AED' : p.done === p.total ? '#E7F4EA' : '#fff',
+        fg: on ? '#fff' : p.done === p.total ? '#15803D' : 'rgba(27,26,31,.6)',
+        border: on ? '#7C3AED' : p.done === p.total ? '#BBE0C4' : '#E4E1DC',
+        pick: () => this.setState({ dayId: d.id }) };
+    });
+
+    const pa = this.progress(hub.id, 'admin'), pd = this.progress(hub.id, s.dayId);
+    v.homeCount = (pa.done + pd.done) + '/' + (pa.total + pd.total);
+    const schedKey = (hub.id === 'epsom' ? 'epsom' : 'other') + ':' + (s.dayId === 'fri' ? 'fri' : 'standard');
+    const sched = SCHEDULES[schedKey];
+    if (sched) {
+      const now = new Date(), mins = now.getHours() * 60 + now.getMinutes();
+      const isDay1 = s.dayId === 'mon';
+      const blocks = sched.filter(b => (b.day1 ? isDay1 : !(b.t === '08:15' && isDay1)));
+      const toM = t => (+t.slice(0, 2)) * 60 + (+t.slice(3));
+      let cur = null, next = null;
+      blocks.forEach(b => { if (toM(b.t) <= mins) cur = b; else if (!next) next = b; });
+      if (!cur) {
+        v.nowPart = 'Before the day starts';
+        v.nowNote = next ? next.name + ' at ' + this.ampm(next.t) + '. ' + next.note : '';
+        v.openNow = () => this.go('list', { listId: s.dayId });
+      } else {
+        v.nowPart = cur.name;
+        v.nowNote = cur.note + (next ? ' Next: ' + next.name + ' at ' + this.ampm(next.t) + '.' : '');
+        const dest = cur.go || 'list';
+        v.openNow = () => this.go(dest === 'list' ? 'list' : dest, dest === 'list' ? { listId: s.dayId } : undefined);
+      }
+    } else {
+      v.nowPart = 'Morning Welcome';
+      v.nowNote = 'Approx 9:20am, groups sitting in their lines. Everything to cover before classes start.';
+      v.openNow = () => this.go('welcome');
+    }
+
+    v.shortcuts = [
+      { tag:'01', name:'All checklists', open:() => this.go('lists') },
+      { tag:'02', name:'Morning Welcome', open:() => this.go('welcome') },
+      { tag:'03', name:'Certificates and Points', open:() => this.go('list', { listId: 'certs' }) },
+      { tag:'04', name:'Group Time', open:() => this.go('group') },
+      { tag:'05', name:'Closing Speech', open:() => this.go('speech') },
+      { tag:'06', name:'Venue and contacts', open:() => this.go('info') },
+    ].map(x => Object.assign({ span: 'auto' }, x));
+
+    if (screen === 'list') {
+      const l = this.listFor(s.listId), p = this.progress(hub.id, s.listId);
+      v.listBlurb = (l.blurbAlt || {})[hub.id] || l.blurb; v.listCount = p.done + ' of ' + p.total; v.listPct = p.pct;
+      const alt = (l.briefAlt || {})[hub.id] || {};
+      const bLead = alt.lead || l.briefLead || '';
+      const bText = alt.brief || l.brief || '';
+      v.hasBrief = !!(bText || bLead);
+      v.briefLead = bLead;
+      v.hasBriefLead = !!bLead;
+      v.brief = bText;
+      v.briefHasMore = !!bText;
+      v.briefDisplay = s.briefOpen ? 'block' : 'none';
+      v.briefToggleLabel = s.briefOpen ? 'Hide' : 'Read more';
+      v.toggleBrief = () => this.setState(st => ({ briefOpen: !st.briefOpen }));
+      let idx = 0;
+      v.sections = l.sections.map(sec => ({
+        name: sec.name,
+        items: sec.items.map(it => {
+          const i = idx++;
+          if (!this.showsAt(it, hub.id)) return null;
+          const time = s.ticks[this.key(hub.id, s.listId, i)], on = !!time;
+          const blocking = !!it.chip && it.chip.indexOf('Blocks') === 0;
+          return {
+            t: it.t, sub: it.sub || '', hasSub: !!it.sub,
+            hasChip: (on && showTimes) || !!it.chip,
+            chip: on && showTimes ? 'Ticked ' + time : (it.chip || ''),
+            chipBg: on ? '#E7F4EA' : blocking ? '#FDECEC' : '#F1ECFE',
+            chipFg: on ? '#15803D' : blocking ? '#9B1C1C' : '#5B21B6',
+            bg: on ? '#F7FBF8' : '#fff', border: on ? '#BBE0C4' : '#E4E1DC',
+            ringColor: on ? '#15803D' : '#CFCBC3', ringFill: on ? '#15803D' : 'transparent',
+            mark: on ? '\u2713' : '', fg: on ? 'rgba(27,26,31,.45)' : '#1B1A1F',
+            strike: on ? 'line-through' : 'none',
+            tick: () => this.tick(hub.id, s.listId, i),
+            _keep: true,
+            hasMore: !!it.more,
+            more: it.more || '',
+            cbId: 'more-' + hub.id + '-' + s.listId + '-' + i,
+          };
+        }).filter(Boolean),
+      })).filter(sec => sec.items.length);
+      const complete = p.done === p.total, sk = hub.id + '|' + s.listId, sent = !!s.submitted[sk];
+      v.submitLabel = sent ? 'Sent to head office \u2713' : complete ? 'Sign off and send to head office' : 'Sign off (' + (p.total - p.done) + ' remaining)';
+      v.submitBg = sent ? '#E7F4EA' : complete ? '#7C3AED' : '#EDEAE4';
+      v.submitFg = sent ? '#15803D' : complete ? '#fff' : 'rgba(27,26,31,.4)';
+      v.submitNote = sent ? 'Signed off by ' + name + '. Reopen any item to amend.' : 'Head office sees your progress live either way.';
+      v.submitList = () => { if (!complete) return; this.setState(st => { const sub = Object.assign({}, st.submitted); sub[sk] = true; return { submitted: sub }; }); };
+    }
+
+    const tt = this.timetable();
+    v.hasTT = !!tt;
+    v.noTT = !tt;
+    v.noTTMsg = hub.id === 'epsom'
+      ? 'Loading the Epsom timetable\u2026'
+      : 'No timetable loaded for ' + hub.name + ' yet. Send me the spreadsheet and it will appear here.';
+    v.ttGroups = tt ? tt.groups.map(g => ({ g: g })) : [];
+    v.ttDate = tt ? tt.date : '';
+    v.ttShow = tt ? tt.show : '';
+    v.ttNote = tt ? tt.note : '';
+    v.ttHasNote = !!(tt && tt.note);
+    v.ttStaff = tt ? tt.staff.map(t => ({ t: t })) : [];
+    v.ttRows = tt ? tt.rows.map(r => {
+      const whole = !!r.whole;
+      return {
+        time: r.time, session: r.session || '', hasSession: !!r.session,
+        isWhole: whole, hasCells: !whole, whole: r.whole,
+        bg: whole ? '#F7F6F4' : '#fff',
+        cells: whole ? [] : r.cells.map(c => ({ c: c || '\u2014', fg: c ? '#1B1A1F' : 'rgba(27,26,31,.3)' })),
+        hasNoClass: !!r.noClass, noClass: r.noClass,
+      };
+    }) : [];
+    const dayName = (DAYS.find(d => d.id === s.dayId) || DAYS[0]).name;
+    v.ttDayLabel = tt ? dayName + ' timetable' : 'Timetable';
+    v.ttSubline = tt ? tt.show + ' · use the D1\u2013D5 pills on Today to change day' : '';
+    v.ttHasSubline = !!tt;
+
+    v.groupSections = GROUPTIME.map(sec => ({
+      name: sec.name,
+      items: sec.items.map(it => ({
+        t: it.t || it.i || '',
+        note: it.note || '', hasNote: !!it.note,
+        b: it.b || '', hasB: !!it.b,
+        isNote: !!it.i,
+        fg: it.i ? 'rgba(27,26,31,.6)' : '#1B1A1F',
+        style: it.i ? 'italic' : 'normal',
+        dot: it.i ? '#DDD0FB' : '#CFCBC3',
+      })),
+    }));
+
+    v.speechParas = SPEECH.map(p => ({
+      isCue: !!p.cue,
+      hints: (p.hints || []).map(h => ({ h: h })), hasHints: !!p.hints,
+      bg: p.cue ? '#F1ECFE' : 'transparent',
+      pad: p.cue ? '13px 15px' : '0',
+      radius: p.cue ? '12px' : '0',
+      parts: p.t.split(/(\[[^\]]*\])/).filter(x => x !== '').map(x => {
+        const fill = x.charAt(0) === '[';
+        return {
+          t: x,
+          weight: p.cue ? '500' : '400',
+          fg: fill ? '#6D28D9' : (p.cue ? '#4C1D95' : '#1B1A1F'),
+          style: fill ? 'italic' : 'normal',
+        };
+      }),
+    }));
+
+    v.welcomeSections = WELCOME.map(sec => {
+      const items = sec.items
+        .map(x => (typeof x === 'string' ? { t: x } : x))
+        .filter(it => this.showsAt(it, hub.id));
+      const venue = sec.tone === 'venue', show = sec.tone === 'show';
+      return {
+        name: sec.name,
+        labelColor: show ? '#7C3AED' : 'rgba(27,26,31,.42)',
+        bg: show ? '#F7F4FE' : '#fff',
+        border: show ? '#DDD0FB' : '#E4E1DC',
+        rule: show ? '#E8DFFC' : '#EFEDE9',
+        dot: show ? '#7C3AED' : venue ? '#C2410C' : '#CFCBC3',
+        fg: '#1B1A1F',
+        items: items.map(it => ({ t: it.t })),
+      };
+    }).filter(sec => sec.items.length);
+
+    const groups = GROUPS[hub.id] || [];
+    v.hasGroups = groups.length > 0;
+    v.noGroups = groups.length === 0;
+    v.noGroupsMsg = 'No colour groups set up for ' + hub.name + ' yet. Tell me the group names and they will appear here.';
+    const scores = groups.map(g => this.state.points[this.pointsKey(hub.id, g.id)] || 0);
+    const top = Math.max.apply(null, scores.concat([0]));
+    v.pointGroups = groups.map((g, i) => {
+      const n = scores[i], lead = n > 0 && n === top;
+      return {
+        name: g.name, total: String(n),
+        color: g.color, bg: g.bg, border: lead ? g.color : g.border,
+        leadLabel: lead ? 'Leading' : '',
+        showLead: lead,
+        add1: () => this.award(hub.id, g.id, 1),
+        add5: () => this.award(hub.id, g.id, 5),
+        add10: () => this.award(hub.id, g.id, 10),
+      };
+    });
+    v.canUndo = !!s.lastAward;
+    v.undoLabel = s.lastAward ? 'Undo last +' + s.lastAward.n : 'Nothing to undo';
+    v.undoColor = s.lastAward ? '#7C3AED' : 'rgba(27,26,31,.35)';
+    v.doUndo = () => this.undoAward();
+    v.pointsDayLabel = (DAYS.find(d => d.id === s.dayId) || DAYS[0]).name;
+
+    const tabDefs = [
+      { id:'home', name:'Today', radius:'99px' },
+      { id:'lists', name:'Checklists', radius:'4px' },
+      { id:'points', name:'Points', radius:'2px' },
+      { id:'welcome', name:'Welcome', radius:'99px' },
+      { id:'info', name:'Info', radius:'99px' },
+    ];
+    const active = screen === 'list' ? 'lists' : screen;
+    v.tabs = tabDefs.map(t => ({
+      name: t.name, radius: t.radius,
+      color: t.id === active ? '#7C3AED' : 'rgba(27,26,31,.42)',
+      fill: t.id === active ? '#7C3AED' : 'transparent',
+      bg: t.id === active ? '#F5F1FE' : 'transparent',
+      go: () => this.go(t.id),
+    }));
+
+    return v;
+  }
+}
+
+</script>
+</body>
+</html>
