@@ -44,7 +44,7 @@ export default async function HubsPage() {
   const todayLabel = new Date().toLocaleDateString('en-NZ', { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
-    <div style={{ minHeight: '100vh', maxWidth: 480, margin: '0 auto', background: 'var(--surface)' }}>
+    <div className="app-shell" style={{ minHeight: '100vh', background: 'var(--surface)' }}>
       <div
         style={{
           background: '#fff',

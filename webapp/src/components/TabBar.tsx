@@ -19,13 +19,12 @@ export default function TabBar({ hubId }: { hubId: string }) {
 
   return (
     <div
+      className="app-shell"
       style={{
         position: 'fixed',
         left: 0,
         right: 0,
         bottom: 0,
-        maxWidth: 480,
-        margin: '0 auto',
         zIndex: 40,
         background: '#fff',
         borderTop: '1px solid var(--border)',
