@@ -94,3 +94,34 @@ export function itemsWithVisibility(l: ChecklistDef, hubId: string): { item: Che
     .map((item, index) => ({ item, index }))
     .filter(({ item }) => showsAt(item, hubId));
 }
+
+const WORKDAY_IDS = ['mon', 'tue', 'wed', 'thu', 'fri'];
+
+function dateOnly(d: Date): Date {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+// Given a workshop's Day 1 date, returns which D1-D5 id "today" falls on,
+// or null if today is outside that workshop's Monday-Friday week.
+export function dayIdForWorkshop(startDateISO: string, today: Date): string | null {
+  const start = dateOnly(new Date(startDateISO + 'T00:00:00'));
+  const diffDays = Math.round((dateOnly(today).getTime() - start.getTime()) / 86400000);
+  if (diffDays < 0 || diffDays > 4) return null;
+  return WORKDAY_IDS[diffDays];
+}
+
+// Finds whichever workshop (if any) covers today for this hub and returns
+// the day it resolves to. Regions run independent weeks, so a hub can have
+// several workshops across a year, but at most one should ever cover a
+// given date.
+export function activeWorkshopDay(workshops: { start_date: string }[], today: Date): string | null {
+  for (const w of workshops) {
+    const d = dayIdForWorkshop(w.start_date, today);
+    if (d) return d;
+  }
+  return null;
+}
+
+export function dateKey(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}

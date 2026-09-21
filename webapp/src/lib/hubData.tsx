@@ -2,13 +2,14 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { scopeFor, visibleIndexes } from '@/lib/logic';
+import { scopeFor, visibleIndexes, activeWorkshopDay, dateKey } from '@/lib/logic';
 import { listById } from '@/lib/data/checklists';
 import type { Profile } from '@/lib/types';
 
 type TickRow = { hub_id: string; scope: string; item_index: number; ticked_at: string; ticked_by: string | null };
 type AwardRow = { id: number; hub_id: string; day_id: string; group_id: string; delta: number; awarded_by: string | null; created_at: string };
 type SignOffRow = { hub_id: string; scope: string; signed_by: string | null; signed_at: string };
+type WorkshopRow = { id: number; hub_id: string; start_date: string; label: string | null };
 
 const DAY_IDS = ['mon', 'tue', 'wed', 'thu', 'fri'];
 
@@ -81,10 +82,11 @@ export function HubDataProvider({
     let cancelled = false;
     async function load() {
       setLoading(true);
-      const [t, a, s] = await Promise.all([
+      const [t, a, s, w] = await Promise.all([
         supabase.from('ticks').select('*').eq('hub_id', hubId),
         supabase.from('points_awards').select('*').eq('hub_id', hubId),
         supabase.from('sign_offs').select('*').eq('hub_id', hubId),
+        supabase.from('workshops').select('*').eq('hub_id', hubId),
       ]);
       if (cancelled) return;
       const tm = new Map<string, TickRow>();
@@ -94,6 +96,24 @@ export function HubDataProvider({
       const sm = new Map<string, SignOffRow>();
       (s.data ?? []).forEach((r: SignOffRow) => sm.set(r.scope, r));
       setSignOffs(sm);
+
+      // Once per calendar day, auto-advance to whichever D1-D5 day today
+      // falls on for this hub's current workshop (if any is running). A
+      // manual pill tap later the same day is left alone until tomorrow.
+      if (typeof window !== 'undefined') {
+        const workshops = (w.data ?? []) as WorkshopRow[];
+        const todayKey = dateKey(new Date());
+        const syncKey = `aos:${hubId}:syncedDate`;
+        if (window.localStorage.getItem(syncKey) !== todayKey) {
+          const autoDay = activeWorkshopDay(workshops, new Date());
+          if (autoDay) {
+            setDayIdState(autoDay);
+            window.localStorage.setItem(dayStorageKey(hubId), autoDay);
+          }
+          window.localStorage.setItem(syncKey, todayKey);
+        }
+      }
+
       setLoading(false);
     }
     load();

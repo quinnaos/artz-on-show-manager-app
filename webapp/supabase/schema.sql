@@ -63,6 +63,20 @@ create table if not exists public.sign_offs (
   primary key (hub_id, scope)
 );
 
+-- ── Workshops ───────────────────────────────────────────────────────────
+-- Each row is one workshop week at one hub (regions run independently, so a
+-- hub can have several of these across a year). start_date is the calendar
+-- date of that week's Day 1; Day 2-5 follow as the next four days. The app
+-- uses whichever row's date range covers "today" to auto-select the day for
+-- that hub, falling back to manual D1-D5 selection outside any workshop.
+create table if not exists public.workshops (
+  id bigint generated always as identity primary key,
+  hub_id text not null,
+  start_date date not null,
+  label text,
+  created_at timestamptz not null default now()
+);
+
 -- ── Helper functions ────────────────────────────────────────────────────
 create or replace function public.is_owner()
 returns boolean
@@ -93,6 +107,7 @@ alter table public.invited_emails enable row level security;
 alter table public.ticks enable row level security;
 alter table public.points_awards enable row level security;
 alter table public.sign_offs enable row level security;
+alter table public.workshops enable row level security;
 
 drop policy if exists "profiles: read own or owner" on public.profiles;
 create policy "profiles: read own or owner" on public.profiles
@@ -129,6 +144,14 @@ create policy "points_awards: hub access" on public.points_awards
 drop policy if exists "sign_offs: hub access" on public.sign_offs;
 create policy "sign_offs: hub access" on public.sign_offs
   for all using (public.has_hub_access(hub_id)) with check (public.has_hub_access(hub_id));
+
+drop policy if exists "workshops: hub access read" on public.workshops;
+create policy "workshops: hub access read" on public.workshops
+  for select using (public.has_hub_access(hub_id));
+
+drop policy if exists "workshops: owner manages" on public.workshops;
+create policy "workshops: owner manages" on public.workshops
+  for all using (public.is_owner()) with check (public.is_owner());
 
 -- ── Realtime ────────────────────────────────────────────────────────────
 -- Lets multiple managers at the same hub see each other's ticks/points live.
