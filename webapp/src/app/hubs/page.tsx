@@ -5,7 +5,7 @@ import { getProfile } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { HUBS } from '@/lib/data/hubs';
 import { ADMIN, listById } from '@/lib/data/checklists';
-import { progressOf, type TickMap } from '@/lib/logic';
+import { progressOf, activeWorkshopDay, type TickMap } from '@/lib/logic';
 import SignOutButton from '@/components/SignOutButton';
 
 export default async function HubsPage() {
@@ -16,23 +16,28 @@ export default async function HubsPage() {
 
   const supabase = await createClient();
   const tickMap: TickMap = {};
+  const hubIds = hubs.map((h) => h.id);
+  const activeDayByHub: Record<string, string> = {};
   if (hubs.length) {
-    const { data: ticks } = await supabase
-      .from('ticks')
-      .select('hub_id, scope, item_index, ticked_at')
-      .in(
-        'hub_id',
-        hubs.map((h) => h.id)
-      );
+    const [{ data: ticks }, { data: workshops }] = await Promise.all([
+      supabase.from('ticks').select('hub_id, scope, item_index, ticked_at').in('hub_id', hubIds),
+      supabase.from('workshops').select('hub_id, start_date').in('hub_id', hubIds),
+    ]);
     (ticks ?? []).forEach((r) => {
       tickMap[`${r.hub_id}|${r.scope}|${r.item_index}`] = r.ticked_at;
     });
+    const now = new Date();
+    hubIds.forEach((id) => {
+      const hubWorkshops = (workshops ?? []).filter((w) => w.hub_id === id);
+      activeDayByHub[id] = activeWorkshopDay(hubWorkshops, now) ?? 'mon';
+    });
   }
 
-  const dayList = listById('mon');
   const cards = hubs.map((h) => {
-    const admin = progressOf(ADMIN, h.id, 'mon', tickMap);
-    const day = progressOf(dayList, h.id, 'mon', tickMap);
+    const dayId = activeDayByHub[h.id] ?? 'mon';
+    const dayList = listById(dayId);
+    const admin = progressOf(ADMIN, h.id, dayId, tickMap);
+    const day = progressOf(dayList, h.id, dayId, tickMap);
     const done = admin.done + day.done;
     const total = admin.total + day.total;
     const pct = total ? Math.round((done / total) * 100) : 0;
