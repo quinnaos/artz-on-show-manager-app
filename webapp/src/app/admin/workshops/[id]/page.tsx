@@ -26,19 +26,18 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
   if (profile.role !== 'owner') redirect('/hubs');
 
   const supabase = await createClient();
-  const { data: workshop } = await supabase.from('workshops').select('*').eq('id', workshopId).maybeSingle();
+  const [{ data: workshop }, { data: ticks }, { data: awards }, { data: signOffs }] = await Promise.all([
+    supabase.from('workshops').select('hub_id, start_date, label').eq('id', workshopId).maybeSingle(),
+    supabase.from('ticks').select('scope, item_index, ticked_at, ticked_by').eq('workshop_id', workshopId).order('ticked_at'),
+    supabase.from('points_awards').select('group_id, delta, awarded_by').eq('workshop_id', workshopId).order('created_at'),
+    supabase.from('sign_offs').select('scope, signed_by, signed_at').eq('workshop_id', workshopId).order('signed_at'),
+  ]);
   if (!workshop) notFound();
 
   const hub = hubById(workshop.hub_id);
   const start = new Date(`${workshop.start_date}T00:00:00`);
   const end = new Date(start);
   end.setDate(end.getDate() + 4);
-
-  const [{ data: ticks }, { data: awards }, { data: signOffs }] = await Promise.all([
-    supabase.from('ticks').select('*').eq('workshop_id', workshopId).order('ticked_at'),
-    supabase.from('points_awards').select('*').eq('workshop_id', workshopId).order('created_at'),
-    supabase.from('sign_offs').select('*').eq('workshop_id', workshopId).order('signed_at'),
-  ]);
 
   const peopleIds = Array.from(
     new Set(

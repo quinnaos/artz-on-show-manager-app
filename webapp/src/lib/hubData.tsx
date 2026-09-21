@@ -102,10 +102,10 @@ export function HubDataProvider({
     async function load() {
       setLoading(true);
       const [t, a, s, w] = await Promise.all([
-        supabase.from('ticks').select('*').eq('hub_id', hubId),
-        supabase.from('points_awards').select('*').eq('hub_id', hubId),
-        supabase.from('sign_offs').select('*').eq('hub_id', hubId),
-        supabase.from('workshops').select('*').eq('hub_id', hubId),
+        supabase.from('ticks').select('hub_id, scope, item_index, ticked_at, ticked_by, workshop_id').eq('hub_id', hubId),
+        supabase.from('points_awards').select('id, hub_id, day_id, group_id, delta, awarded_by, created_at, workshop_id').eq('hub_id', hubId),
+        supabase.from('sign_offs').select('hub_id, scope, signed_by, signed_at, workshop_id').eq('hub_id', hubId),
+        supabase.from('workshops').select('id, hub_id, start_date, label').eq('hub_id', hubId),
       ]);
       if (cancelled) return;
       const tm = new Map<string, TickRow>();

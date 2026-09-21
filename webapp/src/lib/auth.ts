@@ -11,10 +11,11 @@ export async function getProfile(): Promise<Profile | null> {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  const [{ data: profile }, { data: hubs }] = await Promise.all([
+    supabase.from('profiles').select('id, email, name, role').eq('id', user.id).maybeSingle(),
+    supabase.from('manager_hubs').select('hub_id').eq('profile_id', user.id),
+  ]);
   if (!profile) return null;
-
-  const { data: hubs } = await supabase.from('manager_hubs').select('hub_id').eq('profile_id', user.id);
 
   return {
     id: profile.id,

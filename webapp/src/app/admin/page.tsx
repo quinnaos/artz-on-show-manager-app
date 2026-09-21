@@ -16,10 +16,10 @@ export default async function AdminPage() {
 
   const supabase = await createClient();
   const [{ data: profiles }, { data: managerHubs }, { data: invites }, { data: workshops }] = await Promise.all([
-    supabase.from('profiles').select('*').order('created_at'),
-    supabase.from('manager_hubs').select('*'),
-    supabase.from('invited_emails').select('*').order('created_at'),
-    supabase.from('workshops').select('*').order('start_date', { ascending: false }),
+    supabase.from('profiles').select('id, name, email, role').order('created_at'),
+    supabase.from('manager_hubs').select('profile_id, hub_id'),
+    supabase.from('invited_emails').select('email, role, hub_ids').order('created_at'),
+    supabase.from('workshops').select('id, hub_id, start_date, label').order('start_date', { ascending: false }),
   ]);
 
   const hubsFor = (profileId: string) => (managerHubs ?? []).filter((h) => h.profile_id === profileId).map((h) => h.hub_id);
