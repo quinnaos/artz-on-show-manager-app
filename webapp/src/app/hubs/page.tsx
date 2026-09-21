@@ -121,7 +121,7 @@ export default async function HubsPage() {
               color: 'var(--accent)',
             }}
           >
-            Manage managers
+            Manage Managers
           </Link>
         )}
       </div>

@@ -13,7 +13,7 @@ export default async function PendingPage() {
           Artz On Show
         </div>
         <h1 style={{ margin: '10px 0 0', font: "400 26px/1.2 var(--font-sans)", letterSpacing: '-.02em' }}>
-          Access pending
+          Access Pending
         </h1>
         <p style={{ marginTop: 14, font: "400 14px/1.55 var(--font-sans)", color: 'var(--ink-muted)' }}>
           You&rsquo;re signed in, but your email hasn&rsquo;t been added as a manager yet. Ask your admin to

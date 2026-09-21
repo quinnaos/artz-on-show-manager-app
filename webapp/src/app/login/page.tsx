@@ -58,7 +58,7 @@ export default function LoginPage() {
             textAlign: 'center',
           }}
         >
-          Manager sign in
+          Manager Sign In
         </h1>
 
         {status === 'sent' ? (
@@ -72,7 +72,7 @@ export default function LoginPage() {
               textAlign: 'center',
             }}
           >
-            <div style={{ font: "500 15px/1.3 var(--font-sans)", color: 'var(--ink)' }}>Check your email</div>
+            <div style={{ font: "500 15px/1.3 var(--font-sans)", color: 'var(--ink)' }}>Check Your Email</div>
             <div style={{ marginTop: 8, font: "400 13.5px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>
               We sent a sign-in link to <strong>{email}</strong>. Open it on this device to continue.
             </div>

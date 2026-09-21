@@ -31,7 +31,7 @@ export default function HubHomePage() {
   let nowNote: string;
   let openHref: string;
   if (!cur) {
-    nowPart = 'Before the day starts';
+    nowPart = 'Before the Day Starts';
     nowNote = next ? `${next.name} at ${ampm(next.t)}. ${next.note}` : '';
     openHref = `/hub/${hub.id}/checklists/${dayId}`;
   } else {
@@ -72,12 +72,12 @@ export default function HubHomePage() {
   };
 
   const shortcuts = [
-    { tag: '01', name: 'All checklists', href: `/hub/${hub.id}/checklists` },
+    { tag: '01', name: 'All Checklists', href: `/hub/${hub.id}/checklists` },
     { tag: '02', name: 'Morning Welcome', href: `/hub/${hub.id}/welcome` },
     { tag: '03', name: 'Certificates and Points', href: `/hub/${hub.id}/checklists/certs` },
     { tag: '04', name: 'Group Time', href: `/hub/${hub.id}/group-time` },
     { tag: '05', name: 'Closing Speech', href: `/hub/${hub.id}/speech` },
-    { tag: '06', name: 'Venue and contacts', href: `/hub/${hub.id}/info` },
+    { tag: '06', name: 'Venue and Contacts', href: `/hub/${hub.id}/info` },
   ];
 
   return (

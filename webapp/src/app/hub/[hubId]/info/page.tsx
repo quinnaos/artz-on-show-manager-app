@@ -12,7 +12,7 @@ export default function InfoPage() {
 
   return (
     <div>
-      <ScreenHeader kicker={`${hub.name} hub`} title="Venue and contacts" backHref={`/hub/${hub.id}`} />
+      <ScreenHeader kicker={`${hub.name} hub`} title="Venue and Contacts" backHref={`/hub/${hub.id}`} />
       <div style={{ padding: '20px 20px 32px' }}>
         <div style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: 17 }}>
           <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>Venue</div>
