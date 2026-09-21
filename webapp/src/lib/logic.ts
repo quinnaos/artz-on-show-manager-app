@@ -22,28 +22,48 @@ export function visibleIndexes(l: ChecklistDef, hubId: string): number[] {
 // Daily Admin and Certificates & Points run every day, so their ticks (and
 // sign-off) are scoped per day too. The five day checklists are each already
 // a specific day, so they don't need the extra scoping.
-export function scopeFor(listId: string, dayId: string): string {
+//
+// A hub can run the same workshop occasion (Day 3, say) many times a year,
+// so while a workshop is live, its id is folded into the scope too - that's
+// what makes each occurrence's ticks independent of every other occurrence's,
+// rather than the checklist permanently showing whatever was last ticked at
+// that hub. Outside any workshop window, workshopId is omitted and behaves
+// exactly as before (a single shared, un-scoped bucket).
+export function scopeFor(listId: string, dayId: string, workshopId?: number | null): string {
   const daily = listId === 'admin' || listId === 'certs';
-  return daily ? `${listId}@${dayId}` : listId;
+  const base = daily ? `${listId}@${dayId}` : listId;
+  return workshopId != null ? `${base}#${workshopId}` : base;
+}
+
+// Inverse of scopeFor - used by the history viewer to work out which
+// checklist and day a stored scope string belongs to.
+export function parseScope(scope: string): { listId: string; dayId: string } {
+  const [base] = scope.split('#');
+  if (base.includes('@')) {
+    const [listId, dayId] = base.split('@');
+    return { listId, dayId };
+  }
+  return { listId: base, dayId: base };
 }
 
 export type TickMap = Record<string, string>; // `${hubId}|${scope}|${index}` -> ISO time
 
-export function tickKey(hubId: string, listId: string, dayId: string, i: number): string {
-  return `${hubId}|${scopeFor(listId, dayId)}|${i}`;
+export function tickKey(hubId: string, listId: string, dayId: string, i: number, workshopId?: number | null): string {
+  return `${hubId}|${scopeFor(listId, dayId, workshopId)}|${i}`;
 }
 
 export function progressOf(
   l: ChecklistDef,
   hubId: string,
   dayId: string,
-  ticks: TickMap
+  ticks: TickMap,
+  workshopId?: number | null
 ): { done: number; total: number; pct: number } {
   const idx = visibleIndexes(l, hubId);
   const total = idx.length;
   let done = 0;
   idx.forEach((i) => {
-    if (ticks[tickKey(hubId, l.id, dayId, i)]) done++;
+    if (ticks[tickKey(hubId, l.id, dayId, i, workshopId)]) done++;
   });
   return { done, total, pct: total ? Math.round((done / total) * 100) : 0 };
 }
@@ -110,16 +130,19 @@ export function dayIdForWorkshop(startDateISO: string, today: Date): string | nu
   return WORKDAY_IDS[diffDays];
 }
 
-// Finds whichever workshop (if any) covers today for this hub and returns
-// the day it resolves to. Regions run independent weeks, so a hub can have
-// several workshops across a year, but at most one should ever cover a
-// given date.
-export function activeWorkshopDay(workshops: { start_date: string }[], today: Date): string | null {
+// Finds whichever workshop (if any) covers today for this hub. Regions run
+// independent weeks, so a hub can have several workshops across a year, but
+// at most one should ever cover a given date.
+export function activeWorkshop<T extends { start_date: string }>(workshops: T[], today: Date): T | null {
   for (const w of workshops) {
-    const d = dayIdForWorkshop(w.start_date, today);
-    if (d) return d;
+    if (dayIdForWorkshop(w.start_date, today)) return w;
   }
   return null;
+}
+
+export function activeWorkshopDay(workshops: { start_date: string }[], today: Date): string | null {
+  const w = activeWorkshop(workshops, today);
+  return w ? dayIdForWorkshop(w.start_date, today) : null;
 }
 
 export function dateKey(d: Date): string {

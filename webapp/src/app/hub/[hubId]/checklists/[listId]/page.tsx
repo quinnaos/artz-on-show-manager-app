@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { hubById } from '@/lib/data/hubs';
 import { listById } from '@/lib/data/checklists';
-import { showsAt, scopeFor } from '@/lib/logic';
+import { showsAt } from '@/lib/logic';
 import { useHubData } from '@/lib/hubData';
 import ScreenHeader from '@/components/ScreenHeader';
 import ProgressBar from '@/components/ProgressBar';
@@ -15,7 +15,7 @@ export default function SingleChecklistPage() {
   const { hubId, listId } = useParams<{ hubId: string; listId: string }>();
   const hub = hubById(hubId);
   const l = listById(listId);
-  const { dayId, progress, tickedAt, toggleTick, signedOff, signOff, profile } = useHubData();
+  const { progress, tickedAt, toggleTick, signedOff, signOff, scopeForList, profile } = useHubData();
 
   const p = progress(l.id);
   const blurb = (l.blurbAlt || {})[hub.id] || l.blurb;
@@ -23,7 +23,7 @@ export default function SingleChecklistPage() {
   const briefLead = alt.lead || l.briefLead || '';
   const briefFull = alt.brief || l.brief || '';
 
-  const scope = scopeFor(l.id, dayId);
+  const scope = scopeForList(l.id);
   const sentRow = signedOff(scope);
   const complete = p.total > 0 && p.done === p.total;
 

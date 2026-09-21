@@ -142,7 +142,10 @@ export default async function AdminPage() {
           </button>
           <div style={{ marginTop: 8, font: "400 12px/1.5 var(--font-sans)", color: 'var(--ink-faint)' }}>
             The date is that hub&rsquo;s Day 1 (Monday) — Days 2&ndash;5 follow as the next four days automatically. Whichever workshop
-            covers today&rsquo;s date is what that hub opens to; the D1&ndash;D5 pills can still override it on the day.
+            covers today&rsquo;s date is what that hub opens to; the D1&ndash;D5 pills can still override it on the day. Each
+            workshop&rsquo;s ticks and points are kept separate, so running &ldquo;Day 3&rdquo; again later starts blank rather than
+            showing what was ticked last time. Detailed records (ticks, points, sign-offs) are automatically deleted 4 weeks after a
+            workshop&rsquo;s Day 5 — use <strong>View</strong> below while they&rsquo;re still there if you need to check anything.
           </div>
         </form>
 
@@ -167,6 +170,9 @@ export default async function AdminPage() {
                       {formatDate(start)} &ndash; {formatDate(end)}
                     </div>
                   </div>
+                  <Link href={`/admin/workshops/${w.id}`} style={{ font: "500 12.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
+                    View
+                  </Link>
                   <form action={removeWorkshop.bind(null, w.id)}>
                     <button type="submit" style={{ font: "500 12.5px/1 var(--font-sans)", color: '#9B1C1C' }}>
                       Remove
