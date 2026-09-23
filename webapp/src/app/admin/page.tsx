@@ -28,7 +28,7 @@ export default async function AdminPage() {
     <div style={{ minHeight: '100vh', maxWidth: 640, margin: '0 auto', padding: '24px 20px 60px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div>
-          <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>Admin</div>
+          <div className="section-label">Admin</div>
           <h1 style={{ margin: '6px 0 0', font: "400 24px/1.2 var(--font-sans)", letterSpacing: '-.02em' }}>Managers &amp; Access</h1>
         </div>
         <Link href="/hubs" style={{ font: "500 13.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
@@ -37,7 +37,7 @@ export default async function AdminPage() {
       </div>
 
       <section style={{ marginTop: 28 }}>
-        <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink-faint)', margin: 0 }}>
+        <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
           Invite a Manager
         </h2>
         <form action={inviteManager} style={{ marginTop: 12, background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: 18 }}>
@@ -77,7 +77,7 @@ export default async function AdminPage() {
 
       {invites && invites.length > 0 && (
         <section style={{ marginTop: 28 }}>
-          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink-faint)', margin: 0 }}>
+          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
             Pending Invites
           </h2>
           <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -101,7 +101,7 @@ export default async function AdminPage() {
       )}
 
       <section style={{ marginTop: 28 }}>
-        <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink-faint)', margin: 0 }}>
+        <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
           Workshops
         </h2>
         <form action={addWorkshop} style={{ marginTop: 12, background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: 18 }}>
@@ -186,7 +186,7 @@ export default async function AdminPage() {
       </section>
 
       <section style={{ marginTop: 28 }}>
-        <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink-faint)', margin: 0 }}>
+        <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
           Current Access
         </h2>
         <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>

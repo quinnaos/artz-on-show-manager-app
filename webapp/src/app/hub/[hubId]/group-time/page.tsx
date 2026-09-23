@@ -19,9 +19,7 @@ export default function GroupTimePage() {
         </div>
         {GROUPTIME.map((sec) => (
           <div key={sec.name} style={{ marginTop: 22 }}>
-            <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>
-              {sec.name}
-            </div>
+            <div className="section-label">{sec.name}</div>
             <div style={{ marginTop: 11, background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: '4px 16px' }}>
               {sec.items.map((it, i) => {
                 const isNote = !!it.i;

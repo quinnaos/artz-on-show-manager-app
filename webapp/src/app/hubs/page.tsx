@@ -70,7 +70,7 @@ export default async function HubsPage() {
         <div style={{ font: "400 22px/1.25 var(--font-sans)", letterSpacing: '-.02em', color: 'var(--ink)' }}>Hello {name}!</div>
         <div style={{ marginTop: 5, font: "400 14px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>{todayLabel}</div>
 
-        <div style={{ margin: '26px 0 10px', font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>
+        <div className="section-label" style={{ margin: '26px 0 10px' }}>
           {profile.role === 'owner' ? 'Operation hubs' : 'Your hubs'}
         </div>
 

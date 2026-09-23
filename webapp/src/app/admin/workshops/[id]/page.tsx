@@ -78,9 +78,7 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
     <div style={{ minHeight: '100vh', maxWidth: 640, margin: '0 auto', padding: '24px 20px 60px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div>
-          <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>
-            {hub.name}
-          </div>
+          <div className="section-label">{hub.name}</div>
           <h1 style={{ margin: '6px 0 0', font: "400 24px/1.2 var(--font-sans)", letterSpacing: '-.02em' }}>{workshop.label || 'Workshop'}</h1>
           <div style={{ marginTop: 4, font: "400 13px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>
             {formatDate(start)} &ndash; {formatDate(end)}
@@ -100,7 +98,7 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
 
       {byList.size > 0 && (
         <section style={{ marginTop: 28 }}>
-          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink-faint)', margin: 0 }}>
+          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
             Checklists
           </h2>
           <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -125,7 +123,7 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
 
       {groups.length > 0 && awards && awards.length > 0 && (
         <section style={{ marginTop: 28 }}>
-          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink-faint)', margin: 0 }}>
+          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
             Points
           </h2>
           <div style={{ marginTop: 12, background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: 16, display: 'flex', gap: 20, flexWrap: 'wrap' }}>
@@ -141,7 +139,7 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
 
       {signOffs && signOffs.length > 0 && (
         <section style={{ marginTop: 28 }}>
-          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink-faint)', margin: 0 }}>
+          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
             Sign-offs
           </h2>
           <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>

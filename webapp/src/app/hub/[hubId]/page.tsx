@@ -112,9 +112,7 @@ export default function HubHomePage() {
         </div>
 
         <div style={{ margin: '26px 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-          <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>
-            Today&rsquo;s checklists
-          </div>
+          <div className="section-label">Today&rsquo;s checklists</div>
           <div style={{ display: 'flex', gap: 5 }}>
             {DAYS.map((d) => {
               const on = d.id === dayId;
@@ -146,7 +144,7 @@ export default function HubHomePage() {
           {listCard(day)}
         </div>
 
-        <div style={{ margin: '26px 0 10px', font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>
+        <div className="section-label" style={{ margin: '26px 0 10px' }}>
           Shortcuts
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>

@@ -40,6 +40,16 @@ a:hover {
   width: 100%;
 }
 
+/* Small uppercase section-heading labels (e.g. "ROLL AND ABSENCES") used
+   throughout checklists and screen intros. Bigger and black rather than the
+   original light grey, for legibility. */
+.section-label {
+  font: 500 13.5px/1.3 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
 button {
   font: inherit;
   border: none;

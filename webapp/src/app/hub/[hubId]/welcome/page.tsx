@@ -26,14 +26,14 @@ export default function MorningWelcomePage() {
         {sections.map((sec) => {
           const show = sec.tone === 'show';
           const venue = sec.tone === 'venue';
-          const labelColor = show ? 'var(--accent)' : 'var(--ink-faint)';
+          const labelColor = show ? 'var(--accent)' : 'var(--ink)';
           const bg = show ? '#F7F4FE' : '#fff';
           const border = show ? '#DDD0FB' : 'var(--border)';
           const rule = show ? '#E8DFFC' : '#EFEDE9';
           const dot = show ? 'var(--accent)' : venue ? '#C2410C' : '#CFCBC3';
           return (
             <div key={sec.name} style={{ marginTop: 22 }}>
-              <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: labelColor }}>
+              <div className="section-label" style={{ color: labelColor }}>
                 {sec.name}
               </div>
               <div style={{ marginTop: 11, background: bg, border: `1px solid ${border}`, borderRadius: 14, padding: '4px 16px' }}>

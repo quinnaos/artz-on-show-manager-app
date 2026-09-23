@@ -80,9 +80,7 @@ export default function SingleChecklistPage() {
           (sec) =>
             sec.items.length > 0 && (
               <div key={sec.name} style={{ padding: '22px 20px 0' }}>
-                <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>
-                  {sec.name}
-                </div>
+                <div className="section-label">{sec.name}</div>
                 <div style={{ marginTop: 11, display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {sec.items.map(({ item, index }) => (
                     <ChecklistItemRow key={index} item={item} tickedAt={tickedAt(l.id, index)} onTick={() => toggleTick(l.id, index)} />
