@@ -23,6 +23,7 @@ create table if not exists public.manager_hubs (
 -- here; first login consumes the row and creates the matching profile.
 create table if not exists public.invited_emails (
   email text primary key,
+  name text,
   role text not null check (role in ('owner', 'manager')) default 'manager',
   hub_ids text[] not null default '{}',
   invited_by uuid references public.profiles(id),

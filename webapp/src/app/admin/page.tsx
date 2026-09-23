@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getProfile } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { HUBS } from '@/lib/data/hubs';
-import { inviteManager, removeInvite, updateManagerHubs, removeManager, addWorkshop, removeWorkshop } from './actions';
+import { inviteManager, removeInvite, updateManagerHubs, updateManagerName, removeManager, addWorkshop, removeWorkshop } from './actions';
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -18,7 +18,7 @@ export default async function AdminPage() {
   const [{ data: profiles }, { data: managerHubs }, { data: invites }, { data: workshops }] = await Promise.all([
     supabase.from('profiles').select('id, name, email, role').order('created_at'),
     supabase.from('manager_hubs').select('profile_id, hub_id'),
-    supabase.from('invited_emails').select('email, role, hub_ids').order('created_at'),
+    supabase.from('invited_emails').select('email, name, role, hub_ids').order('created_at'),
     supabase.from('workshops').select('id, hub_id, start_date, label').order('start_date', { ascending: false }),
   ]);
 
@@ -41,13 +41,21 @@ export default async function AdminPage() {
           Invite a Manager
         </h2>
         <form action={inviteManager} style={{ marginTop: 12, background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: 18 }}>
-          <input
-            name="email"
-            type="email"
-            required
-            placeholder="manager@artzonshow.co.nz"
-            style={{ width: '100%', padding: '12px 14px', borderRadius: 10, border: '1px solid var(--border)', font: "400 14px/1 var(--font-sans)" }}
-          />
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <input
+              name="name"
+              type="text"
+              placeholder="Name, e.g. Sara"
+              style={{ flex: '1 1 160px', padding: '12px 14px', borderRadius: 10, border: '1px solid var(--border)', font: "400 14px/1 var(--font-sans)" }}
+            />
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="manager@artzonshow.co.nz"
+              style={{ flex: '2 1 220px', padding: '12px 14px', borderRadius: 10, border: '1px solid var(--border)', font: "400 14px/1 var(--font-sans)" }}
+            />
+          </div>
           <div style={{ marginTop: 12, display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
             <label style={{ font: "400 13.5px/1 var(--font-sans)" }}>
               <input type="radio" name="role" value="manager" defaultChecked /> Manager
@@ -84,8 +92,9 @@ export default async function AdminPage() {
             {invites.map((inv) => (
               <div key={inv.email} style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ font: "500 14px/1.3 var(--font-sans)" }}>{inv.email}</div>
+                  <div style={{ font: "500 14px/1.3 var(--font-sans)" }}>{inv.name || inv.email}</div>
                   <div style={{ marginTop: 2, font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>
+                    {inv.name ? `${inv.email} · ` : ''}
                     {inv.role === 'owner' ? 'Owner' : (inv.hub_ids ?? []).map((id: string) => HUBS.find((h) => h.id === id)?.name ?? id).join(', ') || 'No hubs yet'}
                   </div>
                 </div>
@@ -209,6 +218,18 @@ export default async function AdminPage() {
                   </form>
                 )}
               </div>
+              <form action={updateManagerName.bind(null, p.id)} style={{ marginTop: 12, display: 'flex', gap: 8 }}>
+                <input
+                  name="name"
+                  type="text"
+                  defaultValue={p.name ?? ''}
+                  placeholder="Name, e.g. Sara"
+                  style={{ flex: 1, padding: '9px 12px', borderRadius: 9, border: '1px solid var(--border)', font: "400 13.5px/1 var(--font-sans)" }}
+                />
+                <button type="submit" style={{ font: "500 12.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
+                  Save
+                </button>
+              </form>
               {p.role !== 'owner' && (
                 <form action={updateManagerHubs.bind(null, p.id)} style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
                   {HUBS.map((h) => (

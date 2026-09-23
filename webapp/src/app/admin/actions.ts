@@ -18,12 +18,21 @@ function hubIdsFromForm(formData: FormData): string[] {
 export async function inviteManager(formData: FormData) {
   await requireOwner();
   const email = String(formData.get('email') || '').trim().toLowerCase();
+  const name = String(formData.get('name') || '').trim();
   const role = formData.get('role') === 'owner' ? 'owner' : 'manager';
   if (!email) return;
   const hubIds = role === 'owner' ? [] : hubIdsFromForm(formData);
 
   const supabase = await createClient();
-  await supabase.from('invited_emails').upsert({ email, role, hub_ids: hubIds });
+  await supabase.from('invited_emails').upsert({ email, name: name || null, role, hub_ids: hubIds });
+  revalidatePath('/admin');
+}
+
+export async function updateManagerName(profileId: string, formData: FormData) {
+  await requireOwner();
+  const name = String(formData.get('name') || '').trim();
+  const supabase = await createClient();
+  await supabase.from('profiles').update({ name: name || null }).eq('id', profileId);
   revalidatePath('/admin');
 }
 

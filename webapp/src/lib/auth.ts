@@ -57,7 +57,7 @@ export async function syncProfileAfterLogin(): Promise<'ok' | 'pending'> {
   const role = invite?.role ?? 'owner';
   const hubIds: string[] = invite?.hub_ids ?? [];
 
-  const { error } = await admin.from('profiles').insert({ id: user.id, email, role, name: null });
+  const { error } = await admin.from('profiles').insert({ id: user.id, email, role, name: invite?.name ?? null });
   if (error) return 'pending';
 
   if (hubIds.length) {
