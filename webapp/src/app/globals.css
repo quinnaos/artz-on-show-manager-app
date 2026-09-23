@@ -37,21 +37,7 @@ a:hover {
 }
 
 .app-shell {
-  max-width: 480px;
-  margin: 0 auto;
-}
-/* iPad portrait and wider: let the app breathe instead of sitting as a
-   phone-width column in the middle of empty space. */
-@media (min-width: 700px) {
-  .app-shell {
-    max-width: 640px;
-  }
-}
-/* iPad landscape and wider. */
-@media (min-width: 1000px) {
-  .app-shell {
-    max-width: 760px;
-  }
+  width: 100%;
 }
 
 button {
