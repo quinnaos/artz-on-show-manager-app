@@ -36,6 +36,7 @@ type HubDataValue = {
   canUndo: boolean;
   lastAwardLabel: string | null;
   undoLastAward: () => void;
+  resetPoints: () => void;
   signedOff: (scope: string) => SignOffRow | null;
   signOff: (listId: string) => void;
   scopeForList: (listId: string) => string;
@@ -292,6 +293,17 @@ export function HubDataProvider({
     if (id > 0) supabase.from('points_awards').delete().eq('id', id).then();
   }, [lastAward, supabase]);
 
+  // Clears every group's total for the day/workshop currently being viewed.
+  // Only that scope is touched - other days and other workshops keep their
+  // own totals untouched.
+  const resetPoints = useCallback(() => {
+    setAwards((prev) => prev.filter((a) => !(a.day_id === dayId && a.workshop_id === activeWorkshopId)));
+    setLastAward((prev) => (prev && prev.day_id === dayId && prev.workshop_id === activeWorkshopId ? null : prev));
+    let query = supabase.from('points_awards').delete().eq('hub_id', hubId).eq('day_id', dayId);
+    query = activeWorkshopId == null ? query.is('workshop_id', null) : query.eq('workshop_id', activeWorkshopId);
+    query.then();
+  }, [dayId, activeWorkshopId, hubId, supabase]);
+
   const signedOff = useCallback((scope: string) => signOffs.get(scope) ?? null, [signOffs]);
 
   const signOff = useCallback(
@@ -322,6 +334,7 @@ export function HubDataProvider({
     canUndo: !!lastAward,
     lastAwardLabel: lastAward ? `Undo last +${lastAward.delta}` : null,
     undoLastAward,
+    resetPoints,
     signedOff,
     signOff,
     scopeForList,

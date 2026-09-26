@@ -11,7 +11,7 @@ import ScreenHeader from '@/components/ScreenHeader';
 export default function PointsPage() {
   const { hubId } = useParams<{ hubId: string }>();
   const hub = hubById(hubId);
-  const { dayId, pointsTotal, award, canUndo, lastAwardLabel, undoLastAward } = useHubData();
+  const { dayId, pointsTotal, award, canUndo, lastAwardLabel, undoLastAward, resetPoints } = useHubData();
 
   const groups = GROUPS[hub.id] ?? [];
   const scores = groups.map((g) => pointsTotal(dayId, g.id));
@@ -85,6 +85,27 @@ export default function PointsPage() {
         >
           {lastAwardLabel || 'Nothing to undo'}
         </button>
+
+        {groups.length > 0 && (
+          <button
+            onClick={() => {
+              if (window.confirm(`Reset every group back to 0 for ${dayName}? This can't be undone.`)) resetPoints();
+            }}
+            style={{
+              marginTop: 10,
+              width: '100%',
+              padding: 13,
+              background: '#fff',
+              border: '1px solid var(--border)',
+              borderRadius: 12,
+              textAlign: 'center',
+              font: "500 13px/1 var(--font-sans)",
+              color: '#9B1C1C',
+            }}
+          >
+            Reset Points
+          </button>
+        )}
 
         {groups.length > 0 && (
           <div style={{ marginTop: 14, padding: '13px 15px', background: '#F7F4FE', border: '1px solid #DDD0FB', borderRadius: 12, font: "400 12.5px/1.55 var(--font-sans)", color: '#3F2A6B' }}>
