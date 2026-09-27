@@ -7,6 +7,7 @@ import { HUBS } from '@/lib/data/hubs';
 import { ADMIN, listById } from '@/lib/data/checklists';
 import { progressOf, activeWorkshop, dayIdForWorkshop, nzNow, type TickMap } from '@/lib/logic';
 import SignOutButton from '@/components/SignOutButton';
+import RefreshOnMount from '@/components/RefreshOnMount';
 
 export default async function HubsPage() {
   const profile = await getProfile();
@@ -51,6 +52,7 @@ export default async function HubsPage() {
 
   return (
     <div className="app-shell" style={{ minHeight: '100vh', background: 'var(--surface)' }}>
+      <RefreshOnMount />
       <div
         style={{
           background: '#fff',
