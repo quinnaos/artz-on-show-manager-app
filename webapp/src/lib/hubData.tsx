@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { scopeFor, visibleIndexes, activeWorkshop, dayIdForWorkshop, dateKey } from '@/lib/logic';
+import { scopeFor, visibleIndexes, activeWorkshop, dayIdForWorkshop, dateKey, nzNow } from '@/lib/logic';
 import { listById } from '@/lib/data/checklists';
 import type { Profile } from '@/lib/types';
 
@@ -78,7 +78,7 @@ export function HubDataProvider({
   // "Day 3" many times a year gets independent records each time instead of
   // one that's permanently reused. Outside any workshop window this is null,
   // which keeps the old shared, un-scoped behaviour for manual/off-season use.
-  const activeWorkshopId = useMemo(() => activeWorkshop(workshops, new Date())?.id ?? null, [workshops]);
+  const activeWorkshopId = useMemo(() => activeWorkshop(workshops, nzNow())?.id ?? null, [workshops]);
 
   useEffect(() => {
     // Reads a per-viewer UI preference (which day's checklist is showing)
@@ -124,7 +124,7 @@ export function HubDataProvider({
       // falls on for this hub's current workshop (if any is running). A
       // manual pill tap later the same day is left alone until tomorrow.
       if (typeof window !== 'undefined') {
-        const now = new Date();
+        const now = nzNow();
         const todayKey = dateKey(now);
         const syncKey = `aos:${hubId}:syncedDate`;
         if (window.localStorage.getItem(syncKey) !== todayKey) {

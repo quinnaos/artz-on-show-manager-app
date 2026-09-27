@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { hubById } from '@/lib/data/hubs';
 import { ADMIN, DAYS } from '@/lib/data/checklists';
-import { currentBlock, ampm, nowTimeLabel } from '@/lib/logic';
+import { currentBlock, ampm, nowTimeLabel, nzNow } from '@/lib/logic';
 import { useHubData } from '@/lib/hubData';
 import ScreenHeader from '@/components/ScreenHeader';
 import ProgressBar from '@/components/ProgressBar';
@@ -14,10 +14,10 @@ export default function HubHomePage() {
   const { hubId } = useParams<{ hubId: string }>();
   const hub = hubById(hubId);
   const { dayId, setDayId, progress } = useHubData();
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState(() => nzNow());
 
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 30000);
+    const id = setInterval(() => setNow(nzNow()), 30000);
     return () => clearInterval(id);
   }, []);
 

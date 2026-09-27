@@ -77,6 +77,26 @@ export function ampm(t: string): string {
   return h + (m === '00' ? '' : '.' + m) + suffix;
 }
 
+// Every workshop this app tracks runs in New Zealand, so "today" and "now"
+// must always mean NZ wall-clock time - never the timezone the server
+// happens to be deployed in, or a manager's device. Returns a Date object
+// whose local getters (getFullYear, getHours, etc.) report NZ time,
+// regardless of the host's own timezone.
+export function nzNow(): Date {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Pacific/Auckland',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).formatToParts(new Date());
+  const get = (type: string) => Number(parts.find((p) => p.type === type)!.value);
+  return new Date(get('year'), get('month') - 1, get('day'), get('hour') % 24, get('minute'), get('second'));
+}
+
 export function nowTimeLabel(d: Date): string {
   return d
     .toLocaleTimeString('en-NZ', { hour: 'numeric', minute: '2-digit', hour12: true })

@@ -5,7 +5,7 @@ import { getProfile } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { HUBS } from '@/lib/data/hubs';
 import { ADMIN, listById } from '@/lib/data/checklists';
-import { progressOf, activeWorkshop, dayIdForWorkshop, type TickMap } from '@/lib/logic';
+import { progressOf, activeWorkshop, dayIdForWorkshop, nzNow, type TickMap } from '@/lib/logic';
 import SignOutButton from '@/components/SignOutButton';
 
 export default async function HubsPage() {
@@ -26,7 +26,7 @@ export default async function HubsPage() {
     (ticks ?? []).forEach((r) => {
       tickMap[`${r.hub_id}|${r.scope}|${r.item_index}`] = r.ticked_at;
     });
-    const now = new Date();
+    const now = nzNow();
     hubIds.forEach((id) => {
       const hubWorkshops = (workshops ?? []).filter((w) => w.hub_id === id);
       const w = activeWorkshop(hubWorkshops, now);
@@ -47,7 +47,7 @@ export default async function HubsPage() {
   });
 
   const name = profile.name || profile.email.split('@')[0];
-  const todayLabel = new Date().toLocaleDateString('en-NZ', { weekday: 'long', day: 'numeric', month: 'long' });
+  const todayLabel = nzNow().toLocaleDateString('en-NZ', { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
     <div className="app-shell" style={{ minHeight: '100vh', background: 'var(--surface)' }}>
