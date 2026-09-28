@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { completeSignIn } from '@/app/auth/confirm/actions';
+import { completeSignIn } from './actions';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,13 +21,6 @@ export default function LoginPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: {
-        // Kept so an already-sent link still works, but entering the code
-        // below is the primary path - it all happens in this one browser
-        // session, so there's no "open it on another device/app" mismatch,
-        // and no clickable link for mail scanners to pre-fetch and burn.
-        emailRedirectTo: `${window.location.origin}/auth/confirm`,
-      },
     });
     setBusy(false);
     if (error) {
