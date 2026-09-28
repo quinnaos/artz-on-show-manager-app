@@ -5,7 +5,8 @@ import { createClient } from '@/lib/supabase/server';
 import { hubById } from '@/lib/data/hubs';
 import { listById, allItems } from '@/lib/data/checklists';
 import { GROUPS } from '@/lib/data/groups';
-import { parseScope } from '@/lib/logic';
+import { parseScope, nzNow } from '@/lib/logic';
+import PrintButton from '@/components/PrintButton';
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -74,19 +75,32 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
     total: (awards ?? []).filter((a) => a.group_id === g.id).reduce((sum, a) => sum + a.delta, 0),
   }));
 
+  const exportedAt = nzNow().toLocaleString('en-NZ', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+
   return (
     <div style={{ minHeight: '100vh', maxWidth: 640, margin: '0 auto', padding: '24px 20px 60px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
         <div>
           <div className="section-label">{hub.name}</div>
           <h1 style={{ margin: '6px 0 0', font: "400 24px/1.2 var(--font-sans)", letterSpacing: '-.02em' }}>{workshop.label || 'Workshop'}</h1>
           <div style={{ marginTop: 4, font: "400 13px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>
             {formatDate(start)} &ndash; {formatDate(end)}
           </div>
+          <div style={{ marginTop: 2, font: "400 11.5px/1.4 var(--font-sans)", color: 'var(--ink-faint)' }}>Exported {exportedAt} NZT</div>
         </div>
-        <Link href="/admin" style={{ font: "500 13.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
-          &lsaquo; Back to admin
-        </Link>
+        <div className="no-print" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
+          <PrintButton />
+          <Link href="/admin" style={{ font: "500 13.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
+            &lsaquo; Back to admin
+          </Link>
+        </div>
       </div>
 
       {(!ticks || ticks.length === 0) && (!awards || awards.length === 0) && (!signOffs || signOffs.length === 0) && (

@@ -62,3 +62,12 @@ button {
 input {
   font: inherit;
 }
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}
