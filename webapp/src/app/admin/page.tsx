@@ -4,6 +4,7 @@ import { getProfile } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { HUBS } from '@/lib/data/hubs';
 import { inviteManager, removeInvite, updateManagerHubs, updateManagerName, removeManager, addWorkshop, removeWorkshop } from './actions';
+import RefreshOnMount from '@/components/RefreshOnMount';
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -26,6 +27,7 @@ export default async function AdminPage() {
 
   return (
     <div style={{ minHeight: '100vh', maxWidth: 640, margin: '0 auto', padding: '24px 20px 60px' }}>
+      <RefreshOnMount />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div>
           <div className="section-label">Admin</div>
