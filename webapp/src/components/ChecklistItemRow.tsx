@@ -5,7 +5,7 @@ import type { ChecklistItem } from '@/lib/types';
 
 function formatTime(iso: string): string {
   return new Date(iso)
-    .toLocaleTimeString('en-NZ', { hour: 'numeric', minute: '2-digit', hour12: true })
+    .toLocaleTimeString('en-NZ', { timeZone: 'Pacific/Auckland', hour: 'numeric', minute: '2-digit', hour12: true })
     .replace(/\s/g, '')
     .toLowerCase();
 }

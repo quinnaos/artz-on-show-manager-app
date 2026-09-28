@@ -13,7 +13,7 @@ function formatDate(d: Date) {
 
 function formatTime(iso: string) {
   return new Date(iso)
-    .toLocaleString('en-NZ', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })
+    .toLocaleString('en-NZ', { timeZone: 'Pacific/Auckland', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })
     .replace(/\s/g, ' ');
 }
 
