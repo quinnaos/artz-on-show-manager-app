@@ -24,7 +24,8 @@ export async function inviteManager(formData: FormData) {
   const hubIds = role === 'owner' ? [] : hubIdsFromForm(formData);
 
   const supabase = await createClient();
-  await supabase.from('invited_emails').upsert({ email, name: name || null, role, hub_ids: hubIds });
+  const { error } = await supabase.from('invited_emails').upsert({ email, name: name || null, role, hub_ids: hubIds });
+  if (error) throw new Error(`Could not save invite: ${error.message}`);
   revalidatePath('/admin');
 }
 
@@ -32,14 +33,16 @@ export async function updateManagerName(profileId: string, formData: FormData) {
   await requireOwner();
   const name = String(formData.get('name') || '').trim();
   const supabase = await createClient();
-  await supabase.from('profiles').update({ name: name || null }).eq('id', profileId);
+  const { error } = await supabase.from('profiles').update({ name: name || null }).eq('id', profileId);
+  if (error) throw new Error(`Could not save name: ${error.message}`);
   revalidatePath('/admin');
 }
 
 export async function removeInvite(email: string) {
   await requireOwner();
   const supabase = await createClient();
-  await supabase.from('invited_emails').delete().eq('email', email);
+  const { error } = await supabase.from('invited_emails').delete().eq('email', email);
+  if (error) throw new Error(`Could not remove invite: ${error.message}`);
   revalidatePath('/admin');
 }
 
@@ -47,9 +50,11 @@ export async function updateManagerHubs(profileId: string, formData: FormData) {
   await requireOwner();
   const hubIds = hubIdsFromForm(formData);
   const supabase = await createClient();
-  await supabase.from('manager_hubs').delete().eq('profile_id', profileId);
+  const { error: delError } = await supabase.from('manager_hubs').delete().eq('profile_id', profileId);
+  if (delError) throw new Error(`Could not save hub access: ${delError.message}`);
   if (hubIds.length) {
-    await supabase.from('manager_hubs').insert(hubIds.map((hub_id) => ({ profile_id: profileId, hub_id })));
+    const { error: insError } = await supabase.from('manager_hubs').insert(hubIds.map((hub_id) => ({ profile_id: profileId, hub_id })));
+    if (insError) throw new Error(`Could not save hub access: ${insError.message}`);
   }
   revalidatePath('/admin');
 }
@@ -58,7 +63,8 @@ export async function removeManager(profileId: string) {
   const owner = await requireOwner();
   if (owner.id === profileId) throw new Error("You can't remove your own access.");
   const supabase = await createClient();
-  await supabase.from('profiles').delete().eq('id', profileId);
+  const { error } = await supabase.from('profiles').delete().eq('id', profileId);
+  if (error) throw new Error(`Could not remove access: ${error.message}`);
   revalidatePath('/admin');
 }
 
@@ -70,13 +76,15 @@ export async function addWorkshop(formData: FormData) {
   if (!hubId || !startDate || !HUBS.some((h) => h.id === hubId)) return;
 
   const supabase = await createClient();
-  await supabase.from('workshops').insert({ hub_id: hubId, start_date: startDate, label: label || null });
+  const { error } = await supabase.from('workshops').insert({ hub_id: hubId, start_date: startDate, label: label || null });
+  if (error) throw new Error(`Could not add workshop: ${error.message}`);
   revalidatePath('/admin');
 }
 
 export async function removeWorkshop(id: number) {
   await requireOwner();
   const supabase = await createClient();
-  await supabase.from('workshops').delete().eq('id', id);
+  const { error } = await supabase.from('workshops').delete().eq('id', id);
+  if (error) throw new Error(`Could not remove workshop: ${error.message}`);
   revalidatePath('/admin');
 }
