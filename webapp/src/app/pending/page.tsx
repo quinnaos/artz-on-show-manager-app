@@ -1,10 +1,14 @@
-import { getProfile } from '@/lib/auth';
+import { syncProfileAfterLogin } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import SignOutButton from '@/components/SignOutButton';
 
 export default async function PendingPage() {
-  const profile = await getProfile();
-  if (profile) redirect('/hubs');
+  // The invite -> profile-row sync only otherwise runs once, right when
+  // someone signs in. If an admin invites this email after that first
+  // attempt, re-checking here is what makes "reload this page" (below)
+  // actually true, instead of silently requiring a full sign-out/in.
+  const result = await syncProfileAfterLogin();
+  if (result === 'ok') redirect('/hubs');
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
