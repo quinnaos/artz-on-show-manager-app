@@ -184,6 +184,9 @@ export default async function AdminPage() {
                   <Link href={`/admin/workshops/${w.id}`} style={{ font: "500 12.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
                     View
                   </Link>
+                  <a href={`/admin/workshops/${w.id}/pdf`} download style={{ font: "500 12.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
+                    PDF
+                  </a>
                   <form action={removeWorkshop.bind(null, w.id)}>
                     <button type="submit" style={{ font: "500 12.5px/1 var(--font-sans)", color: '#9B1C1C' }}>
                       Remove
