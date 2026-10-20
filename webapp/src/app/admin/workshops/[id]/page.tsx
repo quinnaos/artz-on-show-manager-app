@@ -6,7 +6,7 @@ import { hubById } from '@/lib/data/hubs';
 import { listById, allItems } from '@/lib/data/checklists';
 import { GROUPS } from '@/lib/data/groups';
 import { parseScope, nzNow } from '@/lib/logic';
-import PrintButton from '@/components/PrintButton';
+import ExportPdfButton from '@/components/ExportPdfButton';
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -84,6 +84,19 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
     hour12: true,
   });
 
+  const exportData = {
+    hubName: hub.name,
+    workshopLabel: workshop.label || 'Workshop',
+    dateRange: `${formatDate(start)} – ${formatDate(end)}`,
+    exportedAt,
+    checklists: Array.from(byList.entries()).map(([listId, rows]) => ({ name: listById(listId).name, rows })),
+    points: pointsTotals.map(({ group, total }) => ({ name: group.name, total })),
+    signOffs: signOffs
+      ? signOffs.map((s) => ({ listName: listById(parseScope(s.scope).listId).name, by: nameFor(s.signed_by), time: formatTime(s.signed_at) }))
+      : [],
+  };
+  const exportFilename = `${hub.name} - ${workshop.label || 'Workshop'}.pdf`;
+
   return (
     <div style={{ minHeight: '100vh', maxWidth: 640, margin: '0 auto', padding: '24px 20px 60px' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
@@ -96,7 +109,7 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
           <div style={{ marginTop: 2, font: "400 11.5px/1.4 var(--font-sans)", color: 'var(--ink-faint)' }}>Exported {exportedAt} NZT</div>
         </div>
         <div className="no-print" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-          <PrintButton />
+          <ExportPdfButton data={exportData} filename={exportFilename} />
           <Link href="/admin" style={{ font: "500 13.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
             &lsaquo; Back to admin
           </Link>
