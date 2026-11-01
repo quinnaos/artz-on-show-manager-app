@@ -54,7 +54,15 @@ export default function HubHomePage() {
       <Link
         key={l.id}
         href={`/hub/${hub.id}/checklists/${l.id}`}
-        style={{ background: '#fff', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-card)', padding: '16px 17px' }}
+        style={{
+          background: 'var(--glass-bg)',
+          backdropFilter: 'var(--glass-blur)',
+          WebkitBackdropFilter: 'var(--glass-blur)',
+          border: 'var(--glass-border)',
+          borderRadius: 'var(--radius-md)',
+          boxShadow: 'var(--shadow-glass)',
+          padding: '16px 17px',
+        }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
           <div
@@ -101,7 +109,18 @@ export default function HubHomePage() {
     <div>
       <ScreenHeader kicker="Operation hub" title={hub.name} backHref="/hubs" />
       <div style={{ padding: '4px 20px 32px' }}>
-        <div style={{ background: 'var(--ink)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-card)', padding: '19px 20px', color: '#fff' }}>
+        <div
+          style={{
+            background: 'var(--glass-dark-bg)',
+            backdropFilter: 'var(--glass-blur)',
+            WebkitBackdropFilter: 'var(--glass-blur)',
+            border: 'var(--glass-dark-border)',
+            borderRadius: 'var(--radius-lg)',
+            boxShadow: 'var(--shadow-glass-dark)',
+            padding: '19px 20px',
+            color: '#fff',
+          }}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10px/1 var(--font-sans)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)' }}>
               <Clock size={13} strokeWidth={2.4} />
@@ -118,7 +137,8 @@ export default function HubHomePage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 7,
-              background: 'var(--accent)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,.3), rgba(255,255,255,0) 55%), var(--accent)',
+              border: '1px solid rgba(255,255,255,.25)',
               borderRadius: 999,
               padding: '10px 17px',
               font: "600 13px/1 var(--font-sans)",
@@ -147,9 +167,11 @@ export default function HubHomePage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: on ? 'var(--accent)' : complete ? 'var(--good-bg)' : '#fff',
+                    background: on ? 'var(--accent)' : complete ? 'var(--good-bg)' : 'var(--glass-bg)',
+                    backdropFilter: on || complete ? undefined : 'var(--glass-blur)',
+                    WebkitBackdropFilter: on || complete ? undefined : 'var(--glass-blur)',
                     boxShadow: on ? 'var(--shadow-soft)' : 'none',
-                    border: `1px solid ${on ? 'var(--accent)' : complete ? 'var(--good-border)' : 'var(--border)'}`,
+                    border: `1px solid ${on ? 'var(--accent)' : complete ? 'var(--good-border)' : 'rgba(255,255,255,.6)'}`,
                     font: "700 10.5px/1 var(--font-sans)",
                     color: on ? '#fff' : complete ? 'var(--good)' : 'rgba(27,26,31,.6)',
                   }}
@@ -175,9 +197,12 @@ export default function HubHomePage() {
               key={s.name}
               href={s.href}
               style={{
-                background: '#fff',
+                background: 'var(--glass-bg)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                border: 'var(--glass-border)',
                 borderRadius: 'var(--radius-md)',
-                boxShadow: 'var(--shadow-card)',
+                boxShadow: 'var(--shadow-glass)',
                 padding: '15px 15px 16px',
                 minHeight: 86,
                 display: 'flex',

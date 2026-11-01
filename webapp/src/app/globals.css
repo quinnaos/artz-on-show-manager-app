@@ -23,8 +23,23 @@
   --radius-sm: 11px;
   --shadow-card: 0 1px 2px rgba(23, 15, 46, 0.04), 0 10px 28px rgba(23, 15, 46, 0.07);
   --shadow-soft: 0 6px 18px rgba(23, 15, 46, 0.08);
-  --gradient-hero: radial-gradient(120% 55% at 18% -12%, rgba(196, 160, 255, 0.38), rgba(196, 160, 255, 0) 60%),
-    radial-gradient(90% 45% at 105% -8%, rgba(255, 198, 221, 0.28), rgba(255, 198, 221, 0) 55%), var(--surface-2);
+  --gradient-hero: radial-gradient(130% 60% at 15% -14%, rgba(196, 140, 255, 0.5), rgba(196, 140, 255, 0) 62%),
+    radial-gradient(100% 50% at 108% -10%, rgba(255, 180, 212, 0.38), rgba(255, 180, 212, 0) 58%), var(--surface-2);
+
+  /* Frosted-glass material: translucent panels over the gradient, with a
+     saturation boost (the key to Apple's "liquid glass" look - a flat blur
+     alone just looks like fog) and a 1px inner highlight along the top edge
+     to read as a refractive surface rather than a plain tinted box. */
+  --glass-blur: blur(26px) saturate(180%);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-bg-strong: rgba(255, 255, 255, 0.78);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --shadow-glass: var(--glass-highlight), var(--shadow-card);
+  --glass-dark-bg: rgba(30, 20, 48, 0.66);
+  --glass-dark-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-dark-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --shadow-glass-dark: var(--glass-dark-highlight), var(--shadow-card);
 }
 
 * {

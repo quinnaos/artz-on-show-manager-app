@@ -39,12 +39,12 @@ export default function TabBar({ hubId }: { hubId: string }) {
           gap: 2,
           margin: '0 14px',
           padding: 6,
-          background: 'rgba(255,255,255,.88)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: 'var(--glass-bg-strong)',
+          backdropFilter: 'var(--glass-blur)',
+          WebkitBackdropFilter: 'var(--glass-blur)',
           borderRadius: 999,
-          boxShadow: 'var(--shadow-soft)',
-          border: '1px solid rgba(255,255,255,.6)',
+          boxShadow: 'var(--shadow-glass)',
+          border: 'var(--glass-border)',
           pointerEvents: 'auto',
         }}
       >
