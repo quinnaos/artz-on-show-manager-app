@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { hubById } from '@/lib/data/hubs';
 import { listById } from '@/lib/data/checklists';
@@ -10,6 +9,7 @@ import ScreenHeader from '@/components/ScreenHeader';
 import ProgressBar from '@/components/ProgressBar';
 import BriefCard from '@/components/BriefCard';
 import ChecklistItemRow from '@/components/ChecklistItemRow';
+import BackLink from '@/components/BackLink';
 
 export default function SingleChecklistPage() {
   const { hubId, listId } = useParams<{ hubId: string; listId: string }>();
@@ -62,10 +62,21 @@ export default function SingleChecklistPage() {
     <div>
       <ScreenHeader kicker={`${hub.name} hub`} title={l.name} backHref={`/hub/${hub.id}`} />
       <div>
-        <div style={{ padding: '15px 20px 17px', background: '#fff', borderBottom: '1px solid var(--border)' }}>
+        <div
+          style={{
+            margin: '0 20px',
+            padding: '15px 17px',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'var(--glass-blur)',
+            WebkitBackdropFilter: 'var(--glass-blur)',
+            border: 'var(--glass-border)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: 'var(--shadow-glass)',
+          }}
+        >
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
             <div style={{ flex: 1, font: "400 13.5px/1.45 var(--font-sans)", color: 'var(--ink-muted)' }}>{blurb}</div>
-            <div style={{ font: "500 13px/1 var(--font-mono)", color: 'var(--accent)' }}>
+            <div style={{ font: "700 13px/1 var(--font-sans)", color: 'var(--accent)' }}>
               {p.done} of {p.total}
             </div>
           </div>
@@ -93,27 +104,12 @@ export default function SingleChecklistPage() {
         <div style={{ padding: '26px 20px 0' }}>
           <button
             onClick={() => complete && !sentRow && signOff(l.id)}
-            style={{ width: '100%', background: submitBg, borderRadius: 13, padding: 16, textAlign: 'center', font: "500 14.5px/1 var(--font-sans)", color: submitFg }}
+            style={{ width: '100%', background: submitBg, borderRadius: 999, padding: 16, textAlign: 'center', font: "600 14.5px/1 var(--font-sans)", color: submitFg }}
           >
             {submitLabel}
           </button>
           <div style={{ marginTop: 10, textAlign: 'center', font: "400 12px/1.5 var(--font-sans)", color: 'var(--ink-faint)' }}>{submitNote}</div>
-          <Link
-            href={`/hub/${hub.id}`}
-            style={{
-              display: 'block',
-              marginTop: 14,
-              padding: 14,
-              background: '#fff',
-              border: '1px solid var(--border)',
-              borderRadius: 13,
-              textAlign: 'center',
-              font: "500 13.5px/1 var(--font-sans)",
-              color: 'var(--accent)',
-            }}
-          >
-            &lsaquo; Back to hub home
-          </Link>
+          <BackLink href={`/hub/${hub.id}`}>&lsaquo; Back to hub home</BackLink>
         </div>
       </div>
     </div>

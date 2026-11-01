@@ -54,6 +54,7 @@ export default function LoginPage() {
     <div
       style={{
         minHeight: '100vh',
+        background: 'var(--gradient-hero)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -63,10 +64,10 @@ export default function LoginPage() {
       <div style={{ width: '100%', maxWidth: 360 }}>
         <div
           style={{
-            font: "500 10.5px/1 var(--font-mono)",
-            letterSpacing: '.16em',
+            font: "700 10.5px/1 var(--font-sans)",
+            letterSpacing: '.14em',
             textTransform: 'uppercase',
-            color: 'var(--ink-faint)',
+            color: 'var(--accent)',
             textAlign: 'center',
           }}
         >
@@ -75,9 +76,10 @@ export default function LoginPage() {
         <h1
           style={{
             margin: '10px 0 0',
-            font: "400 28px/1.15 var(--font-sans)",
+            font: "700 28px/1.15 var(--font-sans)",
             letterSpacing: '-.02em',
             textAlign: 'center',
+            color: 'var(--ink)',
           }}
         >
           Manager Sign In
@@ -88,13 +90,16 @@ export default function LoginPage() {
             <div
               style={{
                 padding: '18px 19px',
-                background: 'var(--card)',
-                border: '1px solid var(--border)',
-                borderRadius: 14,
+                background: 'var(--glass-bg)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                border: 'var(--glass-border)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--shadow-glass)',
                 textAlign: 'center',
               }}
             >
-              <div style={{ font: "500 15px/1.3 var(--font-sans)", color: 'var(--ink)' }}>Check Your Email</div>
+              <div style={{ font: "700 15px/1.3 var(--font-sans)", color: 'var(--ink)' }}>Check Your Email</div>
               <div style={{ marginTop: 8, font: "400 13.5px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>
                 We sent a sign-in code to <strong>{email}</strong>. Enter it below.
               </div>
@@ -113,9 +118,10 @@ export default function LoginPage() {
                 style={{
                   width: '100%',
                   padding: '14px 16px',
-                  borderRadius: 13,
-                  border: '1px solid var(--border)',
-                  background: 'var(--card)',
+                  borderRadius: 'var(--radius-md)',
+                  border: 'none',
+                  background: '#fff',
+                  boxShadow: 'var(--shadow-card)',
                   font: "400 15px/1 var(--font-sans)",
                   letterSpacing: '.08em',
                   textAlign: 'center',
@@ -128,10 +134,10 @@ export default function LoginPage() {
                   marginTop: 10,
                   width: '100%',
                   padding: 15,
-                  borderRadius: 13,
+                  borderRadius: 999,
                   background: 'var(--accent)',
                   color: '#fff',
-                  font: "500 14.5px/1 var(--font-sans)",
+                  font: "600 14.5px/1 var(--font-sans)",
                   textAlign: 'center',
                   opacity: busy ? 0.6 : 1,
                 }}
@@ -151,7 +157,7 @@ export default function LoginPage() {
                 marginTop: 14,
                 width: '100%',
                 textAlign: 'center',
-                font: "500 13px/1 var(--font-sans)",
+                font: "600 13px/1 var(--font-sans)",
                 color: 'var(--ink-faint)',
               }}
             >
@@ -170,9 +176,10 @@ export default function LoginPage() {
               style={{
                 width: '100%',
                 padding: '14px 16px',
-                borderRadius: 13,
-                border: '1px solid var(--border)',
-                background: 'var(--card)',
+                borderRadius: 'var(--radius-md)',
+                border: 'none',
+                background: '#fff',
+                boxShadow: 'var(--shadow-card)',
                 font: "400 15px/1 var(--font-sans)",
               }}
             />
@@ -183,10 +190,10 @@ export default function LoginPage() {
                 marginTop: 10,
                 width: '100%',
                 padding: 15,
-                borderRadius: 13,
+                borderRadius: 999,
                 background: 'var(--accent)',
                 color: '#fff',
-                font: "500 14.5px/1 var(--font-sans)",
+                font: "600 14.5px/1 var(--font-sans)",
                 textAlign: 'center',
                 opacity: busy ? 0.6 : 1,
               }}

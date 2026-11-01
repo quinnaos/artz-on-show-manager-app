@@ -11,12 +11,12 @@ export default async function PendingPage() {
   if (result === 'ok') redirect('/hubs');
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+    <div style={{ minHeight: '100vh', background: 'var(--gradient-hero)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
       <div style={{ width: '100%', maxWidth: 380, textAlign: 'center' }}>
-        <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.16em', textTransform: 'uppercase', color: 'var(--ink-faint)' }}>
+        <div style={{ font: "700 10.5px/1 var(--font-sans)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--accent)' }}>
           Artz On Show
         </div>
-        <h1 style={{ margin: '10px 0 0', font: "400 26px/1.2 var(--font-sans)", letterSpacing: '-.02em' }}>
+        <h1 style={{ margin: '10px 0 0', font: "700 26px/1.2 var(--font-sans)", letterSpacing: '-.02em', color: 'var(--ink)' }}>
           Access Pending
         </h1>
         <p style={{ marginTop: 14, font: "400 14px/1.55 var(--font-sans)", color: 'var(--ink-muted)' }}>

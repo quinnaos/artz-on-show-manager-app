@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { hubById } from '@/lib/data/hubs';
 import { GROUPTIME } from '@/lib/data/groupTime';
 import ScreenHeader from '@/components/ScreenHeader';
+import BackLink from '@/components/BackLink';
 
 export default function GroupTimePage() {
   const { hubId } = useParams<{ hubId: string }>();
@@ -13,21 +13,32 @@ export default function GroupTimePage() {
   return (
     <div>
       <ScreenHeader kicker={`${hub.name} hub`} title="Group Time" backHref={`/hub/${hub.id}`} />
-      <div style={{ padding: '20px 20px 32px' }}>
+      <div style={{ padding: '4px 20px 32px' }}>
         <div style={{ font: "400 13.5px/1.55 var(--font-sans)", color: 'var(--ink-muted)' }}>
           Group Time starts at 3:45pm. Work through in order.
         </div>
         {GROUPTIME.map((sec) => (
           <div key={sec.name} style={{ marginTop: 22 }}>
             <div className="section-label">{sec.name}</div>
-            <div style={{ marginTop: 11, background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: '4px 16px' }}>
+            <div
+              style={{
+                marginTop: 11,
+                background: 'var(--glass-bg)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                border: 'var(--glass-border)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--shadow-glass)',
+                padding: '4px 16px',
+              }}
+            >
               {sec.items.map((it, i) => {
                 const isNote = !!it.i;
                 const dot = isNote ? '#DDD0FB' : '#CFCBC3';
                 return (
                   <div
                     key={i}
-                    style={{ display: 'flex', gap: 12, padding: '13px 0', borderBottom: i === sec.items.length - 1 ? 'none' : '1px solid #EFEDE9' }}
+                    style={{ display: 'flex', gap: 12, padding: '13px 0', borderBottom: i === sec.items.length - 1 ? 'none' : '1px solid rgba(27,26,31,.08)' }}
                   >
                     <div style={{ width: 6, height: 6, flex: 'none', borderRadius: 99, background: dot, marginTop: 7 }} />
                     <div
@@ -40,7 +51,7 @@ export default function GroupTimePage() {
                       }}
                     >
                       {it.b && (
-                        <strong style={{ fontWeight: 600, color: 'var(--ink)' }}>{it.b} </strong>
+                        <strong style={{ fontWeight: 700, color: 'var(--ink)' }}>{it.b} </strong>
                       )}
                       {it.t || it.i}
                       {it.note && (
@@ -48,7 +59,7 @@ export default function GroupTimePage() {
                           style={{
                             marginTop: 7,
                             padding: '9px 12px',
-                            background: '#F7F4FE',
+                            background: 'var(--accent-light)',
                             borderLeft: '2px solid var(--accent)',
                             borderRadius: '0 9px 9px 0',
                             font: "400 13px/1.5 var(--font-sans)",
@@ -65,22 +76,7 @@ export default function GroupTimePage() {
             </div>
           </div>
         ))}
-        <Link
-          href={`/hub/${hub.id}`}
-          style={{
-            display: 'block',
-            marginTop: 22,
-            padding: 14,
-            background: '#fff',
-            border: '1px solid var(--border)',
-            borderRadius: 13,
-            textAlign: 'center',
-            font: "500 13.5px/1 var(--font-sans)",
-            color: 'var(--accent)',
-          }}
-        >
-          &lsaquo; Back to hub home
-        </Link>
+        <BackLink href={`/hub/${hub.id}`}>&lsaquo; Back to hub home</BackLink>
       </div>
     </div>
   );

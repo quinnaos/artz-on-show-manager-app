@@ -8,6 +8,8 @@ import { ADMIN, listById } from '@/lib/data/checklists';
 import { progressOf, activeWorkshop, dayIdForWorkshop, nzNow, type TickMap } from '@/lib/logic';
 import SignOutButton from '@/components/SignOutButton';
 import RefreshOnMount from '@/components/RefreshOnMount';
+import BackLink from '@/components/BackLink';
+import { ChevronRight } from 'lucide-react';
 
 export default async function HubsPage() {
   const profile = await getProfile();
@@ -43,7 +45,7 @@ export default async function HubsPage() {
     const done = admin.done + day.done;
     const total = admin.total + day.total;
     const pct = total ? Math.round((done / total) * 100) : 0;
-    const color = pct === 0 ? '#C2410C' : pct >= 90 ? 'var(--good)' : 'var(--accent)';
+    const color = pct === 0 ? 'var(--brand-orange)' : pct >= 90 ? 'var(--good)' : 'var(--accent)';
     return { hub: h, pct, color };
   });
 
@@ -51,12 +53,10 @@ export default async function HubsPage() {
   const todayLabel = nzNow().toLocaleDateString('en-NZ', { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
-    <div className="app-shell" style={{ minHeight: '100vh', background: 'var(--surface)' }}>
+    <div className="app-shell" style={{ minHeight: '100vh', background: 'var(--gradient-hero)' }}>
       <RefreshOnMount />
       <div
         style={{
-          background: '#fff',
-          borderBottom: '1px solid var(--border)',
           padding: '18px 20px 15px',
           paddingTop: 'max(18px, env(safe-area-inset-top))',
           display: 'flex',
@@ -68,8 +68,8 @@ export default async function HubsPage() {
         <SignOutButton />
       </div>
 
-      <div style={{ padding: '24px 20px 32px' }}>
-        <div style={{ font: "400 22px/1.25 var(--font-sans)", letterSpacing: '-.02em', color: 'var(--ink)' }}>Hello {name}!</div>
+      <div style={{ padding: '4px 20px 32px' }}>
+        <div style={{ font: "700 22px/1.25 var(--font-sans)", letterSpacing: '-.02em', color: 'var(--ink)' }}>Hello {name}!</div>
         <div style={{ marginTop: 5, font: "400 14px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>{todayLabel}</div>
 
         <div className="section-label" style={{ margin: '26px 0 10px' }}>
@@ -77,7 +77,19 @@ export default async function HubsPage() {
         </div>
 
         {cards.length === 0 && (
-          <div style={{ padding: '16px 17px', background: '#fff', border: '1px dashed var(--border)', borderRadius: 14, font: "400 13.5px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>
+          <div
+            style={{
+              padding: '16px 17px',
+              background: 'var(--glass-bg)',
+              backdropFilter: 'var(--glass-blur)',
+              WebkitBackdropFilter: 'var(--glass-blur)',
+              border: 'var(--glass-border)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-glass)',
+              font: "400 13.5px/1.5 var(--font-sans)",
+              color: 'var(--ink-muted)',
+            }}
+          >
             You&rsquo;re not assigned to a hub yet. Ask your admin to add you to one.
           </div>
         )}
@@ -88,9 +100,12 @@ export default async function HubsPage() {
               key={hub.id}
               href={`/hub/${hub.id}`}
               style={{
-                background: '#fff',
-                border: '1px solid var(--border)',
-                borderRadius: 14,
+                background: 'var(--glass-bg)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                border: 'var(--glass-border)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--shadow-glass)',
                 padding: '16px 17px',
                 display: 'flex',
                 alignItems: 'center',
@@ -98,40 +113,23 @@ export default async function HubsPage() {
               }}
             >
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ font: "500 16.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{hub.name}</div>
+                <div style={{ font: "700 16.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{hub.name}</div>
                 <div style={{ marginTop: 4, font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {hub.venue}
                 </div>
                 <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 9 }}>
-                  <div style={{ width: 70, height: 5, borderRadius: 99, background: '#EDEAE4', overflow: 'hidden' }}>
+                  <div style={{ width: 70, height: 6, borderRadius: 99, background: 'rgba(124,58,237,.1)', overflow: 'hidden' }}>
                     <div style={{ height: '100%', borderRadius: 99, background: color, width: `${pct}%` }} />
                   </div>
-                  <div style={{ font: "500 11.5px/1 var(--font-mono)", color }}>{pct}%</div>
+                  <div style={{ font: "700 11.5px/1 var(--font-sans)", color }}>{pct}%</div>
                 </div>
               </div>
-              <div style={{ font: "400 20px/1 var(--font-sans)", color: 'rgba(27,26,31,.28)' }}>&rsaquo;</div>
+              <ChevronRight size={18} strokeWidth={2.4} color="rgba(27,26,31,.3)" />
             </Link>
           ))}
         </div>
 
-        {profile.role === 'owner' && (
-          <Link
-            href="/admin"
-            style={{
-              display: 'block',
-              marginTop: 22,
-              padding: '14px 17px',
-              background: '#fff',
-              border: '1px solid var(--border)',
-              borderRadius: 13,
-              textAlign: 'center',
-              font: "500 13.5px/1 var(--font-sans)",
-              color: 'var(--accent)',
-            }}
-          >
-            Manage Managers
-          </Link>
-        )}
+        {profile.role === 'owner' && <BackLink href="/admin">Manage Managers</BackLink>}
       </div>
     </div>
   );

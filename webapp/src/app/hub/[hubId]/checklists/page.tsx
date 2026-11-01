@@ -30,9 +30,12 @@ export default function ChecklistsListPage() {
                 key={l.id}
                 href={`/hub/${hub.id}/checklists/${l.id}`}
                 style={{
-                  background: '#fff',
-                  border: `1px solid ${complete ? 'var(--good-border)' : 'var(--border)'}`,
-                  borderRadius: 14,
+                  background: 'var(--glass-bg)',
+                  backdropFilter: 'var(--glass-blur)',
+                  WebkitBackdropFilter: 'var(--glass-blur)',
+                  border: 'var(--glass-border)',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-glass)',
                   padding: '15px 17px',
                   display: 'flex',
                   alignItems: 'center',
@@ -44,24 +47,24 @@ export default function ChecklistsListPage() {
                     width: 40,
                     height: 40,
                     flex: 'none',
-                    borderRadius: 11,
+                    borderRadius: 12,
                     background: isDaily ? 'var(--ink)' : 'var(--accent-light)',
                     color: isDaily ? '#fff' : '#5B21B6',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    font: "500 12px/1 var(--font-mono)",
+                    font: "700 12px/1 var(--font-sans)",
                   }}
                 >
                   {l.abbr}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ font: "500 15.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{l.name}</div>
+                  <div style={{ font: "700 15.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{l.name}</div>
                   <div style={{ marginTop: 4, font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>
                     {(l.subAlt || {})[hub.id] || l.sub}
                   </div>
                 </div>
-                <div style={{ font: "500 11.5px/1 var(--font-mono)", color: barColor }}>
+                <div style={{ font: "700 11.5px/1 var(--font-sans)", color: barColor }}>
                   {p.done}/{p.total}
                 </div>
               </Link>

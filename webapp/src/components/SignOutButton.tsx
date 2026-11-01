@@ -16,9 +16,12 @@ export default function SignOutButton({ style }: { style?: React.CSSProperties }
       style={{
         padding: '10px 16px',
         borderRadius: 99,
-        border: '1px solid var(--border)',
-        background: '#fff',
-        font: "500 13px/1 var(--font-sans)",
+        background: 'var(--glass-bg)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: 'var(--glass-border)',
+        boxShadow: 'var(--shadow-glass)',
+        font: "600 13px/1 var(--font-sans)",
         color: 'var(--accent)',
         ...style,
       }}

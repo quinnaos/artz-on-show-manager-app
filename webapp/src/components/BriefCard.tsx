@@ -1,18 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { Info } from 'lucide-react';
 
 export default function BriefCard({ lead, full }: { lead: string; full: string }) {
   const [open, setOpen] = useState(false);
   if (!lead && !full) return null;
 
   return (
-    <div style={{ margin: '16px 20px 0', padding: '16px 17px', background: '#F7F4FE', border: '1px solid #DDD0FB', borderRadius: 14 }}>
-      <div style={{ font: "500 10.5px/1 var(--font-mono)", letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+    <div style={{ margin: '16px 20px 0', padding: '16px 17px', background: 'var(--accent-light)', borderRadius: 'var(--radius-md)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10.5px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+        <Info size={12} strokeWidth={2.6} />
         Brief
       </div>
       {lead && (
-        <div style={{ marginTop: 10, font: "500 14px/1.55 var(--font-sans)", color: 'var(--ink)' }}>{lead}</div>
+        <div style={{ marginTop: 10, font: "600 14px/1.55 var(--font-sans)", color: 'var(--ink)' }}>{lead}</div>
       )}
       {full && (
         <div style={{ marginTop: 11 }}>
@@ -21,12 +23,11 @@ export default function BriefCard({ lead, full }: { lead: string; full: string }
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              padding: '4px 10px',
+              padding: '5px 11px',
               borderRadius: 99,
-              border: '1px solid #DDD0FB',
               background: '#fff',
-              font: "500 10px/1.35 var(--font-mono)",
-              letterSpacing: '.07em',
+              font: "700 10px/1.35 var(--font-sans)",
+              letterSpacing: '.05em',
               textTransform: 'uppercase',
               color: '#5B21B6',
             }}

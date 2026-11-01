@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Check } from 'lucide-react';
 import type { ChecklistItem } from '@/lib/types';
 
 function formatTime(iso: string): string {
@@ -22,8 +23,11 @@ export default function ChecklistItemRow({
   const [moreOpen, setMoreOpen] = useState(false);
   const on = !!tickedAt;
 
+  // Plain opaque cards here rather than the frosted-glass treatment used
+  // elsewhere - checklists can run to dozens of rows, and stacking that many
+  // backdrop-filter blurs at once is a real jank risk on lower-end devices.
   return (
-    <div style={{ background: on ? '#F7FBF8' : '#fff', border: `1px solid ${on ? 'var(--good-border)' : 'var(--border)'}`, borderRadius: 13, padding: '14px 15px' }}>
+    <div style={{ background: on ? 'var(--good-bg)' : '#fff', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-card)', padding: '14px 15px' }}>
       <button onClick={onTick} style={{ width: '100%', textAlign: 'left', display: 'flex', gap: 13, alignItems: 'flex-start' }}>
         <div
           style={{
@@ -36,14 +40,13 @@ export default function ChecklistItemRow({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            font: "500 13px/1 var(--font-sans)",
             color: '#fff',
           }}
         >
-          {on ? '✓' : ''}
+          {on && <Check size={14} strokeWidth={3} />}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ font: "400 14.5px/1.4 var(--font-sans)", color: on ? 'var(--ink-muted)' : 'var(--ink)', textDecoration: on ? 'line-through' : 'none' }}>
+          <div style={{ font: "500 14.5px/1.4 var(--font-sans)", color: on ? 'var(--ink-muted)' : 'var(--ink)', textDecoration: on ? 'line-through' : 'none' }}>
             {item.t}
           </div>
           {item.sub && (
@@ -55,11 +58,11 @@ export default function ChecklistItemRow({
                 marginTop: 9,
                 display: 'inline-flex',
                 alignItems: 'center',
-                padding: '4px 9px',
+                padding: '4px 10px',
                 borderRadius: 99,
                 background: 'var(--accent-light)',
-                font: "500 10px/1.35 var(--font-mono)",
-                letterSpacing: '.07em',
+                font: "700 10px/1.35 var(--font-sans)",
+                letterSpacing: '.04em',
                 textTransform: 'uppercase',
                 color: '#5B21B6',
               }}
@@ -73,11 +76,11 @@ export default function ChecklistItemRow({
                 marginTop: 9,
                 display: 'inline-flex',
                 alignItems: 'center',
-                padding: '4px 9px',
+                padding: '4px 10px',
                 borderRadius: 99,
-                background: 'var(--good-bg)',
-                font: "500 10px/1.35 var(--font-mono)",
-                letterSpacing: '.07em',
+                background: '#fff',
+                font: "700 10px/1.35 var(--font-sans)",
+                letterSpacing: '.04em',
                 textTransform: 'uppercase',
                 color: 'var(--good)',
               }}
@@ -94,12 +97,11 @@ export default function ChecklistItemRow({
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              padding: '4px 10px',
+              padding: '5px 11px',
               borderRadius: 99,
-              border: '1px solid #DDD0FB',
-              background: '#F7F4FE',
-              font: "500 10px/1.35 var(--font-mono)",
-              letterSpacing: '.07em',
+              background: 'var(--accent-light)',
+              font: "700 10px/1.35 var(--font-sans)",
+              letterSpacing: '.04em',
               textTransform: 'uppercase',
               color: '#5B21B6',
             }}
@@ -111,7 +113,7 @@ export default function ChecklistItemRow({
               style={{
                 marginTop: 9,
                 padding: '11px 13px',
-                background: '#F7F4FE',
+                background: 'var(--accent-light)',
                 borderLeft: '2px solid #C4B5FD',
                 borderRadius: '0 10px 10px 0',
                 font: "400 12.5px/1.55 var(--font-sans)",
