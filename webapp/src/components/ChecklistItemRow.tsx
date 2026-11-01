@@ -99,25 +99,28 @@ export default function ChecklistItemRow({
               alignItems: 'center',
               padding: '5px 11px',
               borderRadius: 99,
-              background: 'var(--accent-light)',
+              background: 'var(--brand-orange-tint)',
               font: "700 10px/1.35 var(--font-sans)",
               letterSpacing: '.04em',
               textTransform: 'uppercase',
-              color: '#5B21B6',
+              color: 'var(--brand-orange)',
             }}
           >
             {moreOpen ? 'Less' : 'More'}
           </button>
           {moreOpen && (
             <div
+              className="glass-pop"
               style={{
                 marginTop: 9,
-                padding: '11px 13px',
-                background: 'var(--accent-light)',
-                borderLeft: '2px solid #C4B5FD',
-                borderRadius: '0 10px 10px 0',
+                padding: '12px 14px',
+                background: 'var(--brand-orange-tint-glass)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--shadow-pop)',
                 font: "400 12.5px/1.55 var(--font-sans)",
-                color: '#4A3A6B',
+                color: 'var(--brand-orange-text)',
                 whiteSpace: 'pre-line',
               }}
             >

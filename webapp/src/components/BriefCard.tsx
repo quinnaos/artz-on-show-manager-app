@@ -8,8 +8,8 @@ export default function BriefCard({ lead, full }: { lead: string; full: string }
   if (!lead && !full) return null;
 
   return (
-    <div style={{ margin: '16px 20px 0', padding: '16px 17px', background: 'var(--accent-light)', borderRadius: 'var(--radius-md)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10.5px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+    <div style={{ margin: '16px 20px 0', padding: '16px 17px', background: 'var(--brand-orange-tint)', borderRadius: 'var(--radius-md)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10.5px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--brand-orange)' }}>
         <Info size={12} strokeWidth={2.6} />
         Brief
       </div>
@@ -29,13 +29,28 @@ export default function BriefCard({ lead, full }: { lead: string; full: string }
               font: "700 10px/1.35 var(--font-sans)",
               letterSpacing: '.05em',
               textTransform: 'uppercase',
-              color: '#5B21B6',
+              color: 'var(--brand-orange)',
             }}
           >
             {open ? 'Hide' : 'Read more'}
           </button>
           {open && (
-            <div style={{ marginTop: 10, font: "400 13.5px/1.6 var(--font-sans)", color: '#3F2A6B' }}>{full}</div>
+            <div
+              className="glass-pop"
+              style={{
+                marginTop: 10,
+                padding: '12px 14px',
+                background: 'var(--brand-orange-tint-glass)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: 'var(--shadow-pop)',
+                font: "400 13.5px/1.6 var(--font-sans)",
+                color: 'var(--brand-orange-text)',
+              }}
+            >
+              {full}
+            </div>
           )}
         </div>
       )}

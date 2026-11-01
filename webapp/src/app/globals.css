@@ -47,6 +47,10 @@
   --brand-orange: #ea580c;
   --brand-orange-light: #fb923c;
   --gradient-brand-orange: linear-gradient(135deg, var(--brand-orange-light), var(--brand-orange));
+  --brand-orange-tint: #fdeee3;
+  --brand-orange-tint-glass: rgba(251, 146, 60, 0.16);
+  --brand-orange-text: #9a3412;
+  --shadow-pop: 0 20px 45px rgba(234, 88, 12, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 * {
@@ -104,4 +108,21 @@ input {
   body {
     background: #fff;
   }
+}
+
+/* Entrance for content that expands in place (a "Read more" panel, etc.) -
+   a touch of lift and scale on open reads as the glass panel popping up off
+   the surface, rather than text just appearing. */
+@keyframes glass-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.glass-pop {
+  animation: glass-pop 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
