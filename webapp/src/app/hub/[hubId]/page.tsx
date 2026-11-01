@@ -111,25 +111,23 @@ export default function HubHomePage() {
       <div style={{ padding: '4px 20px 32px' }}>
         <div
           style={{
-            background: 'var(--glass-dark-bg)',
-            backdropFilter: 'var(--glass-blur)',
-            WebkitBackdropFilter: 'var(--glass-blur)',
-            border: 'var(--glass-dark-border)',
+            background: 'var(--gradient-brand-orange)',
+            border: '1px solid rgba(255,255,255,.2)',
             borderRadius: 'var(--radius-lg)',
-            boxShadow: 'var(--shadow-glass-dark)',
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,.25), var(--shadow-card)',
             padding: '19px 20px',
             color: '#fff',
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10px/1 var(--font-sans)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10px/1 var(--font-sans)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.72)' }}>
               <Clock size={13} strokeWidth={2.4} />
               On now &middot; {nowTimeLabel(now)}
             </div>
-            <div style={{ font: "700 11.5px/1 var(--font-sans)", color: '#C4B5FD' }}>{homeCount} today</div>
+            <div style={{ font: "700 11.5px/1 var(--font-sans)", color: '#fff' }}>{homeCount} today</div>
           </div>
           <div style={{ marginTop: 13, font: "700 23px/1.15 var(--font-sans)", letterSpacing: '-.02em' }}>{nowPart}</div>
-          <div style={{ marginTop: 8, font: "400 13.5px/1.5 var(--font-sans)", color: 'rgba(255,255,255,.62)' }}>{nowNote}</div>
+          <div style={{ marginTop: 8, font: "400 13.5px/1.5 var(--font-sans)", color: 'rgba(255,255,255,.85)' }}>{nowNote}</div>
           <Link
             href={openHref}
             style={{
@@ -137,11 +135,11 @@ export default function HubHomePage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 7,
-              background: 'var(--accent)',
+              background: '#fff',
               borderRadius: 999,
               padding: '10px 17px',
               font: "600 13px/1 var(--font-sans)",
-              color: '#fff',
+              color: 'var(--brand-orange)',
             }}
           >
             Open instructions &rsaquo;

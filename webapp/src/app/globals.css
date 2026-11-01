@@ -40,6 +40,13 @@
   --glass-dark-border: 1px solid rgba(255, 255, 255, 0.1);
   --glass-dark-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.12);
   --shadow-glass-dark: var(--glass-dark-highlight), var(--shadow-card);
+
+  /* AOS brand orange - used for the "what's happening right now" hero panel,
+     as a deliberate second brand color alongside the purple accent used for
+     navigation/actions everywhere else. */
+  --brand-orange: #ea580c;
+  --brand-orange-light: #fb923c;
+  --gradient-brand-orange: linear-gradient(135deg, var(--brand-orange-light), var(--brand-orange));
 }
 
 * {
