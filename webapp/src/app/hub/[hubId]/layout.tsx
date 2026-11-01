@@ -16,7 +16,7 @@ export default async function HubLayout({ children, params }: LayoutProps<'/hub/
 
   return (
     <HubDataProvider hubId={hub.id} profile={profile}>
-      <div className="app-shell" style={{ minHeight: '100vh', background: 'var(--surface)', paddingBottom: 90 }}>
+      <div className="app-shell" style={{ minHeight: '100vh', background: 'var(--gradient-hero)', paddingBottom: 110 }}>
         {children}
       </div>
       <TabBar hubId={hub.id} />

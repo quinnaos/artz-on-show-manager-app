@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
 
 export default function ScreenHeader({
   kicker,
@@ -14,41 +15,37 @@ export default function ScreenHeader({
   return (
     <div
       style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
         flex: 'none',
-        background: '#fff',
-        borderBottom: '1px solid var(--border)',
-        padding: '18px 20px 15px',
-        paddingTop: 'max(18px, env(safe-area-inset-top))',
+        padding: '20px 20px 18px',
+        paddingTop: 'max(20px, env(safe-area-inset-top))',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, minHeight: 32 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, minHeight: 36 }}>
         {backHref && (
           <Link
             href={backHref}
             style={{
-              width: 31,
-              height: 31,
+              width: 36,
+              height: 36,
               flex: 'none',
-              borderRadius: 99,
-              background: '#F0EEEA',
+              borderRadius: 999,
+              background: 'rgba(255,255,255,.75)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              boxShadow: 'var(--shadow-soft)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              font: "400 19px/1 var(--font-sans)",
               color: 'var(--ink)',
-              paddingBottom: 3,
             }}
           >
-            &lsaquo;
+            <ChevronLeft size={20} strokeWidth={2.4} />
           </Link>
         )}
         {(kicker || title) && (
           <div style={{ minWidth: 0, flex: 1 }}>
             {kicker && (
-              <div style={{ font: "500 9.5px/1 var(--font-mono)", letterSpacing: '.16em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+              <div style={{ font: "700 10px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>
                 {kicker}
               </div>
             )}
@@ -56,8 +53,8 @@ export default function ScreenHeader({
               <div
                 style={{
                   marginTop: 5,
-                  font: "500 18.5px/1.15 var(--font-sans)",
-                  letterSpacing: '-.015em',
+                  font: "700 22px/1.15 var(--font-sans)",
+                  letterSpacing: '-.02em',
                   color: 'var(--ink)',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
