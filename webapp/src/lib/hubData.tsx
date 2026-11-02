@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { scopeFor, visibleIndexes, activeWorkshop, dayIdForWorkshop, dateKey, nzNow } from '@/lib/logic';
 import { listById } from '@/lib/data/checklists';
@@ -19,6 +19,8 @@ type AwardRow = {
 };
 type SignOffRow = { hub_id: string; scope: string; signed_by: string | null; signed_at: string; workshop_id: number | null };
 type WorkshopRow = { id: number; hub_id: string; start_date: string; label: string | null };
+export type Tutor = { name: string; discipline: string };
+type SpeechDetailsRow = { id: number; hub_id: string; workshop_id: number | null; theme: string; dates: string; tutors: Tutor[] };
 
 const DAY_IDS = ['mon', 'tue', 'wed', 'thu', 'fri'];
 
@@ -40,6 +42,8 @@ type HubDataValue = {
   signedOff: (scope: string) => SignOffRow | null;
   signOff: (listId: string) => void;
   scopeForList: (listId: string) => string;
+  speechDetails: { theme: string; dates: string; tutors: Tutor[] };
+  updateSpeechDetails: (patch: Partial<{ theme: string; dates: string; tutors: Tutor[] }>) => void;
 };
 
 const HubDataContext = createContext<HubDataValue | null>(null);
@@ -71,6 +75,8 @@ export function HubDataProvider({
   const [loading, setLoading] = useState(true);
   const [dayId, setDayIdState] = useState('mon');
   const [workshops, setWorkshops] = useState<WorkshopRow[]>([]);
+  const [speechDetailsRows, setSpeechDetailsRows] = useState<SpeechDetailsRow[]>([]);
+  const speechSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // While a workshop is genuinely running today, every tick/award/sign-off
   // made during the session belongs to that one occurrence - regardless of
@@ -102,11 +108,12 @@ export function HubDataProvider({
     let cancelled = false;
     async function load() {
       setLoading(true);
-      const [t, a, s, w] = await Promise.all([
+      const [t, a, s, w, sd] = await Promise.all([
         supabase.from('ticks').select('hub_id, scope, item_index, ticked_at, ticked_by, workshop_id').eq('hub_id', hubId),
         supabase.from('points_awards').select('id, hub_id, day_id, group_id, delta, awarded_by, created_at, workshop_id').eq('hub_id', hubId),
         supabase.from('sign_offs').select('hub_id, scope, signed_by, signed_at, workshop_id').eq('hub_id', hubId),
         supabase.from('workshops').select('id, hub_id, start_date, label').eq('hub_id', hubId),
+        supabase.from('speech_details').select('id, hub_id, workshop_id, theme, dates, tutors').eq('hub_id', hubId),
       ]);
       if (cancelled) return;
       const tm = new Map<string, TickRow>();
@@ -116,6 +123,9 @@ export function HubDataProvider({
       const sm = new Map<string, SignOffRow>();
       (s.data ?? []).forEach((r: SignOffRow) => sm.set(r.scope, r));
       setSignOffs(sm);
+      setSpeechDetailsRows(
+        (sd.data ?? []).map((r) => ({ ...r, theme: r.theme ?? '', dates: r.dates ?? '', tutors: (r.tutors ?? []) as Tutor[] })) as SpeechDetailsRow[]
+      );
 
       const workshopRows = (w.data ?? []) as WorkshopRow[];
       setWorkshops(workshopRows);
@@ -320,6 +330,67 @@ export function HubDataProvider({
     [scopeForList, hubId, profile.id, activeWorkshopId, supabase]
   );
 
+  const speechDetails = useMemo(() => {
+    const row = speechDetailsRows.find((r) => r.workshop_id === activeWorkshopId);
+    return { theme: row?.theme ?? '', dates: row?.dates ?? '', tutors: row?.tutors ?? [] };
+  }, [speechDetailsRows, activeWorkshopId]);
+
+  // Debounced so a burst of keystrokes across the Theme/Dates/Tutor fields
+  // becomes one write, not one per field per keystroke - and so there's only
+  // ever one save in flight, which avoids inserting duplicate rows before the
+  // first insert has come back with a real id.
+  const updateSpeechDetails = useCallback(
+    (patch: Partial<{ theme: string; dates: string; tutors: Tutor[] }>) => {
+      setSpeechDetailsRows((prev) => {
+        const idx = prev.findIndex((r) => r.workshop_id === activeWorkshopId);
+        if (idx === -1) {
+          return [...prev, { id: 0, hub_id: hubId, workshop_id: activeWorkshopId, theme: '', dates: '', tutors: [], ...patch }];
+        }
+        const next = [...prev];
+        next[idx] = { ...next[idx], ...patch };
+        return next;
+      });
+
+      if (speechSaveTimer.current) clearTimeout(speechSaveTimer.current);
+      speechSaveTimer.current = setTimeout(() => {
+        setSpeechDetailsRows((current) => {
+          const row = current.find((r) => r.workshop_id === activeWorkshopId);
+          if (!row) return current;
+          const payload = { theme: row.theme, dates: row.dates, tutors: row.tutors, updated_at: new Date().toISOString(), updated_by: profile.id };
+          if (row.id > 0) {
+            supabase.from('speech_details').update(payload).eq('id', row.id).then();
+          } else {
+            supabase
+              .from('speech_details')
+              .insert({ hub_id: hubId, workshop_id: activeWorkshopId, ...payload })
+              .select()
+              .single()
+              .then(({ data }) => {
+                if (data) {
+                  const saved = data as { id: number; workshop_id: number | null; theme: string | null; dates: string | null; tutors: Tutor[] };
+                  setSpeechDetailsRows((p) =>
+                    p.map((r) =>
+                      r.workshop_id === activeWorkshopId
+                        ? { ...r, id: saved.id, theme: saved.theme ?? '', dates: saved.dates ?? '', tutors: saved.tutors ?? [] }
+                        : r
+                    )
+                  );
+                }
+              });
+          }
+          return current;
+        });
+      }, 700);
+    },
+    [activeWorkshopId, hubId, profile.id, supabase]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (speechSaveTimer.current) clearTimeout(speechSaveTimer.current);
+    };
+  }, []);
+
   const value: HubDataValue = {
     hubId,
     profile,
@@ -337,6 +408,8 @@ export function HubDataProvider({
     resetPoints,
     signedOff,
     signOff,
+    speechDetails,
+    updateSpeechDetails,
     scopeForList,
   };
 

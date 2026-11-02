@@ -85,6 +85,27 @@ create table if not exists public.sign_offs (
   primary key (hub_id, scope)
 );
 
+-- ── Closing speech details ──────────────────────────────────────────────
+-- Manager-entered specifics (this workshop's theme, the next workshop's
+-- dates, tutor credits) that get woven into the Closing Speech text in
+-- place of its [bracketed] placeholders. Scoped like ticks/points: while a
+-- workshop is live, details belong to that occurrence so running the same
+-- hub again later starts blank; outside any workshop window, workshop_id is
+-- null and details are a single shared bucket for manual/off-season use. No
+-- unique constraint on (hub_id, workshop_id) - the app looks up any
+-- existing row itself and updates by id, rather than relying on upsert
+-- conflict targets, since workshop_id is nullable.
+create table if not exists public.speech_details (
+  id bigint generated always as identity primary key,
+  hub_id text not null,
+  workshop_id bigint references public.workshops(id) on delete set null,
+  theme text,
+  dates text,
+  tutors jsonb not null default '[]',
+  updated_at timestamptz not null default now(),
+  updated_by uuid references public.profiles(id)
+);
+
 -- ── Helper functions ────────────────────────────────────────────────────
 create or replace function public.is_owner()
 returns boolean
@@ -116,6 +137,7 @@ alter table public.ticks enable row level security;
 alter table public.points_awards enable row level security;
 alter table public.sign_offs enable row level security;
 alter table public.workshops enable row level security;
+alter table public.speech_details enable row level security;
 
 drop policy if exists "profiles: read own or owner" on public.profiles;
 create policy "profiles: read own or owner" on public.profiles
@@ -153,6 +175,10 @@ drop policy if exists "sign_offs: hub access" on public.sign_offs;
 create policy "sign_offs: hub access" on public.sign_offs
   for all using (public.has_hub_access(hub_id)) with check (public.has_hub_access(hub_id));
 
+drop policy if exists "speech_details: hub access" on public.speech_details;
+create policy "speech_details: hub access" on public.speech_details
+  for all using (public.has_hub_access(hub_id)) with check (public.has_hub_access(hub_id));
+
 drop policy if exists "workshops: hub access read" on public.workshops;
 create policy "workshops: hub access read" on public.workshops
   for select using (public.has_hub_access(hub_id));
@@ -177,6 +203,8 @@ alter publication supabase_realtime add table public.sign_offs;
 create index if not exists ticks_workshop_id_idx on public.ticks (workshop_id);
 create index if not exists points_awards_workshop_id_idx on public.points_awards (workshop_id);
 create index if not exists sign_offs_workshop_id_idx on public.sign_offs (workshop_id);
+create index if not exists speech_details_hub_id_idx on public.speech_details (hub_id);
+create index if not exists speech_details_workshop_id_idx on public.speech_details (workshop_id);
 
 -- ── Retention cleanup ───────────────────────────────────────────────────
 -- Permanently deletes a workshop's ticks/points/sign-offs once its Day 5 was
@@ -204,6 +232,10 @@ begin
     select id from public.workshops where (start_date + 4) < (current_date - 28)
   );
   delete from public.sign_offs
+  where workshop_id in (
+    select id from public.workshops where (start_date + 4) < (current_date - 28)
+  );
+  delete from public.speech_details
   where workshop_id in (
     select id from public.workshops where (start_date + 4) < (current_date - 28)
   );

@@ -1,6 +1,8 @@
 // Closing Speech. Anything in [square brackets] is a gap the Manager fills
 // with the week's detail. `cue` lines are stage directions / applause cues.
-export type SpeechPara = { t: string; cue?: boolean; hints?: string[] };
+// `slot: 'tutors'` marks the one paragraph replaced entirely by the editable
+// tutors list on the speech page, rather than rendered as plain text.
+export type SpeechPara = { t: string; cue?: boolean; hints?: string[]; slot?: 'tutors' };
 
 export const SPEECH: SpeechPara[] = [
   { cue: true, t: 'Firstly, can we give a huge round of applause to all of our incredible performers!' },
@@ -13,7 +15,7 @@ export const SPEECH: SpeechPara[] = [
   { t: 'And how amazing was [e.g. a favourite dance, funny scene, song, character or special moment from the show]!' },
   { t: 'We are incredibly proud of every single one of them.' },
   { t: 'A massive thank you as well to our wonderful Tutors who have encouraged, taught and supported the children throughout the week. We have had:' },
-  { t: '[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]' },
+  { slot: 'tutors', t: '[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]\n[Tutor name] teaching [discipline]' },
   { cue: true, t: 'Can we please give our Tutors a huge round of applause!' },
   { t: 'And of course, a huge thank you to all of our families. Thank you for trusting us with your children and for being here today to celebrate them. We absolutely love creating a space where children can be creative, build their confidence, make friends, try new things and feel proud of themselves.' },
   { t: 'Our next Artz On Show Workshop is [theme], running [dates]. We would absolutely love to see lots of familiar faces back again!' },
@@ -22,3 +24,4 @@ export const SPEECH: SpeechPara[] = [
   { t: 'Thank you for bringing your [e.g. energy, kindness, enthusiasm, creativity, humour] to Artz On Show this week. It has been an absolute pleasure having you with us.' },
   { cue: true, t: 'And for one final time, can we make some noise and give a massive round of applause to our [theme] cast!' },
 ];
+
