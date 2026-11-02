@@ -67,7 +67,7 @@ export default function TabBar({ hubId }: { hubId: string }) {
               }}
             >
               <t.Icon size={19} strokeWidth={2.2} color={color} />
-              <div style={{ font: "600 9.5px/1 var(--font-sans)", color, whiteSpace: 'nowrap' }}>{t.name}</div>
+              <div style={{ font: "500 9.5px/1 var(--font-sans)", color, whiteSpace: 'nowrap' }}>{t.name}</div>
             </Link>
           );
         })}

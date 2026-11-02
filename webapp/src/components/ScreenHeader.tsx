@@ -46,7 +46,7 @@ export default function ScreenHeader({
         {(kicker || title) && (
           <div style={{ minWidth: 0, flex: 1 }}>
             {kicker && (
-              <div style={{ font: "700 10px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>
+              <div style={{ font: "600 10px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--accent)' }}>
                 {kicker}
               </div>
             )}
@@ -54,7 +54,7 @@ export default function ScreenHeader({
               <div
                 style={{
                   marginTop: 5,
-                  font: "700 22px/1.15 var(--font-sans)",
+                  font: "600 22px/1.15 var(--font-sans)",
                   letterSpacing: '-.02em',
                   color: 'var(--ink)',
                   whiteSpace: 'nowrap',

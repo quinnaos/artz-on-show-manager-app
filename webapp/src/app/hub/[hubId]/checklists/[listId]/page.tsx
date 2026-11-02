@@ -76,7 +76,7 @@ export default function SingleChecklistPage() {
         >
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
             <div style={{ flex: 1, font: "400 13.5px/1.45 var(--font-sans)", color: 'var(--ink-muted)' }}>{blurb}</div>
-            <div style={{ font: "700 13px/1 var(--font-sans)", color: 'var(--accent)' }}>
+            <div style={{ font: "600 13px/1 var(--font-sans)", color: 'var(--accent)' }}>
               {p.done} of {p.total}
             </div>
           </div>
@@ -104,7 +104,7 @@ export default function SingleChecklistPage() {
         <div style={{ padding: '26px 20px 0' }}>
           <button
             onClick={() => complete && !sentRow && signOff(l.id)}
-            style={{ width: '100%', background: submitBg, borderRadius: 999, padding: 16, textAlign: 'center', font: "600 14.5px/1 var(--font-sans)", color: submitFg }}
+            style={{ width: '100%', background: submitBg, borderRadius: 999, padding: 16, textAlign: 'center', font: "500 14.5px/1 var(--font-sans)", color: submitFg }}
           >
             {submitLabel}
           </button>

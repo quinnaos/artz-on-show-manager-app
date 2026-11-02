@@ -32,7 +32,7 @@ export default function ClosingSpeechPage() {
                       <span
                         key={j}
                         style={{
-                          fontWeight: p.cue ? 600 : 400,
+                          fontWeight: p.cue ? 500 : 400,
                           color: fill ? '#6D28D9' : p.cue ? '#4C1D95' : 'var(--ink)',
                           fontStyle: fill ? 'italic' : 'normal',
                         }}

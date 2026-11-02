@@ -18,7 +18,7 @@ export default function BackLink({ href, children }: { href: string; children: R
         borderRadius: 'var(--radius-md)',
         boxShadow: 'var(--shadow-glass)',
         textAlign: 'center',
-        font: "600 13.5px/1 var(--font-sans)",
+        font: "500 13.5px/1 var(--font-sans)",
         color: 'var(--accent)',
       }}
     >

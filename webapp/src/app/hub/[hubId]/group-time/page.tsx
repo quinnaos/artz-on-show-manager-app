@@ -51,7 +51,7 @@ export default function GroupTimePage() {
                       }}
                     >
                       {it.b && (
-                        <strong style={{ fontWeight: 700, color: 'var(--ink)' }}>{it.b} </strong>
+                        <strong style={{ fontWeight: 600, color: 'var(--ink)' }}>{it.b} </strong>
                       )}
                       {it.t || it.i}
                       {it.note && (

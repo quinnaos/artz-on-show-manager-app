@@ -69,7 +69,7 @@ export default async function HubsPage() {
       </div>
 
       <div style={{ padding: '4px 20px 32px' }}>
-        <div style={{ font: "700 22px/1.25 var(--font-sans)", letterSpacing: '-.02em', color: 'var(--ink)' }}>Hello {name}!</div>
+        <div style={{ font: "600 22px/1.25 var(--font-sans)", letterSpacing: '-.02em', color: 'var(--ink)' }}>Hello {name}!</div>
         <div style={{ marginTop: 5, font: "400 14px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>{todayLabel}</div>
 
         <div className="section-label" style={{ margin: '26px 0 10px' }}>
@@ -113,7 +113,7 @@ export default async function HubsPage() {
               }}
             >
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ font: "700 16.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{hub.name}</div>
+                <div style={{ font: "600 16.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{hub.name}</div>
                 <div style={{ marginTop: 4, font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {hub.venue}
                 </div>
@@ -121,7 +121,7 @@ export default async function HubsPage() {
                   <div style={{ width: 70, height: 6, borderRadius: 99, background: 'rgba(124,58,237,.1)', overflow: 'hidden' }}>
                     <div style={{ height: '100%', borderRadius: 99, background: color, width: `${pct}%` }} />
                   </div>
-                  <div style={{ font: "700 11.5px/1 var(--font-sans)", color }}>{pct}%</div>
+                  <div style={{ font: "600 11.5px/1 var(--font-sans)", color }}>{pct}%</div>
                 </div>
               </div>
               <ChevronRight size={18} strokeWidth={2.4} color="rgba(27,26,31,.3)" />

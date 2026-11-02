@@ -25,7 +25,7 @@ export default function PointsPage() {
       <div style={{ padding: '4px 20px 32px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10 }}>
           <div style={{ font: "400 13.5px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>Tap to award. Points can never be taken away.</div>
-          <div style={{ font: "700 10.5px/1 var(--font-sans)", letterSpacing: '.04em', color: 'var(--ink-faint)' }}>{dayName}</div>
+          <div style={{ font: "600 10.5px/1 var(--font-sans)", letterSpacing: '.04em', color: 'var(--ink-faint)' }}>{dayName}</div>
         </div>
 
         {groups.length === 0 && (
@@ -52,21 +52,21 @@ export default function PointsPage() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ font: "700 15px/1.2 var(--font-sans)", letterSpacing: '-.01em', color: g.color }}>{g.name}</div>
+                      <div style={{ font: "600 15px/1.2 var(--font-sans)", letterSpacing: '-.01em', color: g.color }}>{g.name}</div>
                       {lead && (
-                        <div style={{ marginTop: 5, display: 'inline-flex', padding: '3px 9px', borderRadius: 99, background: g.color, font: "700 9px/1.35 var(--font-sans)", letterSpacing: '.06em', textTransform: 'uppercase', color: '#fff' }}>
+                        <div style={{ marginTop: 5, display: 'inline-flex', padding: '3px 9px', borderRadius: 99, background: g.color, font: "600 9px/1.35 var(--font-sans)", letterSpacing: '.06em', textTransform: 'uppercase', color: '#fff' }}>
                           Leading
                         </div>
                       )}
                     </div>
-                    <div style={{ font: "700 40px/1 var(--font-sans)", letterSpacing: '-.03em', color: g.color, fontVariantNumeric: 'tabular-nums' }}>{n}</div>
+                    <div style={{ font: "600 40px/1 var(--font-sans)", letterSpacing: '-.03em', color: g.color, fontVariantNumeric: 'tabular-nums' }}>{n}</div>
                   </div>
                   <div style={{ marginTop: 13, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
                     {[1, 5, 10].map((n) => (
                       <button
                         key={n}
                         onClick={() => award(g.id, n)}
-                        style={{ padding: '13px 0', borderRadius: 999, background: '#fff', boxShadow: 'var(--shadow-soft)', textAlign: 'center', font: "700 15px/1 var(--font-sans)", color: g.color, userSelect: 'none' }}
+                        style={{ padding: '13px 0', borderRadius: 999, background: '#fff', boxShadow: 'var(--shadow-soft)', textAlign: 'center', font: "600 15px/1 var(--font-sans)", color: g.color, userSelect: 'none' }}
                       >
                         +{n}
                       </button>
@@ -96,7 +96,7 @@ export default function PointsPage() {
             borderRadius: 'var(--radius-md)',
             boxShadow: 'var(--shadow-glass)',
             textAlign: 'center',
-            font: "600 13px/1 var(--font-sans)",
+            font: "500 13px/1 var(--font-sans)",
             color: canUndo ? 'var(--accent)' : 'rgba(27,26,31,.35)',
           }}
         >
@@ -120,7 +120,7 @@ export default function PointsPage() {
               borderRadius: 'var(--radius-md)',
               boxShadow: 'var(--shadow-glass)',
               textAlign: 'center',
-              font: "600 13px/1 var(--font-sans)",
+              font: "500 13px/1 var(--font-sans)",
               color: '#9B1C1C',
             }}
           >

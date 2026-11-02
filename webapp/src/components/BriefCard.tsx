@@ -9,12 +9,12 @@ export default function BriefCard({ lead, full }: { lead: string; full: string }
 
   return (
     <div style={{ margin: '16px 20px 0', padding: '16px 17px', background: 'var(--brand-orange-tint)', borderRadius: 'var(--radius-md)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10.5px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--brand-orange)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "600 10.5px/1 var(--font-sans)", letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--brand-orange)' }}>
         <Info size={12} strokeWidth={2.6} />
         Brief
       </div>
       {lead && (
-        <div style={{ marginTop: 10, font: "600 14px/1.55 var(--font-sans)", color: 'var(--ink)' }}>{lead}</div>
+        <div style={{ marginTop: 10, font: "500 14px/1.55 var(--font-sans)", color: 'var(--ink)' }}>{lead}</div>
       )}
       {full && (
         <div style={{ marginTop: 11 }}>
@@ -26,7 +26,7 @@ export default function BriefCard({ lead, full }: { lead: string; full: string }
               padding: '5px 11px',
               borderRadius: 99,
               background: '#fff',
-              font: "700 10px/1.35 var(--font-sans)",
+              font: "600 10px/1.35 var(--font-sans)",
               letterSpacing: '.05em',
               textTransform: 'uppercase',
               color: 'var(--brand-orange)',

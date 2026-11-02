@@ -64,7 +64,7 @@ export default function LoginPage() {
       <div style={{ width: '100%', maxWidth: 360 }}>
         <div
           style={{
-            font: "700 10.5px/1 var(--font-sans)",
+            font: "600 10.5px/1 var(--font-sans)",
             letterSpacing: '.14em',
             textTransform: 'uppercase',
             color: 'var(--accent)',
@@ -76,7 +76,7 @@ export default function LoginPage() {
         <h1
           style={{
             margin: '10px 0 0',
-            font: "700 28px/1.15 var(--font-sans)",
+            font: "600 28px/1.15 var(--font-sans)",
             letterSpacing: '-.02em',
             textAlign: 'center',
             color: 'var(--ink)',
@@ -99,7 +99,7 @@ export default function LoginPage() {
                 textAlign: 'center',
               }}
             >
-              <div style={{ font: "700 15px/1.3 var(--font-sans)", color: 'var(--ink)' }}>Check Your Email</div>
+              <div style={{ font: "600 15px/1.3 var(--font-sans)", color: 'var(--ink)' }}>Check Your Email</div>
               <div style={{ marginTop: 8, font: "400 13.5px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>
                 We sent a sign-in code to <strong>{email}</strong>. Enter it below.
               </div>
@@ -137,7 +137,7 @@ export default function LoginPage() {
                   borderRadius: 999,
                   background: 'var(--accent)',
                   color: '#fff',
-                  font: "600 14.5px/1 var(--font-sans)",
+                  font: "500 14.5px/1 var(--font-sans)",
                   textAlign: 'center',
                   opacity: busy ? 0.6 : 1,
                 }}
@@ -157,7 +157,7 @@ export default function LoginPage() {
                 marginTop: 14,
                 width: '100%',
                 textAlign: 'center',
-                font: "600 13px/1 var(--font-sans)",
+                font: "500 13px/1 var(--font-sans)",
                 color: 'var(--ink-faint)',
               }}
             >
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 borderRadius: 999,
                 background: 'var(--accent)',
                 color: '#fff',
-                font: "600 14.5px/1 var(--font-sans)",
+                font: "500 14.5px/1 var(--font-sans)",
                 textAlign: 'center',
                 opacity: busy ? 0.6 : 1,
               }}

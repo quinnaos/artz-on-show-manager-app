@@ -21,7 +21,7 @@ export default function SignOutButton({ style }: { style?: React.CSSProperties }
         WebkitBackdropFilter: 'var(--glass-blur)',
         border: 'var(--glass-border)',
         boxShadow: 'var(--shadow-glass)',
-        font: "600 13px/1 var(--font-sans)",
+        font: "500 13px/1 var(--font-sans)",
         color: 'var(--accent)',
         ...style,
       }}

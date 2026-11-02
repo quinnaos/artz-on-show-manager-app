@@ -80,12 +80,12 @@ export default function HubHomePage() {
             <ClipboardCheck size={17} strokeWidth={2.2} color="var(--accent)" />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ font: "700 15.5px/1.25 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{l.name}</div>
+            <div style={{ font: "600 15.5px/1.25 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{l.name}</div>
             <div style={{ marginTop: 2, font: "400 12.5px/1.45 var(--font-sans)", color: 'var(--ink-muted)' }}>
               {(l.subAlt || {})[hub.id] || l.sub}
             </div>
           </div>
-          <div style={{ font: "700 13px/1 var(--font-sans)", color: barColor }}>
+          <div style={{ font: "600 13px/1 var(--font-sans)", color: barColor }}>
             {p.done}/{p.total}
           </div>
         </div>
@@ -120,13 +120,13 @@ export default function HubHomePage() {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "700 10px/1 var(--font-sans)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.72)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: "600 10px/1 var(--font-sans)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.72)' }}>
               <Clock size={13} strokeWidth={2.4} />
               On now &middot; {nowTimeLabel(now)}
             </div>
-            <div style={{ font: "700 11.5px/1 var(--font-sans)", color: '#fff' }}>{homeCount} today</div>
+            <div style={{ font: "600 11.5px/1 var(--font-sans)", color: '#fff' }}>{homeCount} today</div>
           </div>
-          <div style={{ marginTop: 13, font: "700 23px/1.15 var(--font-sans)", letterSpacing: '-.02em' }}>{nowPart}</div>
+          <div style={{ marginTop: 13, font: "600 23px/1.15 var(--font-sans)", letterSpacing: '-.02em' }}>{nowPart}</div>
           <div style={{ marginTop: 8, font: "400 13.5px/1.5 var(--font-sans)", color: 'rgba(255,255,255,.85)' }}>{nowNote}</div>
           <Link
             href={openHref}
@@ -138,7 +138,7 @@ export default function HubHomePage() {
               background: '#fff',
               borderRadius: 999,
               padding: '10px 17px',
-              font: "600 13px/1 var(--font-sans)",
+              font: "500 13px/1 var(--font-sans)",
               color: 'var(--brand-orange)',
             }}
           >
@@ -147,7 +147,7 @@ export default function HubHomePage() {
         </div>
 
         <div style={{ margin: '26px 0 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-          <div style={{ font: "700 13px/1.3 var(--font-sans)", letterSpacing: '-.01em', color: 'var(--ink)' }}>Today&rsquo;s checklists</div>
+          <div style={{ font: "600 13px/1.3 var(--font-sans)", letterSpacing: '-.01em', color: 'var(--ink)' }}>Today&rsquo;s checklists</div>
           <div style={{ display: 'flex', gap: 6 }}>
             {DAYS.map((d) => {
               const on = d.id === dayId;
@@ -169,7 +169,7 @@ export default function HubHomePage() {
                     WebkitBackdropFilter: on || complete ? undefined : 'var(--glass-blur)',
                     boxShadow: on ? 'var(--shadow-soft)' : 'none',
                     border: `1px solid ${on ? 'var(--accent)' : complete ? 'var(--good-border)' : 'rgba(255,255,255,.6)'}`,
-                    font: "700 10.5px/1 var(--font-sans)",
+                    font: "600 10.5px/1 var(--font-sans)",
                     color: on ? '#fff' : complete ? 'var(--good)' : 'rgba(27,26,31,.6)',
                   }}
                 >
@@ -185,7 +185,7 @@ export default function HubHomePage() {
           {listCard(day)}
         </div>
 
-        <div style={{ margin: '26px 0 10px', font: "700 13px/1.3 var(--font-sans)", letterSpacing: '-.01em', color: 'var(--ink)' }}>
+        <div style={{ margin: '26px 0 10px', font: "600 13px/1.3 var(--font-sans)", letterSpacing: '-.01em', color: 'var(--ink)' }}>
           Shortcuts
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -221,7 +221,7 @@ export default function HubHomePage() {
               >
                 <s.Icon size={15} strokeWidth={2.2} color="var(--accent)" />
               </div>
-              <div style={{ font: "600 14.5px/1.25 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{s.name}</div>
+              <div style={{ font: "500 14.5px/1.25 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{s.name}</div>
             </Link>
           ))}
         </div>

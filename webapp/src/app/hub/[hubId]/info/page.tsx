@@ -44,10 +44,10 @@ export default function InfoPage() {
           {CONTACTS.map((c, i) => (
             <div key={c.name} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 0', borderBottom: i === CONTACTS.length - 1 ? 'none' : '1px solid rgba(27,26,31,.08)' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ font: "600 14.5px/1.25 var(--font-sans)", color: 'var(--ink)' }}>{c.name}</div>
+                <div style={{ font: "500 14.5px/1.25 var(--font-sans)", color: 'var(--ink)' }}>{c.name}</div>
                 <div style={{ marginTop: 3, font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>{c.role}</div>
               </div>
-              <a href={`tel:${c.phone.replace(/\s/g, '')}`} style={{ font: "700 12.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
+              <a href={`tel:${c.phone.replace(/\s/g, '')}`} style={{ font: "600 12.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
                 {c.phone}
               </a>
             </div>

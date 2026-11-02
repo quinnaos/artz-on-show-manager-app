@@ -53,18 +53,18 @@ export default function ChecklistsListPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    font: "700 12px/1 var(--font-sans)",
+                    font: "600 12px/1 var(--font-sans)",
                   }}
                 >
                   {l.abbr}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ font: "700 15.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{l.name}</div>
+                  <div style={{ font: "600 15.5px/1.2 var(--font-sans)", letterSpacing: '-.015em', color: 'var(--ink)' }}>{l.name}</div>
                   <div style={{ marginTop: 4, font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>
                     {(l.subAlt || {})[hub.id] || l.sub}
                   </div>
                 </div>
-                <div style={{ font: "700 11.5px/1 var(--font-sans)", color: barColor }}>
+                <div style={{ font: "600 11.5px/1 var(--font-sans)", color: barColor }}>
                   {p.done}/{p.total}
                 </div>
               </Link>
