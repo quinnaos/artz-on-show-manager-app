@@ -40,9 +40,7 @@ export default function BriefCard({ lead, full }: { lead: string; full: string }
               style={{
                 marginTop: 10,
                 padding: '12px 14px',
-                background: 'var(--brand-orange-tint-glass)',
-                backdropFilter: 'var(--glass-blur)',
-                WebkitBackdropFilter: 'var(--glass-blur)',
+                background: '#fff',
                 borderRadius: 'var(--radius-md)',
                 boxShadow: 'var(--shadow-pop)',
                 font: "400 13.5px/1.6 var(--font-sans)",

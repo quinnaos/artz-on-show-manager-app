@@ -114,9 +114,7 @@ export default function ChecklistItemRow({
               style={{
                 marginTop: 9,
                 padding: '12px 14px',
-                background: 'var(--brand-orange-tint-glass)',
-                backdropFilter: 'var(--glass-blur)',
-                WebkitBackdropFilter: 'var(--glass-blur)',
+                background: 'var(--brand-orange-tint)',
                 borderRadius: 'var(--radius-md)',
                 boxShadow: 'var(--shadow-pop)',
                 font: "400 12.5px/1.55 var(--font-sans)",
