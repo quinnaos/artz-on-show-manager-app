@@ -1,5 +1,4 @@
 import { redirect, notFound } from 'next/navigation';
-import Link from 'next/link';
 import { getProfile } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { hubById } from '@/lib/data/hubs';
@@ -7,6 +6,7 @@ import { listById, allItems } from '@/lib/data/checklists';
 import { GROUPS } from '@/lib/data/groups';
 import { parseScope, nzNow } from '@/lib/logic';
 import ExportPdfButton from '@/components/ExportPdfButton';
+import AdminHeader from '@/components/AdminHeader';
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -17,6 +17,15 @@ function formatTime(iso: string) {
     .toLocaleString('en-NZ', { timeZone: 'Pacific/Auckland', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })
     .replace(/\s/g, ' ');
 }
+
+const cardStyle = {
+  background: 'var(--glass-bg)',
+  backdropFilter: 'var(--glass-blur)',
+  WebkitBackdropFilter: 'var(--glass-blur)',
+  border: 'var(--glass-border)',
+  borderRadius: 'var(--radius-md)',
+  boxShadow: 'var(--shadow-glass)',
+};
 
 export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/workshops/[id]'>) {
   const { id } = await params;
@@ -98,92 +107,83 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
   const exportFilename = `${hub.name} - ${workshop.label || 'Workshop'}.pdf`;
 
   return (
-    <div style={{ minHeight: '100vh', maxWidth: 640, margin: '0 auto', padding: '24px 20px 60px' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
-        <div>
-          <div className="section-label">{hub.name}</div>
-          <h1 style={{ margin: '6px 0 0', font: "400 24px/1.2 var(--font-sans)", letterSpacing: '-.02em' }}>{workshop.label || 'Workshop'}</h1>
-          <div style={{ marginTop: 4, font: "400 13px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>
-            {formatDate(start)} &ndash; {formatDate(end)}
+    <div style={{ minHeight: '100vh', background: 'var(--gradient-hero)' }}>
+      <AdminHeader kicker={hub.name} title={workshop.label || 'Workshop'} backHref="/admin" backLabel="Back to admin" />
+
+      <div style={{ maxWidth: 640, margin: '0 auto', padding: '24px 20px 60px' }}>
+        <div className="no-print" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+          <div>
+            <div style={{ font: "400 13px/1.4 var(--font-sans)", color: 'var(--ink-muted)' }}>
+              {formatDate(start)} &ndash; {formatDate(end)}
+            </div>
+            <div style={{ marginTop: 2, font: "400 11.5px/1.4 var(--font-sans)", color: 'var(--ink-faint)' }}>Exported {exportedAt} NZT</div>
           </div>
-          <div style={{ marginTop: 2, font: "400 11.5px/1.4 var(--font-sans)", color: 'var(--ink-faint)' }}>Exported {exportedAt} NZT</div>
-        </div>
-        <div className="no-print" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
           <ExportPdfButton data={exportData} filename={exportFilename} />
-          <Link href="/admin" style={{ font: "500 13.5px/1 var(--font-sans)", color: 'var(--accent)' }}>
-            &lsaquo; Back to admin
-          </Link>
         </div>
-      </div>
 
-      {(!ticks || ticks.length === 0) && (!awards || awards.length === 0) && (!signOffs || signOffs.length === 0) && (
-        <div style={{ marginTop: 24, padding: 16, background: '#fff', border: '1px dashed var(--border)', borderRadius: 14, font: "400 13.5px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>
-          No records for this workshop &mdash; either nothing was ticked, or its detailed records have already aged out (records are
-          automatically cleared 4 weeks after a workshop&rsquo;s Day 5).
-        </div>
-      )}
+        {(!ticks || ticks.length === 0) && (!awards || awards.length === 0) && (!signOffs || signOffs.length === 0) && (
+          <div style={{ marginTop: 24, padding: 16, ...cardStyle, font: "400 13.5px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>
+            No records for this workshop &mdash; either nothing was ticked, or its detailed records have already aged out (records are
+            automatically cleared 4 weeks after a workshop&rsquo;s Day 5).
+          </div>
+        )}
 
-      {byList.size > 0 && (
-        <section style={{ marginTop: 28 }}>
-          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
-            Checklists
-          </h2>
-          <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {Array.from(byList.entries()).map(([listId, rows]) => (
-              <div key={listId} style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: 16 }}>
-                <div style={{ font: "500 15px/1.3 var(--font-sans)" }}>{listById(listId).name}</div>
-                <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  {rows.map((r, i) => (
-                    <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'baseline' }}>
-                      <div style={{ flex: 1, font: "400 13.5px/1.4 var(--font-sans)" }}>{r.text}</div>
-                      <div style={{ font: "400 12px/1.4 var(--font-mono)", color: 'var(--ink-faint)', whiteSpace: 'nowrap' }}>
-                        {r.by} &middot; {r.time}
+        {byList.size > 0 && (
+          <section style={{ marginTop: 28 }}>
+            <div className="section-label">Checklists</div>
+            <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {Array.from(byList.entries()).map(([listId, rows]) => (
+                <div key={listId} style={{ ...cardStyle, padding: 16 }}>
+                  <div style={{ font: "500 15px/1.3 var(--font-sans)" }}>{listById(listId).name}</div>
+                  <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {rows.map((r, i) => (
+                      <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'baseline' }}>
+                        <div style={{ flex: 1, font: "400 13.5px/1.4 var(--font-sans)" }}>{r.text}</div>
+                        <div style={{ font: "400 12px/1.4 var(--font-sans)", color: 'var(--ink-faint)', whiteSpace: 'nowrap' }}>
+                          {r.by} &middot; {r.time}
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {groups.length > 0 && awards && awards.length > 0 && (
-        <section style={{ marginTop: 28 }}>
-          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
-            Points
-          </h2>
-          <div style={{ marginTop: 12, background: '#fff', border: '1px solid var(--border)', borderRadius: 14, padding: 16, display: 'flex', gap: 20, flexWrap: 'wrap' }}>
-            {pointsTotals.map(({ group, total }) => (
-              <div key={group.id}>
-                <div style={{ font: "500 11px/1 var(--font-mono)", color: group.color }}>{group.name}</div>
-                <div style={{ marginTop: 4, font: "500 24px/1 var(--font-sans)" }}>{total}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {signOffs && signOffs.length > 0 && (
-        <section style={{ marginTop: 28 }}>
-          <h2 style={{ font: "500 13px/1 var(--font-mono)", letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--ink)', margin: 0 }}>
-            Sign-offs
-          </h2>
-          <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {signOffs.map((s) => {
-              const { listId } = parseScope(s.scope);
-              return (
-                <div key={s.scope} style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px', display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-                  <div style={{ font: "500 14px/1.3 var(--font-sans)" }}>{listById(listId).name}</div>
-                  <div style={{ font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)', whiteSpace: 'nowrap' }}>
-                    {nameFor(s.signed_by)} &middot; {formatTime(s.signed_at)}
+                    ))}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
+              ))}
+            </div>
+          </section>
+        )}
+
+        {groups.length > 0 && awards && awards.length > 0 && (
+          <section style={{ marginTop: 28 }}>
+            <div className="section-label">Points</div>
+            <div style={{ marginTop: 12, ...cardStyle, padding: 16, display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+              {pointsTotals.map(({ group, total }) => (
+                <div key={group.id}>
+                  <div style={{ font: "500 11px/1 var(--font-sans)", color: group.color }}>{group.name}</div>
+                  <div style={{ marginTop: 4, font: "500 24px/1 var(--font-sans)" }}>{total}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {signOffs && signOffs.length > 0 && (
+          <section style={{ marginTop: 28 }}>
+            <div className="section-label">Sign-offs</div>
+            <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {signOffs.map((s) => {
+                const { listId } = parseScope(s.scope);
+                return (
+                  <div key={s.scope} style={{ ...cardStyle, padding: '12px 14px', display: 'flex', justifyContent: 'space-between', gap: 12 }}>
+                    <div style={{ font: "500 14px/1.3 var(--font-sans)" }}>{listById(listId).name}</div>
+                    <div style={{ font: "400 12.5px/1.4 var(--font-sans)", color: 'var(--ink-muted)', whiteSpace: 'nowrap' }}>
+                      {nameFor(s.signed_by)} &middot; {formatTime(s.signed_at)}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+      </div>
     </div>
   );
 }
