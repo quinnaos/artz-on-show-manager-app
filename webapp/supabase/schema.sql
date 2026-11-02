@@ -195,9 +195,20 @@ alter table public.ticks replica identity full;
 alter table public.points_awards replica identity full;
 alter table public.sign_offs replica identity full;
 
-alter publication supabase_realtime add table public.ticks;
-alter publication supabase_realtime add table public.points_awards;
-alter publication supabase_realtime add table public.sign_offs;
+-- ALTER PUBLICATION has no IF NOT EXISTS, and errors (aborting the whole
+-- script) if a table was already added by a previous run - so check first.
+do $$
+begin
+  if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'ticks') then
+    alter publication supabase_realtime add table public.ticks;
+  end if;
+  if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'points_awards') then
+    alter publication supabase_realtime add table public.points_awards;
+  end if;
+  if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = 'sign_offs') then
+    alter publication supabase_realtime add table public.sign_offs;
+  end if;
+end $$;
 
 -- ── Indexes ─────────────────────────────────────────────────────────────
 create index if not exists ticks_workshop_id_idx on public.ticks (workshop_id);
