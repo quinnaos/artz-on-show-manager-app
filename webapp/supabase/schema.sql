@@ -106,6 +106,23 @@ create table if not exists public.speech_details (
   updated_by uuid references public.profiles(id)
 );
 
+-- ── Points groups ───────────────────────────────────────────────────────
+-- Which of the fixed six colour groups (orange, green, yellow, red, silver,
+-- black) a hub is running points for. Scoped and looked-up the same way as
+-- speech_details: per workshop occurrence, starting blank each time one runs
+-- again, with a plain shared bucket (workshop_id null) outside any workshop
+-- window. group_ids is an ordered array so the app can keep a stable,
+-- predictable announce-order regardless of what was added or removed.
+create table if not exists public.hub_groups (
+  id bigint generated always as identity primary key,
+  hub_id text not null,
+  workshop_id bigint references public.workshops(id) on delete set null,
+  group_ids text[] not null default '{}',
+  updated_at timestamptz not null default now(),
+  updated_by uuid references public.profiles(id)
+);
+
+
 -- ── Helper functions ────────────────────────────────────────────────────
 create or replace function public.is_owner()
 returns boolean
@@ -138,6 +155,7 @@ alter table public.points_awards enable row level security;
 alter table public.sign_offs enable row level security;
 alter table public.workshops enable row level security;
 alter table public.speech_details enable row level security;
+alter table public.hub_groups enable row level security;
 
 drop policy if exists "profiles: read own or owner" on public.profiles;
 create policy "profiles: read own or owner" on public.profiles
@@ -179,6 +197,10 @@ drop policy if exists "speech_details: hub access" on public.speech_details;
 create policy "speech_details: hub access" on public.speech_details
   for all using (public.has_hub_access(hub_id)) with check (public.has_hub_access(hub_id));
 
+drop policy if exists "hub_groups: hub access" on public.hub_groups;
+create policy "hub_groups: hub access" on public.hub_groups
+  for all using (public.has_hub_access(hub_id)) with check (public.has_hub_access(hub_id));
+
 drop policy if exists "workshops: hub access read" on public.workshops;
 create policy "workshops: hub access read" on public.workshops
   for select using (public.has_hub_access(hub_id));
@@ -216,6 +238,8 @@ create index if not exists points_awards_workshop_id_idx on public.points_awards
 create index if not exists sign_offs_workshop_id_idx on public.sign_offs (workshop_id);
 create index if not exists speech_details_hub_id_idx on public.speech_details (hub_id);
 create index if not exists speech_details_workshop_id_idx on public.speech_details (workshop_id);
+create index if not exists hub_groups_hub_id_idx on public.hub_groups (hub_id);
+create index if not exists hub_groups_workshop_id_idx on public.hub_groups (workshop_id);
 
 -- ── Retention cleanup ───────────────────────────────────────────────────
 -- Permanently deletes a workshop's ticks/points/sign-offs once its Day 5 was
@@ -247,6 +271,10 @@ begin
     select id from public.workshops where (start_date + 4) < (current_date - 28)
   );
   delete from public.speech_details
+  where workshop_id in (
+    select id from public.workshops where (start_date + 4) < (current_date - 28)
+  );
+  delete from public.hub_groups
   where workshop_id in (
     select id from public.workshops where (start_date + 4) < (current_date - 28)
   );

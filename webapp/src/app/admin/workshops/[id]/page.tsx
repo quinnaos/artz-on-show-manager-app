@@ -3,7 +3,7 @@ import { getProfile } from '@/lib/auth';
 import { createClient } from '@/lib/supabase/server';
 import { hubById } from '@/lib/data/hubs';
 import { listById, allItems } from '@/lib/data/checklists';
-import { GROUPS } from '@/lib/data/groups';
+import { groupsFromIds, DEFAULT_GROUP_IDS } from '@/lib/data/groups';
 import { parseScope, nzNow } from '@/lib/logic';
 import ExportPdfButton from '@/components/ExportPdfButton';
 import AdminHeader from '@/components/AdminHeader';
@@ -36,11 +36,12 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
   if (profile.role !== 'owner') redirect('/hubs');
 
   const supabase = await createClient();
-  const [{ data: workshop }, { data: ticks }, { data: awards }, { data: signOffs }] = await Promise.all([
+  const [{ data: workshop }, { data: ticks }, { data: awards }, { data: signOffs }, { data: hubGroups }] = await Promise.all([
     supabase.from('workshops').select('hub_id, start_date, label').eq('id', workshopId).maybeSingle(),
     supabase.from('ticks').select('scope, item_index, ticked_at, ticked_by').eq('workshop_id', workshopId).order('ticked_at'),
     supabase.from('points_awards').select('group_id, delta, awarded_by').eq('workshop_id', workshopId).order('created_at'),
     supabase.from('sign_offs').select('scope, signed_by, signed_at').eq('workshop_id', workshopId).order('signed_at'),
+    supabase.from('hub_groups').select('group_ids').eq('workshop_id', workshopId).maybeSingle(),
   ]);
   if (!workshop) notFound();
 
@@ -78,7 +79,7 @@ export default async function WorkshopHistoryPage({ params }: PageProps<'/admin/
     byList.set(listId, rows);
   });
 
-  const groups = GROUPS[hub.id] ?? [];
+  const groups = groupsFromIds(hubGroups?.group_ids ?? DEFAULT_GROUP_IDS[hub.id] ?? []);
   const pointsTotals = groups.map((g) => ({
     group: g,
     total: (awards ?? []).filter((a) => a.group_id === g.id).reduce((sum, a) => sum + a.delta, 0),

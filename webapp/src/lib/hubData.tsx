@@ -4,7 +4,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { createClient } from '@/lib/supabase/client';
 import { scopeFor, visibleIndexes, activeWorkshop, dayIdForWorkshop, dateKey, nzNow } from '@/lib/logic';
 import { listById } from '@/lib/data/checklists';
-import type { Profile } from '@/lib/types';
+import { groupsFromIds, DEFAULT_GROUP_IDS } from '@/lib/data/groups';
+import type { Profile, ColorGroup } from '@/lib/types';
 
 type TickRow = { hub_id: string; scope: string; item_index: number; ticked_at: string; ticked_by: string | null; workshop_id: number | null };
 type AwardRow = {
@@ -21,6 +22,7 @@ type SignOffRow = { hub_id: string; scope: string; signed_by: string | null; sig
 type WorkshopRow = { id: number; hub_id: string; start_date: string; label: string | null };
 export type Tutor = { name: string; discipline: string };
 type SpeechDetailsRow = { id: number; hub_id: string; workshop_id: number | null; theme: string; dates: string; tutors: Tutor[] };
+type HubGroupsRow = { id: number; hub_id: string; workshop_id: number | null; group_ids: string[] };
 
 const DAY_IDS = ['mon', 'tue', 'wed', 'thu', 'fri'];
 
@@ -44,6 +46,9 @@ type HubDataValue = {
   scopeForList: (listId: string) => string;
   speechDetails: { theme: string; dates: string; tutors: Tutor[] };
   updateSpeechDetails: (patch: Partial<{ theme: string; dates: string; tutors: Tutor[] }>) => void;
+  groups: ColorGroup[];
+  groupIds: string[];
+  updateGroupIds: (ids: string[]) => void;
 };
 
 const HubDataContext = createContext<HubDataValue | null>(null);
@@ -77,6 +82,8 @@ export function HubDataProvider({
   const [workshops, setWorkshops] = useState<WorkshopRow[]>([]);
   const [speechDetailsRows, setSpeechDetailsRows] = useState<SpeechDetailsRow[]>([]);
   const speechSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hubGroupsRows, setHubGroupsRows] = useState<HubGroupsRow[]>([]);
+  const groupsSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // While a workshop is genuinely running today, every tick/award/sign-off
   // made during the session belongs to that one occurrence - regardless of
@@ -108,12 +115,13 @@ export function HubDataProvider({
     let cancelled = false;
     async function load() {
       setLoading(true);
-      const [t, a, s, w, sd] = await Promise.all([
+      const [t, a, s, w, sd, hg] = await Promise.all([
         supabase.from('ticks').select('hub_id, scope, item_index, ticked_at, ticked_by, workshop_id').eq('hub_id', hubId),
         supabase.from('points_awards').select('id, hub_id, day_id, group_id, delta, awarded_by, created_at, workshop_id').eq('hub_id', hubId),
         supabase.from('sign_offs').select('hub_id, scope, signed_by, signed_at, workshop_id').eq('hub_id', hubId),
         supabase.from('workshops').select('id, hub_id, start_date, label').eq('hub_id', hubId),
         supabase.from('speech_details').select('id, hub_id, workshop_id, theme, dates, tutors').eq('hub_id', hubId),
+        supabase.from('hub_groups').select('id, hub_id, workshop_id, group_ids').eq('hub_id', hubId),
       ]);
       if (cancelled) return;
       const tm = new Map<string, TickRow>();
@@ -126,6 +134,7 @@ export function HubDataProvider({
       setSpeechDetailsRows(
         (sd.data ?? []).map((r) => ({ ...r, theme: r.theme ?? '', dates: r.dates ?? '', tutors: (r.tutors ?? []) as Tutor[] })) as SpeechDetailsRow[]
       );
+      setHubGroupsRows((hg.data ?? []) as HubGroupsRow[]);
 
       const workshopRows = (w.data ?? []) as WorkshopRow[];
       setWorkshops(workshopRows);
@@ -391,6 +400,62 @@ export function HubDataProvider({
     };
   }, []);
 
+  const groupIds = useMemo(() => {
+    const row = hubGroupsRows.find((r) => r.workshop_id === activeWorkshopId);
+    return row ? row.group_ids : (DEFAULT_GROUP_IDS[hubId] ?? []);
+  }, [hubGroupsRows, activeWorkshopId, hubId]);
+
+  const groups = useMemo(() => groupsFromIds(groupIds), [groupIds]);
+
+  // Same debounced update-or-insert pattern as updateSpeechDetails above.
+  const updateGroupIds = useCallback(
+    (ids: string[]) => {
+      setHubGroupsRows((prev) => {
+        const idx = prev.findIndex((r) => r.workshop_id === activeWorkshopId);
+        if (idx === -1) {
+          return [...prev, { id: 0, hub_id: hubId, workshop_id: activeWorkshopId, group_ids: ids }];
+        }
+        const next = [...prev];
+        next[idx] = { ...next[idx], group_ids: ids };
+        return next;
+      });
+
+      if (groupsSaveTimer.current) clearTimeout(groupsSaveTimer.current);
+      groupsSaveTimer.current = setTimeout(() => {
+        setHubGroupsRows((current) => {
+          const row = current.find((r) => r.workshop_id === activeWorkshopId);
+          if (!row) return current;
+          const payload = { group_ids: row.group_ids, updated_at: new Date().toISOString(), updated_by: profile.id };
+          if (row.id > 0) {
+            supabase.from('hub_groups').update(payload).eq('id', row.id).then();
+          } else {
+            supabase
+              .from('hub_groups')
+              .insert({ hub_id: hubId, workshop_id: activeWorkshopId, ...payload })
+              .select()
+              .single()
+              .then(({ data }) => {
+                if (data) {
+                  const saved = data as { id: number; workshop_id: number | null; group_ids: string[] };
+                  setHubGroupsRows((p) =>
+                    p.map((r) => (r.workshop_id === activeWorkshopId ? { ...r, id: saved.id, group_ids: saved.group_ids ?? [] } : r))
+                  );
+                }
+              });
+          }
+          return current;
+        });
+      }, 700);
+    },
+    [activeWorkshopId, hubId, profile.id, supabase]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (groupsSaveTimer.current) clearTimeout(groupsSaveTimer.current);
+    };
+  }, []);
+
   const value: HubDataValue = {
     hubId,
     profile,
@@ -410,6 +475,9 @@ export function HubDataProvider({
     signOff,
     speechDetails,
     updateSpeechDetails,
+    groups,
+    groupIds,
+    updateGroupIds,
     scopeForList,
   };
 

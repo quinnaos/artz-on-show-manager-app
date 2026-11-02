@@ -1,23 +1,29 @@
 'use client';
 
+import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { hubById } from '@/lib/data/hubs';
-import { GROUPS } from '@/lib/data/groups';
+import { GROUP_PALETTE, GROUP_IDS } from '@/lib/data/groups';
 import { DAYS } from '@/lib/data/checklists';
 import { useHubData } from '@/lib/hubData';
 import ScreenHeader from '@/components/ScreenHeader';
 import BackLink from '@/components/BackLink';
-import { Undo2, Info } from 'lucide-react';
+import { Undo2, Info, Settings2, Check } from 'lucide-react';
 
 export default function PointsPage() {
   const { hubId } = useParams<{ hubId: string }>();
   const hub = hubById(hubId);
-  const { dayId, pointsTotal, award, canUndo, lastAwardLabel, undoLastAward, resetPoints } = useHubData();
+  const { dayId, pointsTotal, award, canUndo, lastAwardLabel, undoLastAward, resetPoints, groups, groupIds, updateGroupIds } = useHubData();
+  const [editingGroups, setEditingGroups] = useState(false);
 
-  const groups = GROUPS[hub.id] ?? [];
   const scores = groups.map((g) => pointsTotal(dayId, g.id));
   const top = Math.max(0, ...scores);
   const dayName = (DAYS.find((d) => d.id === dayId) ?? DAYS[0]).name;
+
+  const toggleGroup = (id: string) => {
+    const next = groupIds.includes(id) ? groupIds.filter((g) => g !== id) : [...groupIds, id];
+    updateGroupIds(GROUP_IDS.filter((g) => next.includes(g)));
+  };
 
   return (
     <div>
@@ -28,9 +34,51 @@ export default function PointsPage() {
           <div style={{ font: "600 10.5px/1 var(--font-sans)", letterSpacing: '.04em', color: 'var(--ink-faint)' }}>{dayName}</div>
         </div>
 
+        <button
+          onClick={() => setEditingGroups((v) => !v)}
+          style={{ marginTop: 12, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 999, background: 'var(--brand-orange-tint)', font: "500 12.5px/1 var(--font-sans)", color: 'var(--brand-orange-text)' }}
+        >
+          <Settings2 size={14} strokeWidth={2.4} />
+          {editingGroups ? 'Done editing groups' : 'Edit groups'}
+        </button>
+
+        {editingGroups && (
+          <div className="glass-pop" style={{ marginTop: 10, padding: '14px 15px', background: 'var(--brand-orange-tint)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-pop)' }}>
+            <div style={{ font: "400 12.5px/1.5 var(--font-sans)", color: 'var(--brand-orange-text)' }}>
+              Choose up to six colour groups for this workshop. Changes apply straight away.
+            </div>
+            <div style={{ marginTop: 11, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {GROUP_IDS.map((id) => {
+                const g = GROUP_PALETTE[id];
+                const active = groupIds.includes(id);
+                return (
+                  <button
+                    key={id}
+                    onClick={() => toggleGroup(id)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      padding: '8px 13px',
+                      borderRadius: 999,
+                      background: active ? g.bg : '#fff',
+                      border: `1.5px solid ${active ? g.color : 'var(--border)'}`,
+                      font: "500 12.5px/1 var(--font-sans)",
+                      color: active ? g.color : 'var(--ink-faint)',
+                    }}
+                  >
+                    {active && <Check size={13} strokeWidth={3} />}
+                    {g.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {groups.length === 0 && (
           <div style={{ marginTop: 16, padding: '14px 16px', background: 'var(--glass-bg)', backdropFilter: 'var(--glass-blur)', border: 'var(--glass-border)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-glass)', font: "400 13px/1.5 var(--font-sans)", color: 'var(--ink-muted)' }}>
-            No colour groups set up for {hub.name} yet. Ask your admin to add them.
+            No colour groups set up for {hub.name} yet. Tap &ldquo;Edit groups&rdquo; above to add some.
           </div>
         )}
 
